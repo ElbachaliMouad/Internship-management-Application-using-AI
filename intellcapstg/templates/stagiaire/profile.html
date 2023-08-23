@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>INTELLCAP|STAGE Clone</title>
+    	<link rel="shortcut icon" href="assets/images/logo10.png">
+
+    <link rel="stylesheet" href="assets\css\upload.css" />
+    
+      <link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="assets/css/style3.css" />
+  <link rel="stylesheet" href="assets\css\alert.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">    
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style2.css" />
+    <link rel="stylesheet" href="assets/css/alert.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/atelier.css" />
+	<style> 
+
+
+
+      #container{
+      width: 450px; }
+      .col-1{
+      width: 200px; float: left; color: green; font-weight: bold;
+      text-align: center; margin: 10px; border-radius: 20px; background: yellow; }
+      .col-2{
+      width: 200px; float: right; color: green; font-weight: bold;
+      text-align: center; margin: 10px; border-radius: 20px; background: orange; }	
+      p{ font-size: 20px; }
+
+  .user__avatar {
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;}
+  
+	.calendar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .calendar input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .calendar .selected {
+            background-color: #e1f5fe;
+        }
+      
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        select {
+            padding: 8px;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        
+        .feature {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f7f7f7;
+        }
+        .feature h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .feature p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- header starts -->
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="header">
+      <div class="header__left">
+        <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Progressus HTML5 template"></a>
+      </div>
+
+      
+       
+       
+     
+
+
+            
+              <div class="header__middle">
+          
+            <div class="header__input" >
+                <span class="material-icons"> search </span><input type="text" placeholder="Search E-ART" />
+
+              </div>       
+              
+
+        <div class="header__option">
+          <span class="material-icons" > <a href="postuler.html">explore</a> </span>
+          
+        </div>
+        
+        <select id="location-filter" name="location">
+          <option value="">Domaine</option>
+          <option value="new-york">5-8 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9kfdvmdf-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-1vdkmlv2 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12mvdddddd Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+
+          <option value="chicago">12+ Weeks</option>
+          <!-- Add more options as needed -->
+        </select>
+        <select id="location-filter" name="location">
+          <option value="">Sous-Domaine</option>
+          <option value="new-york">5-8 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="chicago">12+ Weeks</option>
+          <!-- Add more options as needed -->
+        </select>
+        <select id="location-filter" name="location">
+          <option value="">Période</option>
+          <option value="new-york">5-8 Weeks </option>
+          <option value="los-angeles">9-12 Weeks </option>
+          <option value="chicago">12+ Weeks</option>
+          <!-- Add more options as needed -->
+        </select>
+
+
+        <div class="header__option">`
+
+          <span class="material-icons" > <a href="#"  data-toggle="modal" data-target="#myModal" title="" data-original-title="view">bolt</a>
+          </span>
+          
+        </div>  
+
+   
+         <div class="header__option">
+                       <a  href="workpace.html"    type="button" class="btn btn-warning" ><strong>In process</strong></a>
+        </div>
+
+      </div>
+
+      <div class="header__right">
+        <div class="header__info">
+          <img
+            class="user__avatar"
+            src="assets/images/ok.jpg"
+            alt=""/>
+        <a href="profiles.html"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
+        </div>
+        
+        <a href="index.html"><span class="material-icons"> logout </span></a>
+
+        
+        
+      </div>
+        
+        
+      </div>
+
+      <div class="header__right">
+        <div class="header__info">
+         
+        </div>
+      
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <html lang="en"><head>
+        <meta charset="utf-8">
+        
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style type="text/css">
+           
+        
+        .ui-w-80 {
+            width: 80px !important;
+            height: auto;
+        }
+        
+        .btn-default {
+            border-color: rgba(24,28,33,0.1);
+            background: rgba(0,0,0,0);
+            color: #4E5155;
+        }
+        
+        label.btn {
+            margin-bottom: 0;
+        }
+        
+        .btn-outline-primary {
+            border-color: #26B4FF;
+            background: transparent;
+            color: #26B4FF;
+        }
+        
+        .btn {
+            cursor: pointer;
+        }
+        
+        .text-light {
+            color: #babbbc !important;
+        }
+        
+        .btn-facebook {
+            border-color: rgba(0,0,0,0);
+            background: #3B5998;
+            color: #fff;
+        }
+        
+        .btn-instagram {
+            border-color: rgba(0,0,0,0);
+            background: #000;
+            color: #fff;
+        }
+        
+        .card {
+            background-clip: padding-box;
+            box-shadow: 0 1px 4px rgba(24,28,33,0.012);
+        }
+        
+        .row-bordered {
+            overflow: hidden;
+        }
+        
+        .account-settings-fileinput {
+            position: absolute;
+            visibility: hidden;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+        .account-settings-links .list-group-item.active {
+            font-weight: bold !important;
+        }
+        html:not(.dark-style) .account-settings-links .list-group-item.active {
+            background: transparent !important;
+        }
+        .account-settings-multiselect ~ .select2-container {
+            width: 100% !important;
+        }
+        .light-style .account-settings-links .list-group-item {
+            padding: 0.85rem 1.5rem;
+            border-color: rgba(24, 28, 33, 0.03) !important;
+        }
+        .light-style .account-settings-links .list-group-item.active {
+            color: #4e5155 !important;
+        }
+        .material-style .account-settings-links .list-group-item {
+            padding: 0.85rem 1.5rem;
+            border-color: rgba(24, 28, 33, 0.03) !important;
+        }
+        .material-style .account-settings-links .list-group-item.active {
+            color: #4e5155 !important;
+        }
+        .dark-style .account-settings-links .list-group-item {
+            padding: 0.85rem 1.5rem;
+            border-color: rgba(255, 255, 255, 0.03) !important;
+        }
+        .dark-style .account-settings-links .list-group-item.active {
+            color: #fff !important;
+        }
+        .light-style .account-settings-links .list-group-item.active {
+            color: #4E5155 !important;
+        }
+        .light-style .account-settings-links .list-group-item {
+            padding: 0.85rem 1.5rem;
+            border-color: rgba(24,28,33,0.03) !important;
+        }
+        
+        
+        
+            </style>
+        </head>
+        <body style="">
+        <div class="container light-style flex-grow-1 container-p-y">
+        <h4 class="font-weight-bold py-3 mb-4">
+        Canditature settings
+        </h4>
+        <div class="card overflow-hidden">
+            
+
+            
+        <div class="row no-gutters row-bordered row-border-light">
+        <div class="col-md-3 pt-0">
+        <div class="list-group list-group-flush account-settings-links">
+        <a class="list-group-item list-group-item-action active" data-toggle="list" href="profile.html">Candidature</a>
+        <a class="list-group-item list-group-item-action"  href="profileinfo.html">Edit profile </a>
+        <a class="list-group-item list-group-item-action"  href="profilepass.html">Change password</a>
+
+        </div>
+        </div>
+        <div class="col-md-9">
+            
+        <div class="tab-content">
+            
+        <div class="tab-pane fade active show" id="account-general">
+                 
+    
+                <div class="content mt-4">
+                <h5 class="title">Support 24/7</h5>
+                <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
+                <div class="mt-3">
+                 <p > <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >Domaines: genie logciel<i class="mdi mdi-chevron-right"></i></a>
+                  <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);"  >| Sous-Domaine: full-stack<i class="mdi mdi-chevron-right"></i></a>
+                
+                  <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| Periode: 8 semaines<i class="mdi mdi-chevron-right"></i></a>
+                </p>
+        <div class="card-body media align-items-center">
+            
+        <img src="assets/images/ok.jpg" alt="" class="d-block ui-w-80">
+        <div class="media-body ml-4">
+
+        <label class="btn btn-outline-primary">
+        Upload new photo
+        <input type="file" class="account-settings-fileinput">
+        </label> &nbsp;
+        <button type="button" class="btn btn-default md-btn-flat">Reset</button>
+        <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+        </div>
+        </div>
+        <div class="top-margin">
+            <label>Last Name </label>
+            <input type="text" class="form-control">
+          </div>	
+          <div class="top-margin">
+            <label>Fisrt Name </label>
+            <input type="text" class="form-control">
+          </div>
+          
+          
+          <div class="top-margin">
+            <label>Phone(+212)</label>
+            <input type="tel" class="form-control">
+          </div>	
+          
+             
+          <div class="top-margin">
+            <label> School </label>
+            <input type="text" class="form-control">
+          </div>	
+          
+          
+          <div class="top-margin">
+          
+          <select id="location-filter" name="location">
+            <option value="">Niveau</option>
+            <option value="los-angeles">Bac +2 </option>
+            <option value="los-angeles">Bac +3 </option>
+            <option value="los-angeles">Bac +4 </option>
+            <option value="los-angeles">Bac +5  </option>
+            <!-- Add more options as needed -->
+          </select>
+          </div>
+        </div>
+        <div class="form-group">
+        <label class="form-label">Company</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+        </div>
+        <div class="top-margin">
+                
+            <label>CV</label>
+            <input type="file" name="upload" accept="application/pdf" />
+        <div class="text-right mt-3">
+            <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
+            <button type="button" class="btn btn-default">Cancel</button>
+        </div>
+        
+       
+    </div>
+        
+      
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        </div>
+        </div>
+        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript">
+            
+        </script>
+        
+        </body></html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
