@@ -1,0 +1,310 @@
+
+[
+    {
+        "domaine": "Informatique",
+        "mission": "Développement web",
+        "description": "Travailler sur des projets de développement web...",
+        "skills_needed": "Connaissance en HTML, CSS, JavaScript...",
+        "duree": "3 mois",
+        "niveau_etude": "bac+3"
+    },
+    {
+        "domaine": "Marketing",
+        "mission": "Stratégies de marketing digital",
+        "description": "Mettre en place des stratégies de marketing...",
+        "skills_needed": "Compétences en SEO, réseaux sociaux...",
+        "duree": "6 mois",
+        "niveau_etude": "bac+4"
+    },
+    {
+        "domaine": "Ingénierie",
+        "mission": "Conception de produits",
+        "description": "Participer à la conception et à la modélisation...",
+        "skills_needed": "Connaissances en CAO, matériaux...",
+        "duree": "4 mois",
+        "niveau_etude": "bac+5"
+    },
+    {
+        "domaine": "Finance",
+        "mission": "Analyse financière",
+        "description": "Effectuer des analyses financières pour...",
+        "skills_needed": "Compétences en comptabilité, finance...",
+        "duree": "5 mois",
+        "niveau_etude": "bac+4"
+    },
+    {
+        "domaine": "Ressources humaines",
+        "mission": "Gestion du personnel",
+        "description": "Gérer les aspects RH de l'entreprise...",
+        "skills_needed": "Connaissances en gestion du personnel...",
+        "duree": "2 mois",
+        "niveau_etude": "bac+3"
+    },
+    {
+        "domaine": "Communication",
+        "mission": "Relations publiques",
+        "description": "Gérer les relations avec les médias et le public...",
+        "skills_needed": "Compétences en communication, rédaction...",
+        "duree": "3 mois",
+        "niveau_etude": "bac+3"
+    },
+    {
+        "domaine": "Sciences sociales",
+        "mission": "Études de marché",
+        "description": "Conduire des études de marché pour évaluer la demande...",
+        "skills_needed": "Compétences en statistiques, enquêtes...",
+        "duree": "4 mois",
+        "niveau_etude": "bac+4"
+    },
+    {
+        "domaine": "Environnement",
+        "mission": "Gestion des ressources naturelles",
+        "description": "Contribuer à la gestion durable des ressources naturelles...",
+        "skills_needed": "Connaissances en écologie, durabilité...",
+        "duree": "6 mois",
+        "niveau_etude": "bac+5"
+    },
+    {
+        "domaine": "Éducation",
+        "mission": "Conception de programmes pédagogiques",
+        "description": "Concevoir des programmes d'enseignement innovants...",
+        "skills_needed": "Compétences en pédagogie, conception de cours...",
+        "duree": "3 mois",
+        "niveau_etude": "bac+4"
+    },
+    {
+        "domaine": "Aéronautique",
+        "mission": "Conception de structures aéronautiques",
+        "description": "Participer à la conception et à l'analyse de structures d'aéronefs...",
+        "skills_needed": "Connaissances en mécanique des structures, CAO...",
+        "duree": "6 mois",
+        "niveau_etude": "bac+5"
+    },
+    {
+        "domaine": "Génie civil",
+        "mission": "Gestion de chantier de construction",
+        "description": "Assister à la gestion et au suivi de chantiers de construction...",
+        "skills_needed": "Compétences en gestion de projet, conception architecturale...",
+        "duree": "4 mois",
+        "niveau_etude": "bac+3"
+    },
+    {
+        "domaine": "Aéronautique",
+        "mission": "Maintenance d'aéronefs",
+        "description": "Participer à la maintenance préventive et corrective d'aéronefs...",
+        "skills_needed": "Connaissances en mécanique aéronautique, avionique...",
+        "duree": "3 mois",
+        "niveau_etude": "bac+4"
+    },
+
+    
+    {
+        "domaine": "Génie civil",
+        "mission": "Conception de ponts",
+        "description": "Contribuer à la conception et à la modélisation de ponts...",
+        "skills_needed": "Connaissances en génie structural, logiciels de CAO...",
+        "duree": "5 mois",
+        "niveau_etude": "bac+5"
+    },
+
+    {
+        "domaine": "Informatique",
+        "mission": "Cybersécurité",
+        "description": "Travailler sur la protection des systèmes informatiques...",
+        "skills_needed": "Compétences en sécurité informatique, cryptographie...",
+        "duree": "6 mois",
+        "niveau_etude": "bac+5"
+        },
+
+
+
+    {
+            "domaine": "Technologies de l'information",
+            "mission": "Développement logiciel",
+            "description": "Participer à la création et au développement de logiciels...",
+            "skills_needed": "Compétences en programmation (Python, Java, C++...), bases de données...",
+            "duree": "5 mois",
+            "niveau_etude": "bac+4"
+            },
+    {
+            "domaine": "Ingénierie mécanique",
+            "mission": "Conception de produits",
+            "description": "Travailler sur la conception et la modélisation de produits...",
+            "skills_needed": "Connaissances en conception assistée par ordinateur (CAO), mécanique...",
+            "duree": "4 mois",
+            "niveau_etude": "bac+5"
+            },
+    {
+            "domaine": "Design industriel",
+            "mission": "Création de designs innovants",
+            "description": "Créer des concepts de design pour des produits...",
+            "skills_needed": "Compétences en design industriel, outils de conception (SolidWorks, AutoCAD)...",
+            "duree": "3 mois",
+            "niveau_etude": "bac+4"
+            },
+    {
+            "domaine": "Développement durable",
+            "mission": "Projets environnementaux",
+            "description": "Participer à des projets visant à promouvoir le développement durable...",
+            "skills_needed": "Connaissances en gestion environnementale, durabilité...",
+            "duree": "6 mois",
+            "niveau_etude": "bac+5"
+            },
+    {
+            "domaine": "Réseaux et télécommunications",
+            "mission": "Gestion des réseaux",
+            "description": "Gérer et maintenir les réseaux informatiques de l'entreprise...",
+            "skills_needed": "Compétences en réseaux, télécommunications, sécurité...",
+            "duree": "4 mois",
+            "niveau_etude": "bac+3"
+            },
+    {
+            "domaine": "Intelligence artificielle",
+            "mission": "Projets d'apprentissage automatique",
+            "description": "Travailler sur des projets d'intelligence artificielle...",
+            "skills_needed": "Compétences en apprentissage automatique, programmation (Python, TensorFlow, PyTorch)...",
+            "duree": "5 mois",
+            "niveau_etude": "bac+5"
+            },
+
+    {
+                "domaine": "Génie électrique",
+                "mission": "Conception de systèmes électriques",
+                "description": "Participer à la conception et au développement de systèmes électriques...",
+                "skills_needed": "Connaissances en électronique, électrotechnique...",
+                "duree": "1 mois",
+                "niveau_etude": "bac+5"
+                },
+    {
+                "domaine": "Génie mécanique",
+                "mission": "Conception de machines",
+                "description": "Travailler sur la conception et la modélisation de machines et de systèmes mécaniques...",
+                "skills_needed": "Compétences en mécanique, CAO, matériaux...",
+                "duree": "5 mois",
+                "niveau_etude": "bac+4"
+                },
+    {
+                "domaine": "Génie industriel",
+                "mission": "Opptimisation de processus de production",
+                "description": "Contribuer à l'optimisation des processus de production et à l'amélioration de l'efficacité...",
+                "skills_needed": "Connaissances en gestion de la production, statistiques...",
+                "duree": "4 mois",
+                "niveau_etude": "bac+3"
+                },
+
+
+                {
+                    "domaine": "Génie électrique",
+                    "mission": "Conception de systèmes électriques",
+                    "description": "Participer à la conception et au développement de systèmes électriques...",
+                    "skills_needed": "Connaissances en électronique, électrotechnique...",
+                    "duree": "6 mois",
+                    "niveau_etude": "bac+5"
+                    },
+                    {
+                    "domaine": "Génie mécanique",
+                    "mission": "Conception de machines",
+                    "description": "Travailler sur la conception et la modélisation de machines et de systèmes mécaniques...",
+                    "skills_needed": "Compétences en mécanique, CAO, matériaux...",
+                    "duree": "5 mois",
+                    "niveau_etude": "bac+4"
+                    },
+                    {
+                    "domaine": "Génie industriel",
+                    "mission": "Optimisation de processus de production",
+                    "description": "Contribuer à l'optimisation des processus de production et à l'amélioration de l'efficacité...",
+                    "skills_needed": "Connaissances en gestion de la production, statistiques...",
+                    "duree": "4 mois",
+                    "niveau_etude": "bac+3"
+                    },
+                    {
+                    "domaine": "Génie électrique",
+                    "mission": "Maintenance d'installations électriques",
+                    "description": "Assurer la maintenance préventive et corrective des installations électriques...",
+                    "skills_needed": "Connaissances en électricité, automatisation...",
+                    "duree": "3 mois",
+                    "niveau_etude": "bac+4"
+                    },
+                    {
+                    "domaine": "Génie mécanique",
+                    "mission": "Analyse des contraintes mécaniques",
+                    "description": "Analyser les contraintes mécaniques et proposer des solutions pour optimiser la résistance des structures...",
+                    "skills_needed": "Compétences en mécanique des matériaux, modélisation...",
+                    "duree": "4 mois",
+                    "niveau_etude": "bac+5"
+                    },
+                    {
+                    "domaine": "Génie industriel",
+                    "mission": "Gestion de la chaîne logistique",
+                    "description": "Gérer la planification, la distribution et la logistique des produits...",
+                    "skills_needed": "Connaissances en gestion de la chaîne logistique, planification...",
+                    "duree": "5 mois",
+                    "niveau_etude": "bac+4"
+                    },
+
+                    {
+                        "domaine": "Génie logiciel",
+                        "mission": "Développement d'applications mobiles",
+                        "description": "Concevoir et développer des applications mobiles pour différentes plateformes...",
+                        "skills_needed": "Compétences en programmation mobile, UX design...",
+                        "duree": "3 mois",
+                        "niveau_etude": "bac+4"
+                        },
+                        {
+                        "domaine": "Réseaux",
+                        "mission": "Administration réseau",
+                        "description": "Gérer et maintenir les réseaux informatiques de l'entreprise...",
+                        "skills_needed": "Compétences en configuration réseau, sécurité des réseaux...",
+                        "duree": "6 mois",
+                        "niveau_etude": "bac+3"
+                        },
+                        {
+                        "domaine": "Génie civil",
+                        "mission": "Conception de structures en béton armé",
+                        "description": "Participer à la conception et au dimensionnement de structures en béton armé...",
+                        "skills_needed": "Connaissances en génie civil, calcul de structures...",
+                        "duree": "4 mois",
+                        "niveau_etude": "bac+5"
+                        },
+                        {
+                        "domaine": "Data",
+                        "mission": "Analyse de données",
+                        "description": "Analyser des ensembles de données pour en tirer des informations utiles pour l'entreprise...",
+                        "skills_needed": "Compétences en statistiques, programmation Python...",
+                        "duree": "5 mois",
+                        "niveau_etude": "bac+4"
+                        },
+                        {
+                        "domaine": "Génie logiciel",
+                        "mission": "Développement d'une plateforme web",
+                        "description": "Concevoir et développer une plateforme web pour faciliter les échanges d'informations...",
+                        "skills_needed": "Compétences en développement web, bases de données...",
+                        "duree": "6 mois",
+                        "niveau_etude": "bac+5"
+                        },
+                        {
+                        "domaine": "Réseaux",
+                        "mission": "Sécurité des systèmes informatiques",
+                        "description": "Mettre en place des mesures de sécurité pour protéger les systèmes informatiques...",
+                        "skills_needed": "Compétences en sécurité informatique, cryptographie...",
+                        "duree": "3 mois",
+                        "niveau_etude": "bac+4"
+                        },
+                        {
+                        "domaine": "Génie civil",
+                        "mission": "Gestion de projet de construction",
+                        "description": "Coordonner les différentes phases d'un projet de construction en respectant les délais et le budget...",
+                        "skills_needed": "Compétences en gestion de projet, planification...",
+                        "duree": "5 mois",
+                        "niveau_etude": "bac+4"
+                        },
+                        {
+                        "domaine": "Data",
+                        "mission": "Prédiction des tendances du marché",
+                        "description": "Utiliser des algorithmes de prédiction pour anticiper les tendances du marché...",
+                        "skills_needed": "Compétences en machine learning, traitement de données...",
+                        "duree": "4 mois",
+                        "niveau_etude": "bac+5"
+                        }
+
+]

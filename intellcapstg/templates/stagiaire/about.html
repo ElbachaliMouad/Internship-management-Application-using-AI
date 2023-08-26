@@ -41,10 +41,12 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav pull-right">
-					<li ><a href="index.html">Home</a></li>
-					<li class="active"><a href="about.html">About</a></li>
-					<li><a href="contact.html">Contact</a></li>
-					<li><a class="btn" href="signin.html">SIGN IN / SIGN UP</a></li>
+					<li ><a href="{% url 'index' %}">Home</a></li>
+					<li class="active"><a href="{% url 'about' %}">About</a></li>
+					<li><a href="{% url 'contact' %}">Contact</a></li>
+					<li><a class="btn" href="{% url 'signin' %}">SIGN IN / SIGN UP</a></li>
+					<li><a href="{% url 'supersignin' %}">Supervisor</a></li>
+
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
@@ -57,7 +59,7 @@
 	<div class="container">
 
 		<ol class="breadcrumb">
-			<li><a href="index.html">Home</a></li>
+			<li><a href="{% url 'index' %}">Home</a></li>
 			<li class="active">About</li>
 		</ol>
 
@@ -128,9 +130,9 @@
 						<div class="widget-body">
 							<p class="simplenav">
 								<a href="#">Home</a> | 
-								<a href="about.html">About</a> |
-								<a href="contact.html">Contact</a> |
-								<b><a href="signup.html">Sign up</a></b>
+								<a href="{% url 'about' %}">About</a> |
+								<a href="{% url 'contact' %}">Contact</a> |
+								<b><a href="{% url 'signup' %}">Sign up</a></b>
 							</p>
 						</div>
 					</div>

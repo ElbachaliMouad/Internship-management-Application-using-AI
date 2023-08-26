@@ -10,20 +10,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>INTELLCAP|STAGE Clone</title>
-    	<link rel="shortcut icon" href="assets/images/logo10.png">
+    <title>INTELLCAP|STAGE </title>
+    	<link rel="shortcut icon" href="{% static  'assets/images/logo10.png' %}">
 
 
-      <link rel="stylesheet" href="assets/css/main.css">
-	<link rel="stylesheet" href="assets/css/style3.css" />
+      <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/style3.css' %}" />
 	
 
-    <link rel="stylesheet" href="assets/css/style2.css" />
-    <link rel="stylesheet" href="assets/css/alert.css" />
+    <link rel="stylesheet" href="{% static 'assets/css/style2.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/alert.css' %}" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/atelier.css" />
+    <link rel="stylesheet" href="{% static 'assets/css/atelier.css' %}" />
 	<style> 
 	.calendar {
             display: flex;
@@ -112,7 +111,7 @@
 
     <div class="header">
       <div class="header__left">
-        <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Progressus HTML5 template"></a>
+        <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
       </div>
 
       
@@ -131,7 +130,7 @@
               
 
         <div class="header__option">
-          <span class="material-icons" > <a href="atelier.html">explore</a> </span>
+          <span class="material-icons" > <a href="{% url 'search' %}">explore</a> </span>
           
         </div>
         
@@ -158,7 +157,7 @@
 
         </select>
         <div class="header__option">
-          <span class="material-icons" > <a href="atelier.html">bolt</a> </span>
+          <span class="material-icons" > <a href="#"  data-toggle="modal" data-target="#myModal" title="" data-original-title="view">bolt</a>
           
         </div>
         
@@ -391,7 +390,7 @@
       title: 'You are not a membre of this app',
       message: 'would you want to join us?',
       onok: () => {
-        window.open(href="signup.html","_self");
+        window.open(href="{% url 'signup' %}","_self");
       }})
  
     
@@ -403,9 +402,32 @@
 
 
         </script>
-    <script src="assets/js/alert.js"></script>
+    <script src="{% static  'assets/js/alert.js' %}"></script>
 
   
    
+<form>
+
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Resume</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+  
+        </div>
+    </div>
+  </div>
+      
   </body>
 </html>

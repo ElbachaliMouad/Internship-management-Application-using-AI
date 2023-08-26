@@ -10,17 +10,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets\css\upload.css" />
-	<link rel="shortcut icon" href="assets/images/logo10.png">
-    	<link rel="shortcut icon" href="assets/images/logo10.png">
+    <link rel="stylesheet" href="{% static 'assets\css\upload.css' %}" />
+	<link rel="shortcut icon" href="{% static 'assets/images/logo10.png' %}">
+	<title>INTELLCAP|STAGE</title>
 
     <!----======== CSS ======== -->
-    <link rel="stylesheet" href="assets/css/style3.css" />
-    <link rel="stylesheet" href="assets\css\style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="{% static 'assets/css/style3.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets\css\style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
@@ -70,24 +66,15 @@
     <!--<title>Dashboard Sidebar Menu</title>--> 
 
 
-    <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--<title>Responsive Card Slider</title>-->
 
         <!-- Swiper CSS -->
         <link rel="stylesheet" href="css/swiper-bundle.min.css">
         <meta charset="utf-8">
             
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- CSS -->
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>E-ART</title>
-        <link rel="stylesheet" href="assets/css/style3.css" />
+        <link rel="stylesheet" href="{% static 'assets/css/style3.css' %}" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
         <style type="text/css">
@@ -131,7 +118,7 @@
     <div class="header">
         
         <div  class="image-container2"> 
-              <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Progressus HTML5 template" style="max-width: 200px; max-height: 150px;"></a>
+              <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template" style="max-width: 200px; max-height: 150px;"></a>
             </div>
           <div class="header__middle" >
              
@@ -141,7 +128,7 @@
                 
   
           <div class="header__option">
-          <a href="explore2.html">  <span class="material-icons" style="color:#007bff"> explore </span></a>
+          <a href="{% url 'document'  %}">  <span class="material-icons" style="color:#007bff"> explore </span></a>
           </div>
 
           
@@ -152,11 +139,11 @@
           <div class="header__info">
             <img
               class="user__avatar"
-              src="assets/images/ok.jpg"
+              src="{% static 'assets/images/ok.jpg' %}"
               alt=""/>
-          <a href="profiles.html"> <strong style="color: blanchedalmond;" style="font-size: 20px;">&ensp;ELBACHALI MOUAD</strong></a> 
+          <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;" style="font-size: 20px;">&ensp;ELBACHALI MOUAD</strong></a> 
           </div>
-          <a href="index.html"><span class="material-icons"> logout </span></a>
+          <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
           
           
           
@@ -208,7 +195,7 @@
               <li>&ensp;</li>
               <li>&ensp;</li>        </li>
 
-            <li><a class="" href="activitemain.html"><i class="fa fa-tasks fa-5x" aria-hidden="true"></i><br>Task</a></li><br>
+            <li><a class="" href="{% url 'activitemain' %}"><i class="fa fa-tasks fa-5x" aria-hidden="true"></i><br>Task</a></li><br>
            
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
@@ -237,7 +224,7 @@
 
            
             <br>
-            <li><a class=   "" href="document.html"><i class="fa fa-file-text fa-5x"></i> <br>Document</a></li><br>
+            <li><a class=   "" href="{% url 'document' %}"><i class="fa fa-file-text fa-5x"></i> <br>Document</a></li><br>
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
             <li>&ensp;</li>
@@ -265,7 +252,7 @@
             <li>&ensp;</li>
             <li>&ensp;</li>
                                       </li>
-            <li><a class="" href="forum.html"><i class="fa fa-comments fa-5x"></i> <br>Forum</a></li><br>
+            <li><a class="" href="{% url 'forum' %}"><i class="fa fa-comments fa-5x"></i> <br>Forum</a></li><br>
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
             <li>&ensp;</li>

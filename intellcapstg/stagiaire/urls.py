@@ -1,36 +1,68 @@
 from django.urls import path ,include
 from . import views 
 
+
 urlpatterns=[
     path('',views.index,name='index'),
+
 
      path('about',views.about,name='about'),
 
     path('contact',views.contact,name='contact'),
 
+
     path('signin',views.signin,name='signin'),
 
     path('signup',views.signup,name='signup'),
 
-    path('activitemain',views.activitemain,name='activitemain'),
 
-    path('document',views.document, name='document'),
+    path('workspace/<int:id>/activitemain',views.activitemain,name='activitemain'),
 
-    path('forum',views.forum,name='forum'),
+
+    path('workspace/<int:id>/document',views.document, name='document'),
+
+
+    path('workspace/<int:id>/forum',views.forum,name='forum'),
+
 
     path('postuler',views.postuler,name='postuler'),
 
 
-    path('offre',views.offre,name='offre'),
-
-    path('profile',views.profile, name='profile'),
-
-    path('profileinfo',views.profileinfo, name='profileinfo'),
-
-    path('profilepass',views.profilepass, name='profilepass'),
+    path('offre/<int:id>',views.offre,name='offre'),
 
 
-    path('search',views.search, name='search'),]
+    path('profile/canditature',views.profile, name='profile'),
+
+
+    path('profile/profileinfo',views.profileinfo, name='profileinfo'),
+
+
+    path('profile/profilepass',views.profilepass, name='profilepass'),
+
+
+    path('search',views.search, name='search'),
+    
+    
+    
+    
+    ######################################################################
+    
+    path('supervisor/signin/', views.supersignin, name='supersignin'),
+
+
+    path('supervisor/offre/', views.superoffre, name='superoffre'),
+
+
+    path('supervisor/profile/<int:id>/', views.superprofile, name='superprofile'),
+
+
+  ##################################################################################
+
+    path('log_out_stagiaire',views.log_out_stagiaire, name='log_out_stagiaire'),
+
+    
+
+    ]
 
 
 

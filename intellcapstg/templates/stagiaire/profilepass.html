@@ -10,24 +10,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>INTELLCAP|STAGE Clone</title>
-    	<link rel="shortcut icon" href="assets/images/logo10.png">
+    <title>INTELLCAP|STAGE </title>
+    	<link rel="shortcut icon" href="{% static 'assets/images/logo10.png' %}">
 
-    <link rel="stylesheet" href="assets\css\upload.css" />
+    <link rel="stylesheet" href="{% static 'assets\css\upload.css' %}" />
     
-      <link rel="stylesheet" href="assets/css/main.css">
-	<link rel="stylesheet" href="assets/css/style3.css" />
-  <link rel="stylesheet" href="assets\css\alert.css">
+      <link rel="stylesheet" href="{% static 'assets/css/main.css'  %}">
+	<link rel="stylesheet" href="{% static 'assets/css/style3.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets\css\alert.css' %}">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">    
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style2.css" />
-    <link rel="stylesheet" href="assets/css/alert.css" />
+    <link rel="stylesheet" href="{% static 'assets/css/style2.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/alert.css' %}" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/atelier.css" />
+    <link rel="stylesheet" href="{% static 'assets/css/atelier.css' %}" />
 	<style> 
 
 
@@ -136,7 +134,7 @@
 
     <div class="header">
       <div class="header__left">
-        <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Progressus HTML5 template"></a>
+        <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
       </div>
 
       
@@ -149,14 +147,14 @@
               <div class="header__middle">
           
             <div class="header__input" >
-                <span class="material-icons"> search </span><input type="text" placeholder="Search E-ART" />
+                <span class="material-icons"> search </span><input type="text" placeholder="Search intellcap|stage" />
 
               </div>       
               
 
         <div class="header__option">
-          <span class="material-icons" > <a href="postuler.html ">explore</a> </span>
-          
+            <span class="material-icons" > <a href="{% url  'search' %}">explore</a> </span>
+
         </div>
         
         <select id="location-filter" name="location">
@@ -238,7 +236,7 @@
        
         
         <div class="header__option">
-            <a type="button" class="btn btn-warning"><strong>In process</strong></a>
+            <a  href="{% url 'activitemain' %}"    type="button" class="btn btn-warning" ><strong>In process</strong></a>
         </div>
       </div>
       <div class="header__right">
@@ -247,13 +245,13 @@
 
           <img
             class="user__avatar"
-            src="assets/images/ok.jpg"
+            src="{% static 'assets/images/ok.jpg' %}"
 
             alt=""/>
-        <a href="profiles.html"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
+        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
         </div>
         
-        <a href="index.html"><span class="material-icons"> logout </span></a>
+        <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
 
         
         
@@ -403,11 +401,11 @@
         <div class="row no-gutters row-bordered row-border-light">
         <div class="col-md-3 pt-0">
         <div class="list-group list-group-flush account-settings-links">
-            <a class="list-group-item list-group-item-action "  href="profile.html">Candidature</a>
+            <a class="list-group-item list-group-item-action "  href="{% url 'profile' %}">Candidature</a>
 
-            <a class="list-group-item list-group-item-action "  href="profileinfo.html"> Edit profile</a>
+            <a class="list-group-item list-group-item-action "  href="{% url 'profileinfo' %}"> Edit profile</a>
 
-        <a class="list-group-item list-group-item-action active "  href="profilepass.html">Change password</a>
+        <a class="list-group-item list-group-item-action active "  href="{% url 'profilepass' %}">Change password</a>
         </div>
         </div>
         
@@ -453,6 +451,28 @@
             
         </script>
         
+<form>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              
+              <div class="modal-body">
+                      <div class="form-group">
+                          <label for="exampleFormControlTextarea1">Resume</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                      </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+    
+          </div>
+      </div>
+    </div>
         </body></html>
 
 
