@@ -55,7 +55,7 @@ def forum(request,id):
 
 
 
-
+#######################################
 @login_required(login_url='signin', )
 def offre(request,id):
 

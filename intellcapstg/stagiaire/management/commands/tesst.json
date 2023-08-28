@@ -1,6 +1,6 @@
 
 [
-    {
+    {    "N": "8",
         "domaine": "Informatique",
         "mission": "Développement web",
         "description": "Travailler sur des projets de développement web...",
@@ -8,7 +8,7 @@
         "duree": "3 mois",
         "niveau_etude": "bac+3"
     },
-    {
+    {   "N": "2",
         "domaine": "Marketing",
         "mission": "Stratégies de marketing digital",
         "description": "Mettre en place des stratégies de marketing...",
@@ -16,7 +16,7 @@
         "duree": "6 mois",
         "niveau_etude": "bac+4"
     },
-    {
+    {    "N": "3",
         "domaine": "Ingénierie",
         "mission": "Conception de produits",
         "description": "Participer à la conception et à la modélisation...",
@@ -24,7 +24,7 @@
         "duree": "4 mois",
         "niveau_etude": "bac+5"
     },
-    {
+    {    "N": "4",
         "domaine": "Finance",
         "mission": "Analyse financière",
         "description": "Effectuer des analyses financières pour...",
@@ -32,7 +32,7 @@
         "duree": "5 mois",
         "niveau_etude": "bac+4"
     },
-    {
+    {     "N": "5",
         "domaine": "Ressources humaines",
         "mission": "Gestion du personnel",
         "description": "Gérer les aspects RH de l'entreprise...",
@@ -40,7 +40,7 @@
         "duree": "2 mois",
         "niveau_etude": "bac+3"
     },
-    {
+    { "N": "6",
         "domaine": "Communication",
         "mission": "Relations publiques",
         "description": "Gérer les relations avec les médias et le public...",
@@ -48,7 +48,7 @@
         "duree": "3 mois",
         "niveau_etude": "bac+3"
     },
-    {
+    { "N": "7",
         "domaine": "Sciences sociales",
         "mission": "Études de marché",
         "description": "Conduire des études de marché pour évaluer la demande...",
@@ -56,7 +56,7 @@
         "duree": "4 mois",
         "niveau_etude": "bac+4"
     },
-    {
+    { "N": "8",
         "domaine": "Environnement",
         "mission": "Gestion des ressources naturelles",
         "description": "Contribuer à la gestion durable des ressources naturelles...",
@@ -64,7 +64,7 @@
         "duree": "6 mois",
         "niveau_etude": "bac+5"
     },
-    {
+    { "N": "9",
         "domaine": "Éducation",
         "mission": "Conception de programmes pédagogiques",
         "description": "Concevoir des programmes d'enseignement innovants...",
@@ -72,7 +72,7 @@
         "duree": "3 mois",
         "niveau_etude": "bac+4"
     },
-    {
+    { "N": "10",
         "domaine": "Aéronautique",
         "mission": "Conception de structures aéronautiques",
         "description": "Participer à la conception et à l'analyse de structures d'aéronefs...",
@@ -80,7 +80,7 @@
         "duree": "6 mois",
         "niveau_etude": "bac+5"
     },
-    {
+    { "N": "11",
         "domaine": "Génie civil",
         "mission": "Gestion de chantier de construction",
         "description": "Assister à la gestion et au suivi de chantiers de construction...",
@@ -88,7 +88,7 @@
         "duree": "4 mois",
         "niveau_etude": "bac+3"
     },
-    {
+    { "N": "12",
         "domaine": "Aéronautique",
         "mission": "Maintenance d'aéronefs",
         "description": "Participer à la maintenance préventive et corrective d'aéronefs...",
@@ -98,7 +98,7 @@
     },
 
     
-    {
+    { "N": "13",
         "domaine": "Génie civil",
         "mission": "Conception de ponts",
         "description": "Contribuer à la conception et à la modélisation de ponts...",
@@ -107,7 +107,7 @@
         "niveau_etude": "bac+5"
     },
 
-    {
+    { "N": "14",
         "domaine": "Informatique",
         "mission": "Cybersécurité",
         "description": "Travailler sur la protection des systèmes informatiques...",
@@ -118,7 +118,7 @@
 
 
 
-    {
+    { "N": "15",
             "domaine": "Technologies de l'information",
             "mission": "Développement logiciel",
             "description": "Participer à la création et au développement de logiciels...",
@@ -126,7 +126,7 @@
             "duree": "5 mois",
             "niveau_etude": "bac+4"
             },
-    {
+    { "N": "16",
             "domaine": "Ingénierie mécanique",
             "mission": "Conception de produits",
             "description": "Travailler sur la conception et la modélisation de produits...",
@@ -134,7 +134,7 @@
             "duree": "4 mois",
             "niveau_etude": "bac+5"
             },
-    {
+    { "N": "17",
             "domaine": "Design industriel",
             "mission": "Création de designs innovants",
             "description": "Créer des concepts de design pour des produits...",
@@ -142,7 +142,7 @@
             "duree": "3 mois",
             "niveau_etude": "bac+4"
             },
-    {
+    { "N": "18",
             "domaine": "Développement durable",
             "mission": "Projets environnementaux",
             "description": "Participer à des projets visant à promouvoir le développement durable...",
@@ -150,7 +150,7 @@
             "duree": "6 mois",
             "niveau_etude": "bac+5"
             },
-    {
+    { "N": "19",
             "domaine": "Réseaux et télécommunications",
             "mission": "Gestion des réseaux",
             "description": "Gérer et maintenir les réseaux informatiques de l'entreprise...",
@@ -158,7 +158,7 @@
             "duree": "4 mois",
             "niveau_etude": "bac+3"
             },
-    {
+    { "N": "19",
             "domaine": "Intelligence artificielle",
             "mission": "Projets d'apprentissage automatique",
             "description": "Travailler sur des projets d'intelligence artificielle...",
@@ -167,15 +167,15 @@
             "niveau_etude": "bac+5"
             },
 
-    {
+    { "N": "20",
                 "domaine": "Génie électrique",
                 "mission": "Conception de systèmes électriques",
                 "description": "Participer à la conception et au développement de systèmes électriques...",
                 "skills_needed": "Connaissances en électronique, électrotechnique...",
-                "duree": "1 mois",
+                "duree": "8 mois",
                 "niveau_etude": "bac+5"
                 },
-    {
+    { "N": "21",
                 "domaine": "Génie mécanique",
                 "mission": "Conception de machines",
                 "description": "Travailler sur la conception et la modélisation de machines et de systèmes mécaniques...",
@@ -183,7 +183,7 @@
                 "duree": "5 mois",
                 "niveau_etude": "bac+4"
                 },
-    {
+    { "N": "22",
                 "domaine": "Génie industriel",
                 "mission": "Opptimisation de processus de production",
                 "description": "Contribuer à l'optimisation des processus de production et à l'amélioration de l'efficacité...",
@@ -193,7 +193,7 @@
                 },
 
 
-                {
+                { "N": "23",
                     "domaine": "Génie électrique",
                     "mission": "Conception de systèmes électriques",
                     "description": "Participer à la conception et au développement de systèmes électriques...",
@@ -201,7 +201,7 @@
                     "duree": "6 mois",
                     "niveau_etude": "bac+5"
                     },
-                    {
+                    { "N": "24",
                     "domaine": "Génie mécanique",
                     "mission": "Conception de machines",
                     "description": "Travailler sur la conception et la modélisation de machines et de systèmes mécaniques...",
@@ -209,7 +209,7 @@
                     "duree": "5 mois",
                     "niveau_etude": "bac+4"
                     },
-                    {
+                    { "N": "25",
                     "domaine": "Génie industriel",
                     "mission": "Optimisation de processus de production",
                     "description": "Contribuer à l'optimisation des processus de production et à l'amélioration de l'efficacité...",
@@ -217,7 +217,7 @@
                     "duree": "4 mois",
                     "niveau_etude": "bac+3"
                     },
-                    {
+                    { "N": "26",
                     "domaine": "Génie électrique",
                     "mission": "Maintenance d'installations électriques",
                     "description": "Assurer la maintenance préventive et corrective des installations électriques...",
@@ -225,7 +225,7 @@
                     "duree": "3 mois",
                     "niveau_etude": "bac+4"
                     },
-                    {
+                    { "N": "27",
                     "domaine": "Génie mécanique",
                     "mission": "Analyse des contraintes mécaniques",
                     "description": "Analyser les contraintes mécaniques et proposer des solutions pour optimiser la résistance des structures...",
@@ -233,7 +233,7 @@
                     "duree": "4 mois",
                     "niveau_etude": "bac+5"
                     },
-                    {
+                    { "N": "28",
                     "domaine": "Génie industriel",
                     "mission": "Gestion de la chaîne logistique",
                     "description": "Gérer la planification, la distribution et la logistique des produits...",
@@ -242,7 +242,7 @@
                     "niveau_etude": "bac+4"
                     },
 
-                    {
+                    { "N": "29",
                         "domaine": "Génie logiciel",
                         "mission": "Développement d'applications mobiles",
                         "description": "Concevoir et développer des applications mobiles pour différentes plateformes...",
@@ -250,7 +250,7 @@
                         "duree": "3 mois",
                         "niveau_etude": "bac+4"
                         },
-                        {
+                        { "N": "30",
                         "domaine": "Réseaux",
                         "mission": "Administration réseau",
                         "description": "Gérer et maintenir les réseaux informatiques de l'entreprise...",
@@ -258,7 +258,7 @@
                         "duree": "6 mois",
                         "niveau_etude": "bac+3"
                         },
-                        {
+                        { "N": "31",
                         "domaine": "Génie civil",
                         "mission": "Conception de structures en béton armé",
                         "description": "Participer à la conception et au dimensionnement de structures en béton armé...",
@@ -266,7 +266,7 @@
                         "duree": "4 mois",
                         "niveau_etude": "bac+5"
                         },
-                        {
+                        { "N": "32",
                         "domaine": "Data",
                         "mission": "Analyse de données",
                         "description": "Analyser des ensembles de données pour en tirer des informations utiles pour l'entreprise...",
@@ -274,7 +274,7 @@
                         "duree": "5 mois",
                         "niveau_etude": "bac+4"
                         },
-                        {
+                        { "N": "33",
                         "domaine": "Génie logiciel",
                         "mission": "Développement d'une plateforme web",
                         "description": "Concevoir et développer une plateforme web pour faciliter les échanges d'informations...",
@@ -282,7 +282,7 @@
                         "duree": "6 mois",
                         "niveau_etude": "bac+5"
                         },
-                        {
+                        { "N": "34",
                         "domaine": "Réseaux",
                         "mission": "Sécurité des systèmes informatiques",
                         "description": "Mettre en place des mesures de sécurité pour protéger les systèmes informatiques...",
@@ -290,7 +290,7 @@
                         "duree": "3 mois",
                         "niveau_etude": "bac+4"
                         },
-                        {
+                        { "N": "35",
                         "domaine": "Génie civil",
                         "mission": "Gestion de projet de construction",
                         "description": "Coordonner les différentes phases d'un projet de construction en respectant les délais et le budget...",
@@ -298,7 +298,7 @@
                         "duree": "5 mois",
                         "niveau_etude": "bac+4"
                         },
-                        {
+                        { "N": "36",
                         "domaine": "Data",
                         "mission": "Prédiction des tendances du marché",
                         "description": "Utiliser des algorithmes de prédiction pour anticiper les tendances du marché...",

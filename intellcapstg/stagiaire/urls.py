@@ -50,10 +50,10 @@ urlpatterns=[
     path('supervisor/signin/', views.supersignin, name='supersignin'),
 
 
-    path('supervisor/offre/', views.superoffre, name='superoffre'),
+    path('supervisor/activiteadmin/', views.superoffre, name='superoffre'),
 
 
-    path('supervisor/profile/<int:id>/', views.superprofile, name='superprofile'),
+    path('supervisor/profile/', views.superprofile, name='superprofile'),
 
 
   ##################################################################################
