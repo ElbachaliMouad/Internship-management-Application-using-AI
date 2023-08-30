@@ -80,14 +80,25 @@
 							<p class="text-center text-muted">Lorem ipsum dolor sit amet, <a href="{% url 'signup' %}">Register</a> adipisicing elit. Quo nulla quibusdam cum doloremque incidunt nemo sunt a tenetur omnis odio. </p>
 							<hr>
 							
-							<form>
-								<div class="top-margin">
-									<label>Username/Email <span class="text-danger">*</span></label>
-									<input type="text" class="form-control">
+							{% if error %}
+
+							<div class="alert alert-danger" role="alert" data-mdb-color="danger">
+							 {{message}}
+							</div>
+							{% endif %}
+
+ 
+							<form action="{%  url  'signin'     %}" method="POST">
+								{% csrf_token %}
+
+								<div    class="top-margin">
+
+									<label>Email <span class="text-danger">*</span></label>
+									<input   name="mail" type="text" class="form-control" required>
 								</div>
 								<div class="top-margin">
 									<label>Password <span class="text-danger">*</span></label>
-									<input type="password" class="form-control">
+									<input    name="password" type="password" class="form-control" required>
 								</div>
 
 								<hr>
@@ -97,7 +108,9 @@
 										<b><a href="">Forgot password?</a></b>
 									</div>
 									<div class="col-lg-4 text-right">
-									<a class="btn btn-action"  	 href="{% url 'search' %}">Sign in</a>
+									
+									<button class="btn btn-action"  type="submit" >Sign in</button>
+
 									</div>
 								</div>
 							</form>

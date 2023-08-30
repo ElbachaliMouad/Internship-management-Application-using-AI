@@ -84,6 +84,10 @@ DATABASES = {
         'PASSWORD': 'mouad2001',
         'HOST': '127.0.0.1',
         'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': 'SET collation_connection = utf8mb4_unicode_ci',
+        },
     }
 }
 

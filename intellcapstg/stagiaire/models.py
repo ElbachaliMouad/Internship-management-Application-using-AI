@@ -13,27 +13,28 @@ from django.dispatch import receiver
 
 
 class Supervisor(models.Model):
-    supervisor_id=models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
+    supervisor_id=models.ForeignKey(User, on_delete=models.CASCADE)
     count_offre=models.IntegerField(default=0)
     count_demande=models.IntegerField(default=0)
 
     class Meta:
         db_table = 'supervisor'
 
-    
+    def __str__(self):
+         return (self.supervisor_id.username )
 
 
 
 class Stagiaire(models.Model):
-    stagiaire_id=models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
-    last_Name=models.CharField(max_length=255)
-    fisrt_Name=models.CharField(max_length=255)
-    school=models.CharField(max_length=255)
-    phone=models.CharField(max_length=20)
-    motivation=models.TextField()
-    niveau=models.CharField(max_length=50)
-    image = models.ImageField(upload_to='photos/', default='photos/default.jpg')
-    cv=models.FileField(upload_to='pdfs/')
+    stagiaire_id=models.ForeignKey(User, on_delete=models.CASCADE)
+    last_Name=models.CharField(max_length=255,blank=True,null=True)
+    fisrt_Name=models.CharField(max_length=255,blank=True,null=True)
+    school=models.CharField(max_length=255,blank=True,null=True)
+    phone=models.CharField(max_length=20,blank=True,null=True)
+    motivation=models.TextField(null=True,blank=True)
+    niveau=models.CharField(max_length=50,null=True,blank=True)
+    image = models.ImageField(upload_to='photos/', default='photos/default.jpg',blank=True,null=True)
+    cv=models.FileField(upload_to='pdfs/',blank=True,null=True)
     status=models.IntegerField(default=0)
 
    
@@ -41,7 +42,7 @@ class Stagiaire(models.Model):
         db_table = 'stagiaire'
 
     def __str__(self):
-         return (self.last_Name )
+         return (self.stagiaire_id.username )
     
 @receiver(pre_save, sender=Stagiaire)
 def validate_your_field(sender, instance, **kwargs):
@@ -54,21 +55,20 @@ def validate_your_field(sender, instance, **kwargs):
 
   
 class Offre(models.Model):
-    id = models.AutoField(primary_key=True)
-    owner = models.ForeignKey(Supervisor, on_delete=models.CASCADE, to_field='id')
-    domaine = models.CharField(max_length=255)
-    mission = models.CharField(max_length=255)
-    description = models.TextField()
-    skills_needed = models.CharField(max_length=255)
-    dure = models.CharField(max_length=255)
-    niveau_etude=models.CharField(max_length=255)
-    count=models.IntegerField()
-    valable=models.IntegerField(default=1)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    domaine = models.CharField(max_length=255,blank=True,null=True)
+    mission = models.CharField(max_length=255,blank=True,null=True)
+    description = models.TextField(null=True,blank=True)
+    skills_needed = models.CharField(max_length=255,blank=True,null=True)
+    dure = models.CharField(max_length=255,blank=True,null=True)
+    niveau_etude=models.CharField(max_length=255,blank=True,null=True)
+    count=models.IntegerField(default=0)
+    valable=models.IntegerField(default=0)
 
     class Meta:
         db_table = 'offre'
     def __str__(self):
-         return (self.mission )
+         return (self.owner.username )
     
     
 

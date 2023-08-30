@@ -9,7 +9,7 @@
 	<meta name="viewport"    content="width=device-width, initial-scale=1.0">
 	
 	<link rel="shortcut icon" href="{% static 'assets/images/logo10.png' %}">
-	<title>INTELLCAP|STAGE Clone</title>
+	<title>INTELLCAP|STAGE </title>
 
 	<link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
@@ -74,32 +74,44 @@
 							<h3 class="thin text-center">Register a new account</h3>
 							<p class="text-center text-muted">Lorem ipsum dolor sit amet, <a href="{% url 'signin' %}">Login</a> adipisicing elit. Quo nulla quibusdam cum doloremque incidunt nemo sunt a tenetur omnis odio. </p>
 							<hr>
+							{% if error %}
 
-							<form>
+							<div class="alert alert-danger" role="alert" data-mdb-color="danger">
+							 {{message}}
+							</div>
+ 
+ 
+							 
+ 
+							 {% elif valid   %}
+ 
+							<div class="alert alert-success" role="alert" data-mdb-color="success">
+							 {{message1}}
+							</div>
+ 
+							
+ 
+							 {% endif %}
+							<form action="{%  url  'signup'     %}" method="POST">
+								{% csrf_token %}
+
+								
 								<div class="top-margin">
-									<label>First Name</label>
-									<input type="text" class="form-control">
-								</div>
-								<div class="top-margin">
-									<label>Last Name</label>
-									<input type="text" class="form-control">
+									<label>Username</label>
+									<input  name="username" type="text" class="form-control" >
 								</div>
 								<div class="top-margin">
 									<label>Email Address <span class="text-danger">*</span></label>
-									<input type="text" class="form-control">
-								</div>
-								<div class="top-margin">
-									<label>Invitation code <span class="text-danger">*</span></label>
-									<input type="password" class="form-control">
+									<input  name="mail" type="text" class="form-control">
 								</div>
 								<div class="row top-margin">
 									<div class="col-sm-6">
 										<label>Password <span class="text-danger">*</span></label>
-										<input type="password" class="form-control">
+										<input name="password" type="password" class="form-control">
 									</div>
 									<div class="col-sm-6">
 										<label>Confirm Password <span class="text-danger">*</span></label>
-										<input type="password" class="form-control">
+										<input name="repassword" type="password" class="form-control">
 									</div>
 
 									
@@ -115,7 +127,7 @@
 										</label>                        
 									</div>
 									<div class="col-lg-4 text-right">
-										<a class="btn btn-action"   href="{% url 'signin' %}" type="submit">Register</a>
+										<button class="btn btn-action"   type="submit">Register</button>
 									</div>
 								</div>
 							</form>

@@ -228,9 +228,9 @@
         <div class="header__info">
           <img
             class="user__avatar"
-            src="{% static 'assets/images/ok.jpg' %}"
+            src="{{stagiaire.image.url}}"
             alt=""/>
-        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
+        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
         </div>
         
         <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
