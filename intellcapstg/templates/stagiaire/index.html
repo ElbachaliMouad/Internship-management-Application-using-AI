@@ -187,26 +187,27 @@
 					 </p>
 					 
 				<p>	<select id="location-filter" name="location">
-						<option value="">Filière</option>
-						<option value="new-york">New York</option>
-						<option value="los-angeles">Los Angeles</option>
-						<option value="chicago">Chicago</option>
+						<option value="">Domaine</option>
+						{%  for domaine in domaines %}
+						<option value="new-york">{{domaine}}</option>
+
+						{%  endfor %}
 						<!-- Add more options as needed -->
 					</select>
 					<select id="location-filter" name="location">
-						<option value="">Missions</option>
-						<option value="new-york">New York</option>
-						<option value="los-angeles">Los Angeles</option>
-						<option value="chicago">Chicago</option>
-						<!-- Add more options as needed -->
+						<option value="">Niveau</option>
+						{%  for niveau in niveaus %}
+						<option value="new-york">{{niveau}}</option>
+
+						{%  endfor %}
 					</select>
 
 					<select id="location-filter" name="location">
 						<option value="">Période</option>
-						<option value="new-york">5-8 Weeks </option>
-						<option value="los-angeles">9-12 Weeks </option>
-						<option value="chicago">12+ Weeks</option>
-						<!-- Add more options as needed -->
+						{%  for dure in dures %}
+						<option value="new-york">{{dure}}</option>
+
+						{%  endfor %}
 					</select>
 				</p>
 				

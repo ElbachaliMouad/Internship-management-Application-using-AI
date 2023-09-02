@@ -143,72 +143,27 @@
           <span class="material-icons" > <a href="{% url 'search'  %}">explore</a> </span>
           
         </div>
-        
+
+
         <select id="location-filter" name="location">
           <option value="">Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9kfdvmdf-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-1vdkmlv2 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12mvdddddd Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-
-          <option value="chicago">12+ Weeks</option>
+          {% for domaine in domaines %}
+          <option value="new-york">{{domaine}}</option>          
+          {%  endfor %}
           <!-- Add more options as needed -->
         </select>
         <select id="location-filter" name="location">
-          <option value="">Sous-Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
+          <option value="">Niveau</option>
+          {% for niveau in niveaus %}
+          <option value="new-york">{{niveau}}</option>          
+          {%  endfor %}
           <!-- Add more options as needed -->
         </select>
         <select id="location-filter" name="location">
           <option value="">Période</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
+          {% for dure in dures %}
+          <option value="new-york">{{dure}}</option>          
+          {%  endfor %}
           <!-- Add more options as needed -->
         </select>
 
@@ -220,8 +175,7 @@
           
         </div>  
 
-        <div class="header__option">
-        </div>
+       
       </div>
 
       <div class="header__right">
@@ -262,145 +216,61 @@
         
             </head>
             <body style="">
-            <div class="container">
-            <div class="row justify-content-center">
-            <div class="col-12">
-            <div class="section-title text-center mb-4 pb-2">
-            
-            </div>
-            </div>
-            
-            </div>
-            <div>
-  
-          </div>
-            <div class="row">
-            <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-            <div class="card service-wrapper rounded border-0 shadow p-4">
-            
-
-
-            <div class="content mt-4">
-            <h5 class="title">Fully Responsive</h5>
-            <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
-            <div class="mt-3">
-              <a href="javascript:void(0)" class="btn btn-primary" id="3">Postuler<i class="mdi mdi-chevron-right"></i></a>
-            </div>
-            </div>
-            
-            </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-            <div class="card service-wrapper rounded border-0 shadow p-4">
+              <div class="container">
+                <div class="row justify-content-center">
+                <div class="col-12">
+                <div class="section-title text-center mb-4 pb-2">
+                
+                </div>
+                </div>
+                </div>
+                <div class="row">
           
-            <div class="content mt-4">
-            <h5 class="title">Fresh Layouts</h5>
-            <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
-            <div class="mt-3">
-              <a href="javascript:void(0)"   class="btn btn-primary" id="3">Postuler<i class="mdi mdi-chevron-right"></i></a>
-            </div>
-            </div>
-           
-            </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-            <div class="card service-wrapper rounded border-0 shadow p-4">
-            
-            <div class="content mt-4">
-            <h5 class="title">Minimalism Feast</h5>
-            <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
-            <div class="mt-3">
-              <a href="javascript:void(0)"   class="btn btn-primary" id="3">Postuler<i class="mdi mdi-chevron-right"></i></a>
-            </div>
-            </div>
-          
-            </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-            <div class="card service-wrapper rounded border-0 shadow p-4">
-           
-            <div class="content mt-4">
-            <h5 class="title">Modern Workflow</h5>
-            <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
-            <div class="mt-3">
-              <a href="javascript:void(0)"   class="btn btn-primary" id="3">Postuler<i class="mdi mdi-chevron-right"></i></a>
-            </div>
-            </div>
-           
-            </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-            <div class="card service-wrapper rounded border-0 shadow p-4">
-           
-            <div class="content mt-4">
-            <h5 class="title">Unique Features</h5>
-            <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
-            <div class="mt-3">
-              <a href="javascript:void(0)"  class="btn btn-primary" id="3">Postuler<i class="mdi mdi-chevron-right"></i></a>
-            </div>
-            </div>
-          
-            </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-            <div class="card service-wrapper rounded border-0 shadow p-4">
-          
-            <div class="content mt-4">
-            <h5 class="title">Support 24/7</h5>
-            <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
-            <div class="mt-3">
-              <a href="javascript:void(0)"    class="btn btn-primary" id="3">Postuler<i class="mdi mdi-chevron-right"></i></a>
-            </div>
-            </div>
-            
-            </div>
-            
-
-            
 
 
 
+              {%   for offre in offres %}
 
 
-
-
-            </div>
             <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
               <div class="card service-wrapper rounded border-0 shadow p-4">
-            
+
               <div class="content mt-4">
-              <h5 class="title">Support 24/7</h5>
-              <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
+              <h5 class="title">{{offre.domaine}}</h5>
+              <p class="text-muted mt-3 mb-0">{{offre.description}}</p>
               <div class="mt-3">
-               <p > <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >Domaines: genie logciel<i class="mdi mdi-chevron-right"></i></a>
-                <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);"  >| Sous-Domaine: full-stack<i class="mdi mdi-chevron-right"></i></a>
+               <p > <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >Mission: {{offre.mission}}<i class="mdi mdi-chevron-right"></i></a>
+                <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);"  >| skills:  {{offre.skills_needed}}<i class="mdi mdi-chevron-right"></i></a>
               
-                <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| Periode: 8 semaines<i class="mdi mdi-chevron-right"></i></a>
+                <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| Periode:  {{offre.dure}}<i class="mdi mdi-chevron-right"></i></a>
+                <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| niveau:  {{offre.niveau_etude}}<i class="mdi mdi-chevron-right"></i></a>
+
               </p>
-               
+              
 
               <td>
                 <form action="offre.html">
-              <button   class="btn btn-primary" id="3">Postuler<i class="mdi mdi-chevron-right"></i></button></form>
+              <a   class="btn btn-primary" id="3"   href="{% url 'offre'  offre.id      %}">Postuler<i class="mdi mdi-chevron-right"></i></a></form>
             </td>
               </div>
               </div>
               
               </div>
               
-  
+            </div>
+
               
   
+              {% endfor %}
+
   
   
   
   
-  
-            </div>
           </div>
           <div class="row g-0 align-items-center pb-4">
             <div class="col-sm-6">
-            <div><p class="mb-sm-0">Showing 1 to 10 of 57 entries</p></div>
+            <div><p class="mb-sm-0">Showing {{number}} offres</p></div>
             </div>
             <div class="col-sm-6">
             <div class="float-sm-end">

@@ -10,7 +10,8 @@ class Command(BaseCommand):
     #hhg
     def handle(self, *args, **options):
         json_file_path = r'C:\Users\hp\Desktop\estage\intellcapstg\stagiaire\management\commands\data.json'
-        supervis=get_object_or_404(User, username='mouad')
+        userr=get_object_or_404(User, username='mouad')
+        supervis=get_object_or_404(Supervisor, supervisor_id=userr)
         print(supervis)
         with open(json_file_path, 'r' , encoding='utf-8') as json_file:
             data=json.load(json_file)

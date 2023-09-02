@@ -237,12 +237,12 @@
         <div class="header__info">
           <img
             class="user__avatar"
-            src="{% static 'assets/images/ok.jpg' %}"
+            src="{{stagiaire.image.url}}"
             alt=""/>
-        <a href="{% static 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
+        <a href="{% static 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
         </div>
         
-        <a href="@% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
+        <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
 
         
         
@@ -266,13 +266,13 @@
       <div class="card service-wrapper rounded border-0 shadow p-4">
     
       <div class="content mt-4">
-      <h5 class="title">Support 24/7</h5>
-      <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
+      <h5 class="title">{{offre.domaine}}</h5>
+      <p class="text-muted mt-3 mb-0">{{offre.description}}</p>
       <div class="mt-3">
-       <p > <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >Domaines: genie logciel<i class="mdi mdi-chevron-right"></i></a>
-        <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);"  >| Sous-Domaine: full-stack<i class="mdi mdi-chevron-right"></i></a>
+       <p > <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >Mission:{{offre.mission}}<i class="mdi mdi-chevron-right"></i></a>
+        <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);"  >| skills: {{offre.skills_needed}}<i class="mdi mdi-chevron-right"></i></a>
       
-        <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| Periode: 8 semaines<i class="mdi mdi-chevron-right"></i></a>
+        <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| Periode:{{offre.dure}}<i class="mdi mdi-chevron-right"></i></a>
       </p>
        
 

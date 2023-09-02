@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login ,logout
+from django.http import Http404
+
 from django.db.models import Q
 from django.core.validators import validate_email
 from django.contrib.auth.models import User 
@@ -21,7 +23,23 @@ def contact(request):
 
 
 def index(request):
-    return render(request, 'stagiaire/index.html')
+    domaines_dict=Offre.objects.values('domaine').distinct()
+    missions_dict=Offre.objects.values('mission').distinct()
+    dures_dict=Offre.objects.values('dure').distinct()
+    niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+
+    domaines = [domaine['domaine'] for domaine in domaines_dict]
+    missions=[mission['mission'] for mission in missions_dict]
+    dures=[dure['dure'] for dure in dures_dict]
+    niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+    print(niveaus)
+    context={
+             'domaines':domaines,
+             'missions':missions,
+             'dures':dures,
+             'niveaus':niveaus
+             }
+    return render(request, 'stagiaire/index.html',context)
 
 #########################################
 
@@ -181,7 +199,16 @@ def forum(request,id):
 @login_required(login_url='signin', )
 def offre(request,id):
 
-    return render(request, 'stagiaire/offre.html')
+        try:
+            stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+            offre = get_object_or_404(Offre, id=id)
+            context={'offre':offre,
+                     'stagiaire':stagiaire}
+            return render(request, 'stagiaire/offre.html',context)
+        except Http404:
+            return render(request, 'stagiaire/error.html',status=404)
+
+            
 
 
 
@@ -195,10 +222,27 @@ def postuler(request):
 
 @login_required(login_url='signin', )
 def search(request):
-     
+    offres=Offre.objects.all() 
+    domaines_dict=Offre.objects.values('domaine').distinct()
+    missions_dict=Offre.objects.values('mission').distinct()
+    dures_dict=Offre.objects.values('dure').distinct()
+    niveaus_dict=Offre.objects.values('niveau_etude').distinct()
 
     stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-    context={'stagiaire' : stagiaire}
+    number=offres.count()
+    domaines = [domaine['domaine'] for domaine in domaines_dict]
+    missions=[mission['mission'] for mission in missions_dict]
+    dures=[dure['dure'] for dure in dures_dict]
+    niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+    print(niveaus)
+    context={'stagiaire' : stagiaire,
+             'offres':offres,  
+             'number':number,
+             'domaines':domaines,
+             'missions':missions,
+             'dures':dures,
+             'niveaus':niveaus
+             }
     return render(request, 'stagiaire/search.html' , context)
 
 

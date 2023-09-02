@@ -26,7 +26,8 @@ urlpatterns=[
 
 
     path('postuler',views.postuler,name='postuler'),
-
+    
+    
 
     path('offre/<int:id>',views.offre,name='offre'),
 

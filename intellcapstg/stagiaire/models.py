@@ -49,13 +49,16 @@ def validate_your_field(sender, instance, **kwargs):
     allowed_values = [0, 1, 2]
     if instance.status not in allowed_values:
         raise ValidationError('Invalid value. Only 0, 1, or 2 are allowed.')
-    
+    if instance.stagiaire_id.is_superuser:
+        raise ValidationError('only stagiaire can acces')
+
+
 
     
 
   
 class Offre(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
     domaine = models.CharField(max_length=255,blank=True,null=True)
     mission = models.CharField(max_length=255,blank=True,null=True)
     description = models.TextField(null=True,blank=True)
@@ -68,7 +71,7 @@ class Offre(models.Model):
     class Meta:
         db_table = 'offre'
     def __str__(self):
-         return (self.owner.username )
+         return (self.owner.supervisor_id.username )
     
     
 
