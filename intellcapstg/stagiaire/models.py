@@ -46,9 +46,9 @@ class Stagiaire(models.Model):
     
 @receiver(pre_save, sender=Stagiaire)
 def validate_your_field(sender, instance, **kwargs):
-    allowed_values = [0, 1, 2]
+    allowed_values = [0, 1, 2,3]
     if instance.status not in allowed_values:
-        raise ValidationError('Invalid value. Only 0, 1, or 2 are allowed.')
+        raise ValidationError('Invalid value. Only 0, 1, 2 or 3 are allowed.')
     if instance.stagiaire_id.is_superuser:
         raise ValidationError('only stagiaire can acces')
 

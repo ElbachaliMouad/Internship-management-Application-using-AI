@@ -156,75 +156,27 @@
           <span class="material-icons" > <a href="{% url  'search' %}">explore</a> </span>
           
         </div>
-        
         <select id="location-filter" name="location">
-          <option value="">Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9kfdvmdf-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-1vdkmlv2 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12mvdddddd Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-
-          <option value="chicago">12+ Weeks</option>
-          <!-- Add more options as needed -->
-        </select>
-        <select id="location-filter" name="location">
-          <option value="">Sous-Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
-          <!-- Add more options as needed -->
-        </select>
-        <select id="location-filter" name="location">
-          <option value="">Période</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
-          <!-- Add more options as needed -->
-        </select>
-
+            <option value="">Domaine</option>
+            {% for domaine in domaines %}
+            <option value="new-york">{{domaine}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select id="location-filter" name="location">
+            <option value="">Niveau</option>
+            {% for niveau in niveaus %}
+            <option value="new-york">{{niveau}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select id="location-filter" name="location">
+            <option value="">Période</option>
+            {% for dure in dures %}
+            <option value="new-york">{{dure}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
 
         <div class="header__option">`
 
@@ -235,9 +187,39 @@
 
        
         
-        <div class="header__option">
-            <a  href="{% url 'activitemain' %}"    type="button" class="btn btn-warning" ><strong>In process</strong></a>
+        
+        {%  if stagiaire.status == 0     %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
         </div>
+
+
+
+        {%  endif %}
+
+
+        {%  if stagiaire.status == 1    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+        {%  if stagiaire.status == 2    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+
       </div>
       <div class="header__right">
 
@@ -245,10 +227,10 @@
 
           <img
             class="user__avatar"
-            src="{% static 'assets/images/ok.jpg' %}"
+            src="{{stagiaire.image.url}}"
 
             alt=""/>
-        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
+        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
         </div>
         
         <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
@@ -400,28 +382,41 @@
         <div class="row no-gutters row-bordered row-border-light">
         <div class="col-md-3 pt-0">
         <div class="list-group list-group-flush account-settings-links">
-            <a class="list-group-item list-group-item-action "  href="{% url   'profile' %}">Candidature</a>
+            {% if stagiaire.status != 0   %}
 
+            <a class="list-group-item list-group-item-action "  href="{% url   'profile' %}">Candidature</a>
+{% endif %}
             <a class="list-group-item list-group-item-action active" data-toggle="list" href="{% url 'profileinfo' %}"> Edit profile</a>
 
         <a class="list-group-item list-group-item-action "  href="{% url 'profilepass' %}">Change password</a>
 
         </div>
         </div>
+       
+
         <div class="col-md-9">
         <div class="tab-content">
-        
-       
+            
         <div class="tab-pane fade active show" id="account-change-password">
+            {% if error %}
+
+            <div class="alert alert-danger" role="alert" data-mdb-color="danger">
+             {{message}}
+            </div>
+            {% endif %}
+            <form action="{%  url  'profileinfo'  %}" method="POST">
+                {% csrf_token %}
+
+
         <div class="card-body pb-2">
              <div class="form-group">
         <label class="form-label">Username</label>
-        <input type="text" class="form-control mb-1" value="nmaxwell">
+        <input type="text" class="form-control mb-1" value="{{user.username}}" name="username">
         </div>
      
         <div class="form-group">
         <label class="form-label">E-mail</label>
-        <input type="text" class="form-control mb-1" value="nmaxwell@mail.com">
+        <input type="text" class="form-control mb-1" value="{{user.email}}" name="mail">
        
         </div>
         </div>
@@ -434,10 +429,11 @@
         </div>
         </div>
         <div class="text-right mt-3">
-        <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-        <button type="button" class="btn btn-default">Cancel</button>
+        <button  class="btn btn-primary" type="submit">Save changes</button>&nbsp;
+        
         </div>
         </div>
+    </form>
         <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript">

@@ -130,7 +130,7 @@
 
     <div class="header">
       <div class="header__left">
-        <a class="navbar-brand" href="{% static 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
+        <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
       </div>
 
       
@@ -228,6 +228,39 @@
           </span>
           
         </div>  
+        
+        {%  if stagiaire.status == 0     %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+
+        {%  if stagiaire.status == 1    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+        {%  if stagiaire.status == 2    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+
 
         <div class="header__option">
         </div>
@@ -239,7 +272,7 @@
             class="user__avatar"
             src="{{stagiaire.image.url}}"
             alt=""/>
-        <a href="{% static 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
+        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
         </div>
         
         <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>

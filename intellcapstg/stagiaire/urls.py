@@ -27,7 +27,7 @@ urlpatterns=[
 
     path('postuler',views.postuler,name='postuler'),
     
-    
+
 
     path('offre/<int:id>',views.offre,name='offre'),
 
@@ -60,7 +60,9 @@ urlpatterns=[
   ##################################################################################
 
     path('log_out_stagiaire',views.log_out_stagiaire, name='log_out_stagiaire'),
+   
 
+         
     
 
     ]

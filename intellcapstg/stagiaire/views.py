@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login ,logout
 from django.http import Http404
+from django.contrib.auth.decorators import user_passes_test
+
 
 from django.db.models import Q
 from django.core.validators import validate_email
@@ -15,6 +17,18 @@ from django.contrib.auth.models import User, Group
 
 
 
+
+def is_special_user(user):
+         return not(user.is_superuser)
+
+
+
+
+
+
+
+
+############################
 def about(request):
     return render(request,'stagiaire/about.html')
 
@@ -142,8 +156,12 @@ def  signin(request):
             print(test)
             if user_mail :
                 if test:
+                    stagiaire = get_object_or_404(Stagiaire, stagiaire_id=user)
                     login(request, user_mail)
-                    return redirect('search')
+                    if stagiaire.status ==3:
+                        return redirect('activitemain',args=[user.pk])
+                    else:
+                        return redirect('search')
                 else:
                     error=True
                     message="can't find  user"
@@ -178,7 +196,6 @@ def  signin(request):
 ########same work################################################
 
 @login_required(login_url='signin', )
-###test
 def activitemain(request,id):
     return render(request, 'stagiaire/activitemain.html')
 
@@ -222,20 +239,22 @@ def postuler(request):
 
 @login_required(login_url='signin', )
 def search(request):
-    offres=Offre.objects.all() 
-    domaines_dict=Offre.objects.values('domaine').distinct()
-    missions_dict=Offre.objects.values('mission').distinct()
-    dures_dict=Offre.objects.values('dure').distinct()
-    niveaus_dict=Offre.objects.values('niveau_etude').distinct()
 
-    stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-    number=offres.count()
-    domaines = [domaine['domaine'] for domaine in domaines_dict]
-    missions=[mission['mission'] for mission in missions_dict]
-    dures=[dure['dure'] for dure in dures_dict]
-    niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
-    print(niveaus)
-    context={'stagiaire' : stagiaire,
+    try:
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        offres=Offre.objects.all() 
+        domaines_dict=Offre.objects.values('domaine').distinct()
+        missions_dict=Offre.objects.values('mission').distinct()
+        dures_dict=Offre.objects.values('dure').distinct()
+        niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+
+        number=offres.count()
+        domaines = [domaine['domaine'] for domaine in domaines_dict]
+        missions=[mission['mission'] for mission in missions_dict]
+        dures=[dure['dure'] for dure in dures_dict]
+        niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+        print(niveaus)
+        context={'stagiaire' : stagiaire,
              'offres':offres,  
              'number':number,
              'domaines':domaines,
@@ -243,33 +262,150 @@ def search(request):
              'dures':dures,
              'niveaus':niveaus
              }
-    return render(request, 'stagiaire/search.html' , context)
+        return render(request, 'stagiaire/search.html' , context)
+
+    except Http404:
+            return render(request, 'stagiaire/error.html',status=404)
+
+            
 
 
-########same work#################################################
+
+##########################same work###############################
 
 
 @login_required(login_url='signin', )
+
 def profile(request):
+    
+    try:
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.status != 0 :
+             offres=Offre.objects.all() 
+             domaines_dict=Offre.objects.values('domaine').distinct()
+             missions_dict=Offre.objects.values('mission').distinct()
+             dures_dict=Offre.objects.values('dure').distinct()
+             niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+             number=offres.count()
+             domaines = [domaine['domaine'] for domaine in domaines_dict]
+             missions=[mission['mission'] for mission in missions_dict]
+             dures=[dure['dure'] for dure in dures_dict]
+             niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+             print(niveaus)
+             context={'stagiaire' : stagiaire,
+             'offres':offres,  
+             'number':number,
+             'domaines':domaines,
+             'missions':missions,
+             'dures':dures,
+             'niveaus':niveaus}
+             return render(request, 'stagiaire/profile.html' , context)
+        else:
+            return render(request, 'stagiaire/error.html',status=404)
 
-    return render(request, 'stagiaire/profile.html')
 
+    except Http404:
+            return render(request, 'stagiaire/error.html',status=404)
 
 
 @login_required(login_url='signin', )
 def profileinfo(request):
-    return render(request,'stagiaire/profileinfo.html')
+    try:
+        # Retrieve stagiaire and offres data
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        offres = Offre.objects.all()
 
+        # Query distinct values for various fields
+        domaines_dict = Offre.objects.values('domaine').distinct()
+        missions_dict = Offre.objects.values('mission').distinct()
+        dures_dict = Offre.objects.values('dure').distinct()
+        niveaus_dict = Offre.objects.values('niveau_etude').distinct()
 
+        # Extract values from querysets
+        domaines = [domaine['domaine'] for domaine in domaines_dict]
+        missions = [mission['mission'] for mission in missions_dict]
+        dures = [dure['dure'] for dure in dures_dict]
+        niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
+
+        context = {
+            'stagiaire': stagiaire,
+            'offres': offres,
+            'number': offres.count(),
+            'domaines': domaines,
+            'missions': missions,
+            'dures': dures,
+            'niveaus': niveaus,
+            'error': False,
+            'valid': False,
+            'message1': "",
+            'message': ""
+        }
+
+        if request.method == "POST":
+            mail = request.POST.get('mail', None)
+            username = request.POST.get('username', None)
+            
+            # Use Django's EmailValidator for email validation
+            try:
+                validate_email(mail)
+            except:
+                context['error'] = True
+                context['message'] = "Enter a valid email !"
+            
+            user_by_email = User.objects.filter(email=mail).first()
+            user_by_username = User.objects.filter(username=username).first()
+
+            if user_by_email:
+                context['error'] = True
+                context['message'] = f"A user with existing {mail} mail !"
+
+            if user_by_username:
+                context['error'] = True
+                context['message'] = f"A user with existing {username} username !"
+
+            if not context['error']:
+                user = request.user
+                user.username = username
+                user.email = mail
+                user.save()
+                return redirect('profileinfo')
+
+        return render(request, 'stagiaire/profileinfo.html', context)
+
+    except Http404:
+        return render(request, 'stagiaire/error.html', status=404)
+######
 
 
 
 @login_required(login_url='signin', )
 def profilepass(request):
+    try:
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        offres=Offre.objects.all() 
+        domaines_dict=Offre.objects.values('domaine').distinct()
+        missions_dict=Offre.objects.values('mission').distinct()
+        dures_dict=Offre.objects.values('dure').distinct()
+        niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+        number=offres.count()
+        domaines = [domaine['domaine'] for domaine in domaines_dict]
+        missions=[mission['mission'] for mission in missions_dict]
+        dures=[dure['dure'] for dure in dures_dict]
+        niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+        print(niveaus)
+        context={'stagiaire' : stagiaire,
+        'offres':offres,  
+             'number':number,
+             'domaines':domaines,
+             'missions':missions,
+             'dures':dures,
+             'niveaus':niveaus}
+        return render(request, 'stagiaire/profilepass.html',context)
 
-    return render(request, 'stagiaire/profilepass.html')
+        
 
-
+    except Http404:
+            return render(request, 'stagiaire/error.html',status=404)
 
 ##########################supervisor##############################
 
@@ -293,8 +429,12 @@ def  superprofile(request, id):
 
 @login_required(login_url='signin')
 def log_out_stagiaire(request):
-        logout(request)
-        return redirect('index')
+       
+            logout(request)
+            return redirect('index')
+
+
+
 
 
 

@@ -155,75 +155,27 @@
           <span class="material-icons" > <a href="{% url 'search' %}">explore</a> </span>
           
         </div>
-        
         <select id="location-filter" name="location">
-          <option value="">Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9kfdvmdf-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-1vdkmlv2 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12mvdddddd Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-
-          <option value="chicago">12+ Weeks</option>
-          <!-- Add more options as needed -->
-        </select>
-        <select id="location-filter" name="location">
-          <option value="">Sous-Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
-          <!-- Add more options as needed -->
-        </select>
-        <select id="location-filter" name="location">
-          <option value="">Période</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
-          <!-- Add more options as needed -->
-        </select>
-
+            <option value="">Domaine</option>
+            {% for domaine in domaines %}
+            <option value="new-york">{{domaine}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select id="location-filter" name="location">
+            <option value="">Niveau</option>
+            {% for niveau in niveaus %}
+            <option value="new-york">{{niveau}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select id="location-filter" name="location">
+            <option value="">Période</option>
+            {% for dure in dures %}
+            <option value="new-york">{{dure}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
 
         <div class="header__option">`
 
@@ -232,10 +184,38 @@
           
         </div>  
 
+
+        {%  if stagiaire.status == 0     %}
    
          <div class="header__option">
-                       <a  href="{% url 'activitemain' %}"    type="button" class="btn btn-warning" ><strong>In process</strong></a>
+                       <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
         </div>
+
+
+
+        {%  endif %}
+
+
+        {%  if stagiaire.status == 1    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+        {%  if stagiaire.status == 2    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
 
       </div>
 
@@ -243,9 +223,9 @@
         <div class="header__info">
           <img
             class="user__avatar"
-            src="{% static  'assets/images/ok.jpg' %}"
+            src="{{stagiaire.image.url}}"
             alt=""/>
-        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
+        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
         </div>
         
         <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
@@ -425,7 +405,7 @@
                 </p>
         <div class="card-body media align-items-center">
     
-        <img src="{% static 'assets/images/ok.jpg' %}" alt="" class="d-block ui-w-80">
+        <img src="{{stagiaire.image.url}}" alt="" class="d-block ui-w-80">
         <div class="media-body ml-4">
 
         <label class="btn btn-outline-primary">

@@ -175,6 +175,38 @@
           
         </div>  
 
+        {%  if stagiaire.status == 0     %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+
+        {%  if stagiaire.status == 1    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+        {%  if stagiaire.status == 2    %}
+   
+         <div class="header__option">
+                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
+        </div>
+
+
+
+        {%  endif %}
+
+
        
       </div>
 
