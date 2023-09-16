@@ -25,35 +25,6 @@ class Supervisor(models.Model):
 
 
 
-class Stagiaire(models.Model):
-    stagiaire_id=models.ForeignKey(User, on_delete=models.CASCADE)
-    last_Name=models.CharField(max_length=255,blank=True,null=True)
-    fisrt_Name=models.CharField(max_length=255,blank=True,null=True)
-    school=models.CharField(max_length=255,blank=True,null=True)
-    phone=models.CharField(max_length=20,blank=True,null=True)
-    motivation=models.TextField(null=True,blank=True)
-    niveau=models.CharField(max_length=50,null=True,blank=True)
-    image = models.ImageField(upload_to='photos/', default='photos/default.jpg',blank=True,null=True)
-    cv=models.FileField(upload_to='pdfs/',blank=True,null=True)
-    status=models.IntegerField(default=0)
-
-   
-    class Meta:
-        db_table = 'stagiaire'
-
-    def __str__(self):
-         return (self.stagiaire_id.username )
-    
-@receiver(pre_save, sender=Stagiaire)
-def validate_your_field(sender, instance, **kwargs):
-    allowed_values = [0, 1, 2,3]
-    if instance.status not in allowed_values:
-        raise ValidationError('Invalid value. Only 0, 1, 2 or 3 are allowed.')
-    if instance.stagiaire_id.is_superuser:
-        raise ValidationError('only stagiaire can acces')
-
-
-
     
 
   
@@ -71,7 +42,7 @@ class Offre(models.Model):
     class Meta:
         db_table = 'offre'
     def __str__(self):
-         return (self.owner.supervisor_id.username )
+         return (f"{self.pk}" )
     
     
 
@@ -85,6 +56,36 @@ def validate_your_field(sender, instance, **kwargs):
     if instance.count==0:
         instance.valable=0
 
+
+
+
+class Stagiaire(models.Model):
+    stagiaire_id=models.ForeignKey(User, on_delete=models.CASCADE)
+    last_Name=models.CharField(max_length=255,blank=True,default='')
+    fisrt_Name=models.CharField(max_length=255,blank=True,default='')
+    school=models.CharField(max_length=255,blank=True,default='')
+    phone=models.CharField(max_length=20,blank=True,default='')
+    motivation=models.TextField(null=True,blank=True,default='')
+    niveau=models.CharField(max_length=50,null=True,blank=True)
+    image = models.ImageField(upload_to='photos/', default='photos/default.jpg',)
+    cv=models.FileField(upload_to='pdfs/',blank=True,null=True)
+    status=models.IntegerField(default=0)
+    offre_stage=models.ForeignKey(Offre, on_delete=models.CASCADE,null=True)
+
+   
+    class Meta:
+        db_table = 'stagiaire'
+
+    def __str__(self):
+         return (self.stagiaire_id.username )
+    
+@receiver(pre_save, sender=Stagiaire)
+def validate_your_field(sender, instance, **kwargs):
+    allowed_values = [0, 1, 2,3]
+    if instance.status not in allowed_values:
+        raise ValidationError('Invalid value. Only 0, 1, 2 or 3 are allowed.')
+    if instance.stagiaire_id.is_superuser:
+        raise ValidationError('only stagiaire can acces')
 
 
 

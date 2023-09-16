@@ -153,73 +153,31 @@
           
         </div>
         
+        
+
         <select id="location-filter" name="location">
           <option value="">Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9kfdvmdf-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-1vdkmlv2 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12mvdddddd Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-
-          <option value="chicago">12+ Weeks</option>
+          {% for domaine in domaines %}
+          <option value="new-york">{{domaine}}</option>          
+          {%  endfor %}
           <!-- Add more options as needed -->
         </select>
+        
         <select id="location-filter" name="location">
-          <option value="">Sous-Domaine</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
+          <option value="">Niveau</option>
+          {% for niveau in niveaus %}
+          <option value="new-york">{{niveau}}</option>          
+          {%  endfor %}
           <!-- Add more options as needed -->
-        </select>
+        </select> 
         <select id="location-filter" name="location">
           <option value="">Période</option>
-          <option value="new-york">5-8 Weeks </option>
-          <option value="los-angeles">9-12 Weeks </option>
-          <option value="chicago">12+ Weeks</option>
+          {% for dure in dures %}
+          <option value="new-york">{{dure}}</option>          
+          {%  endfor %}
           <!-- Add more options as needed -->
         </select>
+      
 
 
         <div class="header__option">`
@@ -270,9 +228,9 @@
         <div class="header__info">
           <img
             class="user__avatar"
-            src="{{stagiaire.image.url}}"
+            src="{{ stagiaire.image.url }}"
             alt=""/>
-        <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
+        <a href="{% url 'profileinfo' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
         </div>
         
         <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
@@ -295,7 +253,9 @@
 
    
     <div class="main__body">
+      
       <!-- main body starts -->
+      
       <div class="card service-wrapper rounded border-0 shadow p-4">
     
       <div class="content mt-4">
@@ -311,18 +271,28 @@
 
     
     
-    
+     
             
 
 
                 
+      {% if error %}
+
+      <div class="alert alert-danger" role="alert" data-mdb-color="danger">
+        {{ message|linebreaks }}
+      </div>
+      {% endif %}
                 <div class="modal-dialog" role="document">
+                  
                     <div class="modal-content">
                       
                         <div class="modal-body">
                           
-                            <form class="form-horizontal" role="form" method="POST" action="">
-                              <div class="form-group">
+						
+                          <form action="{%  url  'offre'  id=id  %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-group">
                                 <div>
                                   
                                   
@@ -332,9 +302,9 @@
                 <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
               
                 <div class="image-upload-wrap">
-                  <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                  <input class="file-upload-input" name="image" type='file' onchange="readURL(this);" accept="image/*"   />
                   <div class="drag-text">
-                    <h3>Drag and drop a file or select add Image</h3>
+                    <h3>Drag and drop an Image</h3>
                   </div>
                 </div>
                 <div class="file-upload-content">
@@ -383,35 +353,35 @@
               </script>
               <div class="top-margin">
                 <label>Last Name </label>
-                <input type="text" class="form-control">
+                <input type="text" name="lastn" class="form-control"  value="{{stagiaire.last_Name}}">
               </div>	
               <div class="top-margin">
                 <label>Fisrt Name </label>
-                <input type="text" class="form-control">
+                <input type="text" name="firstn" class="form-control" value="{{stagiaire.fisrt_Name}}">
               </div>
               
               
               <div class="top-margin">
                 <label>Phone(+212)</label>
-                <input type="tel" class="form-control">
+                <input type="tel"   name="phone" class="form-control"  value="{{stagiaire.phone}}">
               </div>	
               
                  
               <div class="top-margin">
                 <label> School </label>
-                <input type="text" class="form-control">
+                <input type="text"  name="school" class="form-control"  value="{{stagiaire.school}}">
               </div>	
               
               
               <div class="top-margin">
               
-              <select id="location-filter" name="location">
-                <option value="">Niveau</option>
-                <option value="los-angeles">Bac +2 </option>
-                <option value="los-angeles">Bac +3 </option>
-                <option value="los-angeles">Bac +4 </option>
-                <option value="los-angeles">Bac +5  </option>
-                <!-- Add more options as needed -->
+                <select id="location-filter" name="niveau">
+                  <option value="">Niveau</option>
+                  <option value="Bac+2 ">Bac+2 </option>
+                  <option value="Bac+3 ">Bac+3 </option>
+                  <option value="Bac+4 ">Bac+4 </option>
+                  <option value="Bac+5 ">Bac+5 </option>
+                  <!-- Ajoutez plus d'options au besoin -->
               </select>
               </div>
               
@@ -425,12 +395,12 @@
               
               <div class="top-margin">
                 <label>Motivation</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1"   name="motiv" rows="3"  value="{{stagiaire.motivation}}">{{stagiaire.motivation}}</textarea>
               </div>
               <div class="top-margin">
                 
                 <label>CV</label>
-                <input type="file" name="upload" accept="application/pdf" />
+                <input type="file" name="cv" accept="application/pdf"  value="{{stagiaire.cv}}"/>
               </div>
               
                                 </div>
@@ -447,7 +417,7 @@
                                     </div>
                                 </div>
                         </div>
-                        <a type="submit" class="btn btn-primary"   >Save</a>
+                        <button type="submit" class="btn btn-primary"   >Save</button>
               
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->

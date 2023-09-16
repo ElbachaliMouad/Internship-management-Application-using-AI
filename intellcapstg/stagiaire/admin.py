@@ -7,7 +7,7 @@ from django.contrib.auth.admin import UserAdmin
 
 class StagiaireAdmin(admin.ModelAdmin):
     list_display = ('stagiaire_id', 'last_Name','fisrt_Name','school','phone',
-    'motivation','niveau','image','cv','status')
+    'motivation','niveau','image','cv','status','offre_stage')
 
 
 admin.site.register(Stagiaire, StagiaireAdmin)

@@ -3,8 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login ,logout
 from django.http import Http404
 from django.contrib.auth.decorators import user_passes_test
-
-
+from django.contrib.auth.hashers import check_password
 from django.db.models import Q
 from django.core.validators import validate_email
 from django.contrib.auth.models import User 
@@ -214,19 +213,105 @@ def forum(request,id):
 
 #######################################
 @login_required(login_url='signin', )
-def offre(request,id):
+def offre(request, id):
+    try:
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        offre = get_object_or_404(Offre, id=id)
+        domaines_dict = Offre.objects.values('domaine').distinct()
+        missions_dict = Offre.objects.values('mission').distinct()
+        dures_dict = Offre.objects.values('dure').distinct()
+        niveaus_dict = Offre.objects.values('niveau_etude').distinct()
+        selected_offre = Offre.objects.get(pk=id)
 
-        try:
-            stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-            offre = get_object_or_404(Offre, id=id)
-            context={'offre':offre,
-                     'stagiaire':stagiaire}
-            return render(request, 'stagiaire/offre.html',context)
-        except Http404:
-            return render(request, 'stagiaire/error.html',status=404)
+        domaines = [domaine['domaine'] for domaine in domaines_dict]
+        missions = [mission['mission'] for mission in missions_dict]
+        dures = [dure['dure'] for dure in dures_dict]
+        niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
+        message = ''
+        error = False
+
+        if request.method == "POST":
+            error_messages = []
+
+            # Get data from the form
+            last_name = request.POST.get('lastn', None)
+            first_name = request.POST.get('firstn', None)
+            phone = request.POST.get('phone', None)
+            school = request.POST.get('school', None)
+            motivation = request.POST.get('motiv', None)
+            niveau = request.POST.get('niveau', None)
+            cv = request.FILES.get('cv',None)
+
+            # Check if last name is empty
+            if not last_name:
+               error_messages.append(" * Please enter your last name.")
+
+    # Check other fields for emptiness...
+            if not first_name:
+               error_messages.append(" * Please enter your first name.")
+            if not phone:
+                error_messages.append(" * Please enter your phone.")
+            if not school:
+                error_messages.append(" * Please enter your school.")
+            if not motivation:
+                error_messages.append(" * Please  enter your motivation.")
+            if not niveau:
+                error_messages.append(" * Please  enter your niveau.")
+            if not cv :
+               error_messages.append(" * Please  enter your cv.")
+
+
+
+            # Check for image file
+            if 'image' in request.FILES:
+                image = request.FILES['image']
+                if image.content_type.startswith('image'):
+                    stagiaire.image = image
+                
+                else:
+                    error_messages.append(" * Invalid image file format. Please upload an image.")
+
+            # Check for CV file
+          
 
             
 
+              
+
+            # Check other fields...
+            if not error_messages:
+                stagiaire.last_Name = last_name
+                stagiaire.fisrt_Name = first_name
+                stagiaire.phone = phone
+                stagiaire.school = school
+                stagiaire.motivation = motivation
+                stagiaire.niveau = niveau
+                stagiaire.status = 1
+                stagiaire.offre_stage = selected_offre
+                stagiaire.cv = cv
+
+                stagiaire.save()
+            else:
+        # If there are errors, set the error variable and message
+                error = True
+                message = "\n".join(error_messages)
+
+        context = {
+            'offre': offre,
+            'stagiaire': stagiaire,
+            'id': id,
+            'domaines': domaines,
+            'missions': missions,
+            'dures': dures,
+            'niveaus': niveaus,
+            'message': message,
+            'error': error
+        }
+
+        return render(request, 'stagiaire/offre.html', context)
+
+    except Http404:
+        return render(request, 'stagiaire/error.html', status=404)
 
 
 
@@ -382,31 +467,51 @@ def profileinfo(request):
 def profilepass(request):
     try:
         stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-        offres=Offre.objects.all() 
-        domaines_dict=Offre.objects.values('domaine').distinct()
-        missions_dict=Offre.objects.values('mission').distinct()
-        dures_dict=Offre.objects.values('dure').distinct()
-        niveaus_dict=Offre.objects.values('niveau_etude').distinct()
-        number=offres.count()
+        offres = Offre.objects.all()
+        domaines_dict = Offre.objects.values('domaine').distinct()
+        missions_dict = Offre.objects.values('mission').distinct()
+        dures_dict = Offre.objects.values('dure').distinct()
+        niveaus_dict = Offre.objects.values('niveau_etude').distinct()
+        number = offres.count()
         domaines = [domaine['domaine'] for domaine in domaines_dict]
-        missions=[mission['mission'] for mission in missions_dict]
-        dures=[dure['dure'] for dure in dures_dict]
-        niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
-        print(niveaus)
-        context={'stagiaire' : stagiaire,
-        'offres':offres,  
-             'number':number,
-             'domaines':domaines,
-             'missions':missions,
-             'dures':dures,
-             'niveaus':niveaus}
-        return render(request, 'stagiaire/profilepass.html',context)
+        missions = [mission['mission'] for mission in missions_dict]
+        dures = [dure['dure'] for dure in dures_dict]
+        niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
 
-        
+        context = {
+            'stagiaire': stagiaire,
+            'offres': offres,
+            'number': number,
+            'domaines': domaines,
+            'missions': missions,
+            'dures': dures,
+            'niveaus': niveaus,
+            'error': False,
+            'valid': False,
+            'message1': "",
+            'message': ""
+        }
+
+        if request.method == "POST":
+            current_pass = request.POST.get('password', None)
+            new_pass = request.POST.get('neopassword', None)
+            re_pass = request.POST.get('repassword', None)
+
+            if not check_password(current_pass, request.user.password):
+                context['error'] = True
+                context['message'] = "The current password is not correct."
+            elif new_pass != re_pass:
+                context['error'] = True
+                context['message'] = "The new passwords do not match."
+            else:
+                request.user.set_password(new_pass)
+                request.user.save()
+                return redirect('profilepass')
+
+        return render(request, 'stagiaire/profilepass.html', context)
 
     except Http404:
-            return render(request, 'stagiaire/error.html',status=404)
-
+        return render(request, 'stagiaire/error.html', status=404)
 ##########################supervisor##############################
 
  
