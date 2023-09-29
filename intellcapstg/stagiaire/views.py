@@ -10,12 +10,54 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.http import HttpResponse
 import hashlib
-from .models import Stagiaire, Supervisor,Offre
+from .models import Stagiaire, Supervisor,Offre,Task, Document
 from django.contrib.auth.models import User, Group
 # Create your views here.
+from datetime import datetime, timedelta
+
+from django.utils import timezone
+import re
+from django.db.models import Q
+
+
+def rechercher(query,results):
+
+    for i, char in enumerate(query):
+        # Combine queries using OR (|)
+        or_query = Q(domaine__istartswith=query[:i+1]) | \
+                   Q(mission__istartswith=query[:i+1]) | \
+                   Q(skills_needed__istartswith=query[:i+1]) | \
+                   Q(dure__istartswith=query[:i+1]) | \
+                   Q(niveau_etude__istartswith=query[:i+1])
+
+        # Apply the OR query
+        results = results.filter(or_query)
+
+    return results
 
 
 
+
+
+
+        
+
+
+def is_valid_phone_number(phone_number):
+    # Define a regex pattern to match a typical phone number
+    # This is a basic example and may need to be adapted to match your specific phone number format
+    pattern = r'^\+?1?\d{9,15}$'
+
+    return re.match(pattern, phone_number) is not None
+
+def calculate_middle_date(date1, date2):
+    # Calculate the average timestamp
+    average_timestamp = (date1.timestamp() + date2.timestamp()) / 2
+
+    # Convert the average timestamp back to a datetime object
+    middle_date = datetime.fromtimestamp(average_timestamp)
+
+    return middle_date.strftime('%Y-%m-%d')
 
 def is_special_user(user):
          return not(user.is_superuser)
@@ -155,10 +197,19 @@ def  signin(request):
             print(test)
             if user_mail :
                 if test:
-                    stagiaire = get_object_or_404(Stagiaire, stagiaire_id=user)
-                    login(request, user_mail)
-                    if stagiaire.status ==3:
-                        return redirect('activitemain',args=[user.pk])
+                    try:
+                        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=user)
+                        login(request, user_mail)
+                     
+                    except Http404:
+                        return render(request, 'stagiaire/error.html', status=404)
+
+                    if stagiaire.status ==2:
+                        return redirect('activitemain',id=stagiaire.offre_stage.pk)
+                    
+                    elif stagiaire.status ==1:
+                        return redirect('profile')
+                    
                     else:
                         return redirect('search')
                 else:
@@ -196,18 +247,76 @@ def  signin(request):
 
 @login_required(login_url='signin', )
 def activitemain(request,id):
-    return render(request, 'stagiaire/activitemain.html')
+    try:
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.offre_stage.pk != id:
+                return render(request, 'stagiaire/error.html', status=404)
+        else:
+            if stagiaire.status != 2:
+                return render(request, 'stagiaire/error.html', status=404)
+            else:
+                pas=False
+                tasks=Task.objects.filter(task_offre=stagiaire.offre_stage)
+                documents=Document.objects.filter(owner=stagiaire)
+               
+
+            
+
+
+
+
+
+
+                context={'stagiaire':stagiaire,
+                         'tasks':tasks}
+                return render(request, 'stagiaire/activitemain.html', context)
+
+
+
+    except Http404 :
+        return render(request, 'stagiaire/error.html', status=404)
+
+
+
 
 
 
 @login_required(login_url='signin', )
 def document(request,id):
-    return render(request, 'stagiaire/document.html')
+     try:
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.offre_stage.pk != id:
+                return render(request, 'stagiaire/error.html', status=404)
+        else:
+            if stagiaire.status != 2:
+                return render(request, 'stagiaire/error.html', status=404)
+            else:
+                context={'stagiaire':stagiaire}
+                return render(request, 'stagiaire/document.html', context)
+
+
+
+     except Http404 :
+         return render(request, 'stagiaire/error.html', status=404)
 
 
 @login_required(login_url='signin', )
 def forum(request,id):
-    return render(request, 'stagiaire/forum.html')
+    try:
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.offre_stage.pk != id:
+                return render(request, 'stagiaire/error.html', status=404)
+        else:
+            if stagiaire.status != 2:
+                return render(request, 'stagiaire/error.html', status=404)
+            else:
+                context={'stagiaire':stagiaire}
+                return render(request, 'stagiaire/forum.html', context)
+
+
+
+    except Http404 :
+        return render(request, 'stagiaire/error.html', status=404)
 
 
 
@@ -216,99 +325,129 @@ def forum(request,id):
 def offre(request, id):
     try:
         stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-        offre = get_object_or_404(Offre, id=id)
-        domaines_dict = Offre.objects.values('domaine').distinct()
-        missions_dict = Offre.objects.values('mission').distinct()
-        dures_dict = Offre.objects.values('dure').distinct()
-        niveaus_dict = Offre.objects.values('niveau_etude').distinct()
-        selected_offre = Offre.objects.get(pk=id)
+        if stagiaire.status==2:
+            return render(request, 'stagiaire/error.html',status=404)
 
-        domaines = [domaine['domaine'] for domaine in domaines_dict]
-        missions = [mission['mission'] for mission in missions_dict]
-        dures = [dure['dure'] for dure in dures_dict]
-        niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
-        message = ''
-        error = False
 
-        if request.method == "POST":
-            error_messages = []
+        else:
+            offre = get_object_or_404(Offre, id=id)
+            if offre.date_of_expiry:
+                    if offre.date_of_expiry <= timezone.now():
+                      offre.valable=0
+                      offre.save()
+                    else:
+                        pass
+            else:
+                    pass
+            if offre.valable==0:
+                    return render(request, 'stagiaire/error.html', status=404)
+            else:
+                domaines_dict = Offre.objects.values('domaine').distinct()
+                missions_dict = Offre.objects.values('mission').distinct()
+                dures_dict = Offre.objects.values('dure').distinct()
+                niveaus_dict = Offre.objects.values('niveau_etude').distinct()
+                domaines = [domaine['domaine'] for domaine in domaines_dict]
+                missions = [mission['mission'] for mission in missions_dict]
+                dures = [dure['dure'] for dure in dures_dict]
+                niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
+                message = ''
+                error = False
+                if request.method == "POST":
+                  error_messages = []
+                  last_name = request.POST.get('lastn', None)
+                  first_name = request.POST.get('firstn', None)
+                  phone = request.POST.get('phone', None)
+                  school = request.POST.get('school', None)
+                  motivation = request.POST.get('motiv', None)
+                  niveau = request.POST.get('niveau', None)
+                  cv = request.FILES.get('cv',None)
 
-            # Get data from the form
-            last_name = request.POST.get('lastn', None)
-            first_name = request.POST.get('firstn', None)
-            phone = request.POST.get('phone', None)
-            school = request.POST.get('school', None)
-            motivation = request.POST.get('motiv', None)
-            niveau = request.POST.get('niveau', None)
-            cv = request.FILES.get('cv',None)
-
-            # Check if last name is empty
-            if not last_name:
-               error_messages.append(" * Please enter your last name.")
-
-    # Check other fields for emptiness...
-            if not first_name:
-               error_messages.append(" * Please enter your first name.")
-            if not phone:
-                error_messages.append(" * Please enter your phone.")
-            if not school:
-                error_messages.append(" * Please enter your school.")
-            if not motivation:
-                error_messages.append(" * Please  enter your motivation.")
-            if not niveau:
-                error_messages.append(" * Please  enter your niveau.")
-            if not cv :
-               error_messages.append(" * Please  enter your cv.")
+                  if not last_name:
+                     error_messages.append(" * Please enter your last name.")
+                  if not first_name:
+                     error_messages.append(" * Please enter your first name.")
+                  if not phone:
+                     error_messages.append(" * Please enter your phone.")
+                  if not school:
+                     error_messages.append(" * Please enter your school.")
+                  if not motivation:
+                     
+                     error_messages.append(" * Please  enter your motivation.")
+                  if not niveau:
+                     error_messages.append(" * Please  enter your niveau.")
+                  if not cv :
+                     error_messages.append(" * Please  enter your cv.")
 
 
 
             # Check for image file
-            if 'image' in request.FILES:
-                image = request.FILES['image']
-                if image.content_type.startswith('image'):
-                    stagiaire.image = image
+                  if 'image' in request.FILES:
+                     image = request.FILES['image']
+                     if image.content_type.startswith('image'):
+                        stagiaire.image = image
                 
-                else:
-                    error_messages.append(" * Invalid image file format. Please upload an image.")
+                     else:
+                        error_messages.append(" * Invalid image file format. Please upload an image.")
 
-            # Check for CV file
           
 
             
 
               
 
-            # Check other fields...
-            if not error_messages:
-                stagiaire.last_Name = last_name
-                stagiaire.fisrt_Name = first_name
-                stagiaire.phone = phone
-                stagiaire.school = school
-                stagiaire.motivation = motivation
-                stagiaire.niveau = niveau
-                stagiaire.status = 1
-                stagiaire.offre_stage = selected_offre
-                stagiaire.cv = cv
+                  if not error_messages:
+                     
+                     stagiaire.last_Name = last_name
+                     stagiaire.fisrt_Name = first_name
+                     stagiaire.phone = phone
+                     stagiaire.school = school
+                     stagiaire.motivation = motivation
+                     stagiaire.niveau = niveau
+                     stagiaire.status = 1
+                     stagiaire.cv = cv
+                     if stagiaire.offre_stage :
+                          
+                          if stagiaire.offre_stage != offre:
+                              print(stagiaire.offre_stage)
+                              print(offre)
+                              stagiaire.offre_stage.demande -=1 
+                              stagiaire.offre_stage.save()
+                              offre.demande += 1
+                              offre.save()
+                              stagiaire.offre_stage=offre
+                              
+                          else:
+                              pass
 
-                stagiaire.save()
-            else:
-        # If there are errors, set the error variable and message
-                error = True
-                message = "\n".join(error_messages)
+                     else:
+                         offre.demande+=1
+                         offre.save()
 
-        context = {
-            'offre': offre,
-            'stagiaire': stagiaire,
-            'id': id,
-            'domaines': domaines,
-            'missions': missions,
-            'dures': dures,
-            'niveaus': niveaus,
-            'message': message,
-            'error': error
-        }
+                         stagiaire.offre_stage=offre
+                     stagiaire.save()
+    # Link the user to the new offer
 
-        return render(request, 'stagiaire/offre.html', context)
+                  else:
+                     error = True
+                     message = "\n".join(error_messages)
+
+                context = {
+               'offre': offre,
+               'stagiaire': stagiaire,
+               'id': id,
+               'domaines': domaines,
+               'missions': missions,
+                'dures': dures,
+                'niveaus': niveaus,
+                'message': message,
+                 'error': error
+                }
+
+                return render(request, 'stagiaire/offre.html', context)
+
+            
+        
+        
 
     except Http404:
         return render(request, 'stagiaire/error.html', status=404)
@@ -318,28 +457,30 @@ def offre(request, id):
 ############same work############################################
 
 def postuler(request):
-    return render(request,'stagiaire/postuler.html')
+    for offre in  Offre.objects.filter(valable=1):
+                if offre.date_of_expiry:
+                    if offre.date_of_expiry <= timezone.now():
+                      offre.valable=0
+                      offre.save()
+                    else:
+                        pass
+                else:
+                    pass
 
+    offres= Offre.objects.filter(valable=1)
+    domaines_dict=Offre.objects.values('domaine').distinct()
+    missions_dict=Offre.objects.values('mission').distinct()
+    dures_dict=Offre.objects.values('dure').distinct()
+    niveaus_dict=Offre.objects.values('niveau_etude').distinct()
 
-
-@login_required(login_url='signin', )
-def search(request):
-
-    try:
-        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-        offres=Offre.objects.all() 
-        domaines_dict=Offre.objects.values('domaine').distinct()
-        missions_dict=Offre.objects.values('mission').distinct()
-        dures_dict=Offre.objects.values('dure').distinct()
-        niveaus_dict=Offre.objects.values('niveau_etude').distinct()
-
-        number=offres.count()
-        domaines = [domaine['domaine'] for domaine in domaines_dict]
-        missions=[mission['mission'] for mission in missions_dict]
-        dures=[dure['dure'] for dure in dures_dict]
-        niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
-        print(niveaus)
-        context={'stagiaire' : stagiaire,
+    number=offres.count()
+    domaines = [domaine['domaine'] for domaine in domaines_dict]
+    missions=[mission['mission'] for mission in missions_dict]
+    dures=[dure['dure'] for dure in dures_dict]
+    niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+    print(niveaus)
+            
+    context={
              'offres':offres,  
              'number':number,
              'domaines':domaines,
@@ -347,7 +488,125 @@ def search(request):
              'dures':dures,
              'niveaus':niveaus
              }
-        return render(request, 'stagiaire/search.html' , context)
+                
+    return render(request, 'stagiaire/postuler.html' , context)
+
+    
+
+
+
+@login_required(login_url='signin', )
+def search(request):
+  
+    try:
+        
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.status==2:
+            return render(request, 'stagiaire/error.html',status=404)
+        else:
+            for offre in  Offre.objects.filter(valable=1):
+                if offre.date_of_expiry:
+                    if offre.date_of_expiry <= timezone.now():
+                      offre.valable=0
+                      offre.save()
+                    else:
+                        pass
+                else:
+                    pass
+
+            offres= Offre.objects.filter(valable=1)
+            domaines_dict=Offre.objects.values('domaine').distinct()
+            missions_dict=Offre.objects.values('mission').distinct()
+            dures_dict=Offre.objects.values('dure').distinct()
+            niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+
+            number=offres.count()
+            domaines = [domaine['domaine'] for domaine in domaines_dict]
+            missions=[mission['mission'] for mission in missions_dict]
+            dures=[dure['dure'] for dure in dures_dict]
+            niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+            print(niveaus)
+            
+            context={'stagiaire' : stagiaire,
+             'offres':offres,  
+             'number':number,
+             'domaines':domaines,
+             'missions':missions,
+             'dures':dures,
+             'niveaus':niveaus,
+             'exist':True
+             }
+            if  request.method== "POST":
+                
+                query=request.POST.get('query',None)
+                dom=request.POST.get('dom',None)
+                miss=request.POST.get('miss',None)
+                periode=request.POST.get('periode',None)
+                print(query,dom,miss,periode)
+                misssperiods = domsmisss = domsperiodes = domsperiodesmiss = periodes = misss = doms = None
+
+                if  query:
+                    a=rechercher(query,offres)
+                else:
+                    a=Offre.objects.none()
+                if dom:
+                    doms = offres.filter(domaine=dom)
+                else:
+                    doms=Offre.objects.none()
+        
+        # Filter based on mission if provided
+                if miss:
+                    misss = offres.filter(niveau_etude=miss)
+                else:
+                    miss=Offre.objects.none()
+        # Filter based on periode if provided
+                if periode:
+                    periodes = offres.filter(dure=periode)
+                else:
+                    periodes=Offre.objects.none()
+        # Perform intersection if multiple filters provided
+                if dom and miss and periode:
+                    domsperiodesmiss = offres.filter(domaine=dom, niveau_etude=miss, dure=periode)
+                else:
+                    domsperiodesmiss=domsperiodesmiss
+                if dom and miss:
+                    domsmisss = offres.filter(domaine=dom, niveau_etude=miss)
+                else:
+                    domsperiodesmiss=Offre.objects.none()
+                if dom and periode:
+                    domsperiodes = offres.filter(domaine=dom, dure=periode)
+                else:
+                    domsperiodes=Offre.objects.none()
+                
+                if miss and periode:
+                    misssperiods = offres.filter(niveau_etude=miss, dure=periode)
+                else:
+                    misssperiods=Offre.objects.none()
+
+
+                
+
+                offres=a.union(domsperiodesmiss).union(domsmisss).union(domsperiodes).union(misssperiods).union(doms).union(misss).union(periodes)
+
+               
+            
+                if len(offres)==0:
+                    context['exist']=False
+                else:
+                    context['offres']=offres
+                    context['number']=offres.count()
+
+
+                    
+
+
+                    
+
+
+                
+            return render(request, 'stagiaire/search.html' , context)
+
+            
 
     except Http404:
             return render(request, 'stagiaire/error.html',status=404)
@@ -362,57 +621,145 @@ def search(request):
 @login_required(login_url='signin', )
 
 def profile(request):
-    
-    try:
+     
+     
+     try:
         stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-        if stagiaire.status != 0 :
-             offres=Offre.objects.all() 
-             domaines_dict=Offre.objects.values('domaine').distinct()
-             missions_dict=Offre.objects.values('mission').distinct()
-             dures_dict=Offre.objects.values('dure').distinct()
-             niveaus_dict=Offre.objects.values('niveau_etude').distinct()
-             number=offres.count()
-             domaines = [domaine['domaine'] for domaine in domaines_dict]
-             missions=[mission['mission'] for mission in missions_dict]
-             dures=[dure['dure'] for dure in dures_dict]
-             niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
-             print(niveaus)
-             context={'stagiaire' : stagiaire,
-             'offres':offres,  
-             'number':number,
-             'domaines':domaines,
-             'missions':missions,
-             'dures':dures,
-             'niveaus':niveaus}
-             return render(request, 'stagiaire/profile.html' , context)
+        if stagiaire.status in [0,2]:
+            return render(request, 'stagiaire/error.html',status=404)
+
+
         else:
-            return render(request, 'stagiaire/error.html',status=404)
+            
+            offre = get_object_or_404(Offre, id=stagiaire.offre_stage.pk)
+            
+            if offre.valable==0:
+                    return render(request, 'stagiaire/error.html', status=404)
+            else:
+                domaines_dict = Offre.objects.values('domaine').distinct()
+                missions_dict = Offre.objects.values('mission').distinct()
+                dures_dict = Offre.objects.values('dure').distinct()
+                niveaus_dict = Offre.objects.values('niveau_etude').distinct()
+                domaines = [domaine['domaine'] for domaine in domaines_dict]
+                missions = [mission['mission'] for mission in missions_dict]
+                dures = [dure['dure'] for dure in dures_dict]
+                niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
+                message = ''
+                error = False
+                if request.method == "POST":
+                  error_messages = []
+                  last_name = request.POST.get('lastn', None)
+                  first_name = request.POST.get('firstn', None)
+                  phone = request.POST.get('phone', None)
+                  school = request.POST.get('school', None)
+                  motivation = request.POST.get('motiv', None)
+                  niveau = request.POST.get('niveau', None)
+                  cv = request.FILES.get('cv',None)
+
+                  if not last_name:
+                     error_messages.append(" * Please enter your last name.")
+                  if not first_name:
+                     error_messages.append(" * Please enter your first name.")
+
+                  if not phone:
+                     error_messages.append(" * Please enter your phone.")
+                  
+                  if  not is_valid_phone_number(phone):
+                     error_messages.append(" * Please enter a valide  phone: +212..")
+
+                      
+                      
+                  if not school:
+                     error_messages.append(" * Please enter your school.")
+                  if not motivation:
+                     
+                     error_messages.append(" * Please  enter your motivation.")
+                  if not niveau:
+                     error_messages.append(" * Please  enter your niveau.")
+                  if not cv :
+                     error_messages.append(" * Please  enter your cv.")
 
 
-    except Http404:
-            return render(request, 'stagiaire/error.html',status=404)
+
+            # Check for image file
+                  if 'image' in request.FILES:
+                     image = request.FILES['image']
+                     if image.content_type.startswith('image'):
+                        stagiaire.image = image
+                
+                     else:
+                        error_messages.append(" * Invalid image file format. Please upload an image.")
+
+          
+
+            
+
+              
+
+                  if not error_messages:
+                     
+                     stagiaire.last_Name = last_name
+                     stagiaire.fisrt_Name = first_name
+                     stagiaire.phone = phone
+                     stagiaire.school = school
+                     stagiaire.motivation = motivation
+                     stagiaire.niveau = niveau
+                     stagiaire.status = 1
+                     stagiaire.cv = cv
+                     stagiaire.save()
+
+                  else:
+                     error = True
+                     message = "\n".join(error_messages)
+
+                context = {
+               'offre': offre,
+               'stagiaire': stagiaire,
+               'id': id,
+               'domaines': domaines,
+               'missions': missions,
+                'dures': dures,
+                'niveaus': niveaus,
+                'message': message,
+                 'error': error
+                }
+
+                return render(request, 'stagiaire/profile.html', context)
+
+            
+        
+        
+
+     except Http404:
+         return render(request, 'stagiaire/error.html', status=404)
+
+    
+    
+
+    
 
 
 @login_required(login_url='signin', )
 def profileinfo(request):
     try:
         # Retrieve stagiaire and offres data
-        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-        offres = Offre.objects.all()
+          stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+          offres =  Offre.objects.filter(valable=1)
+          
 
         # Query distinct values for various fields
-        domaines_dict = Offre.objects.values('domaine').distinct()
-        missions_dict = Offre.objects.values('mission').distinct()
-        dures_dict = Offre.objects.values('dure').distinct()
-        niveaus_dict = Offre.objects.values('niveau_etude').distinct()
+          domaines_dict = Offre.objects.values('domaine').distinct()
+          missions_dict = Offre.objects.values('mission').distinct()
+          dures_dict = Offre.objects.values('dure').distinct()
+          niveaus_dict = Offre.objects.values('niveau_etude').distinct()
 
         # Extract values from querysets
-        domaines = [domaine['domaine'] for domaine in domaines_dict]
-        missions = [mission['mission'] for mission in missions_dict]
-        dures = [dure['dure'] for dure in dures_dict]
-        niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
+          domaines = [domaine['domaine'] for domaine in domaines_dict]
+          missions = [mission['mission'] for mission in missions_dict]
+          dures = [dure['dure'] for dure in dures_dict]
+          niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
 
-        context = {
+          context = {
             'stagiaire': stagiaire,
             'offres': offres,
             'number': offres.count(),
@@ -424,38 +771,46 @@ def profileinfo(request):
             'valid': False,
             'message1': "",
             'message': ""
-        }
+           }
 
-        if request.method == "POST":
-            mail = request.POST.get('mail', None)
-            username = request.POST.get('username', None)
-            
+          if request.method == "POST":
+              mail = request.POST.get('mail', None)
+              username = request.POST.get('username', None)
+             
+                    
             # Use Django's EmailValidator for email validation
-            try:
-                validate_email(mail)
-            except:
-                context['error'] = True
-                context['message'] = "Enter a valid email !"
+              if mail != request.user.email:
+                  try:
+                     validate_email(mail)
+                  except:
+                     context['error'] = True
+                     context['message'] = "Enter a valid email !"
             
-            user_by_email = User.objects.filter(email=mail).first()
-            user_by_username = User.objects.filter(username=username).first()
+                  user_by_email = User.objects.filter(email=mail).first()
 
-            if user_by_email:
-                context['error'] = True
-                context['message'] = f"A user with existing {mail} mail !"
+                  if user_by_email:
+                      context['error'] = True
+                      context['message'] = f"A user with existing {mail} mail !"
+              else:
+                  pass
 
-            if user_by_username:
-                context['error'] = True
-                context['message'] = f"A user with existing {username} username !"
+              if username != request.user.username:
+                  user_by_username = User.objects.filter(username=username).first()
+                  if user_by_username:                     
+                     context['error'] = True
+                     context['message'] = f"A user with existing {username} username !"
+              else:
+                  pass
 
-            if not context['error']:
+              if not context['error']:
                 user = request.user
                 user.username = username
                 user.email = mail
                 user.save()
                 return redirect('profileinfo')
+                
 
-        return render(request, 'stagiaire/profileinfo.html', context)
+          return render(request, 'stagiaire/profileinfo.html', context)
 
     except Http404:
         return render(request, 'stagiaire/error.html', status=404)
@@ -466,19 +821,19 @@ def profileinfo(request):
 @login_required(login_url='signin', )
 def profilepass(request):
     try:
-        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-        offres = Offre.objects.all()
-        domaines_dict = Offre.objects.values('domaine').distinct()
-        missions_dict = Offre.objects.values('mission').distinct()
-        dures_dict = Offre.objects.values('dure').distinct()
-        niveaus_dict = Offre.objects.values('niveau_etude').distinct()
-        number = offres.count()
-        domaines = [domaine['domaine'] for domaine in domaines_dict]
-        missions = [mission['mission'] for mission in missions_dict]
-        dures = [dure['dure'] for dure in dures_dict]
-        niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
+            stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+            offres =  Offre.objects.filter(valable=1)
+            domaines_dict = Offre.objects.values('domaine').distinct()
+            missions_dict = Offre.objects.values('mission').distinct()
+            dures_dict = Offre.objects.values('dure').distinct()
+            niveaus_dict = Offre.objects.values('niveau_etude').distinct()
+            number = offres.count()
+            domaines = [domaine['domaine'] for domaine in domaines_dict]
+            missions = [mission['mission'] for mission in missions_dict]
+            dures = [dure['dure'] for dure in dures_dict]
+            niveaus = [niveau['niveau_etude'] for niveau in niveaus_dict]
 
-        context = {
+            context = {
             'stagiaire': stagiaire,
             'offres': offres,
             'number': number,
@@ -490,30 +845,45 @@ def profilepass(request):
             'valid': False,
             'message1': "",
             'message': ""
-        }
+            }
 
-        if request.method == "POST":
-            current_pass = request.POST.get('password', None)
-            new_pass = request.POST.get('neopassword', None)
-            re_pass = request.POST.get('repassword', None)
+            if request.method == "POST":
+              error_messages = []
 
-            if not check_password(current_pass, request.user.password):
-                context['error'] = True
-                context['message'] = "The current password is not correct."
-            elif new_pass != re_pass:
-                context['error'] = True
-                context['message'] = "The new passwords do not match."
-            else:
+              current_pass = request.POST.get('password', None)
+              new_pass = request.POST.get('neopassword', None)
+              re_pass = request.POST.get('repassword', None)
+              if not check_password(current_pass, request.user.password):
+                error_messages.append("The current password is not correct.")
+
+              elif new_pass != re_pass:
+                error_messages.append("The new passwords do not match.")
+
+              if not re_pass:
+                error_messages.append("* Please enter your confirmation password")
+
+              if not new_pass:
+                error_messages.append("* Please enter your new password")
+
+              if not current_pass:
+                error_messages.append("* Please enter your password")
+
+              if not error_messages:
                 request.user.set_password(new_pass)
                 request.user.save()
                 return redirect('profilepass')
-
-        return render(request, 'stagiaire/profilepass.html', context)
+              else:
+                error = True
+                message = "\n".join(error_messages)
+                context['error'] = error
+                context['message'] = message
+            return render(request, 'stagiaire/profilepass.html', context)
 
     except Http404:
         return render(request, 'stagiaire/error.html', status=404)
-##########################supervisor##############################
+    
 
+##########################supervisor##############################
  
 def supersignin(request):
     return render(request,'supervisor/signin.html')
@@ -525,8 +895,6 @@ def superoffre(request):
 
 def  superprofile(request, id):
     return render(request, 'supervisor/profile.html')
-
-
 
 ##########################logout#################################
 

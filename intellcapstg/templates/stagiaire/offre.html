@@ -25,7 +25,17 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/atelier.css' %}" />
-	<style> 
+	<style>   .header__ok {
+    display: flex;
+    align-items: center;
+    background-color: #fffdfb;
+    padding: 0px;
+    margin-left: 5px;
+    border-radius: 500px;
+    flex: 0.2;
+    align-items: center;
+    
+  }
       #container{
       width: 450px; }
       .col-1{
@@ -105,6 +115,18 @@
             font-size: 14px;
             line-height: 1.5;
         }
+        .material-icons-button {
+      font-family: 'Material Icons';
+
+        background: none;
+        border: none;
+        font-size: 36px; /* Adjust the size as needed */
+        cursor: pointer;
+        padding: 0;
+    }
+    .navbar-brand   img {
+        margin-top: -1px; /* Adjust the padding to your desired value */
+    }
     </style>
   </head>
   <body>
@@ -126,10 +148,13 @@
 
 
 
-
-
     <div class="header">
+
       <div class="header__left">
+        <form action="{% url 'search' %}" method="post">
+          {% csrf_token %}
+
+
         <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
       </div>
 
@@ -138,55 +163,44 @@
        
      
 
-
+    
             
               <div class="header__middle">
-          
-            <div class="header__input" >
-                <span class="material-icons"> search </span><input type="text" placeholder="Search E-ART" />
 
+            <div class="header__input" >
+                <span class="material-icons"> search </span><input type="text" placeholder="Search intellcap|stage" />
               </div>       
               
 
-        <div class="header__option">
-          <span class="material-icons" > <a href="{% url 'search' %}">explore</a> </span>
-          
-        </div>
-        
-        
+       
+        <select class="header__ok" id="location-filter" name="location">
+            <option value="">Domaine</option>
+            {% for domaine in domaines %}
+            <option value="new-york">{{domaine}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select class="header__ok" id="location-filter" name="location">
+            <option value="">Niveau</option>
+            {% for niveau in niveaus %}
+            <option value="new-york">{{niveau}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select class="header__ok" id="location-filter" name="location">
+            <option value="">Période</option>
+            {% for dure in dures %}
+            <option value="new-york">{{dure}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
 
-        <select id="location-filter" name="location">
-          <option value="">Domaine</option>
-          {% for domaine in domaines %}
-          <option value="new-york">{{domaine}}</option>          
-          {%  endfor %}
-          <!-- Add more options as needed -->
-        </select>
-        
-        <select id="location-filter" name="location">
-          <option value="">Niveau</option>
-          {% for niveau in niveaus %}
-          <option value="new-york">{{niveau}}</option>          
-          {%  endfor %}
-          <!-- Add more options as needed -->
-        </select> 
-        <select id="location-filter" name="location">
-          <option value="">Période</option>
-          {% for dure in dures %}
-          <option value="new-york">{{dure}}</option>          
-          {%  endfor %}
-          <!-- Add more options as needed -->
-        </select>
-      
+          <div class="header__option">
+            <button class="material-icons-button" type="sumbit" > <a href="">explore</a> </button>
+         
+          </div>
 
 
-        <div class="header__option">`
-
-          <span class="material-icons" > <a href="#"  data-toggle="modal" data-target="#myModal" title="" data-original-title="view">bolt</a>
-          </span>
-          
-        </div>  
-        
         {%  if stagiaire.status == 0     %}
    
          <div class="header__option">
@@ -200,56 +214,48 @@
 
         {%  if stagiaire.status == 1    %}
    
+
          <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
+                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS  </strong></a>
         </div>
-
-
-
+       
         {%  endif %}
+
+
 
         {%  if stagiaire.status == 2    %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
-        </div>
 
-
-
-        {%  endif %}
-
-
-
+      
         <div class="header__option">
+            <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED   </strong></a>
         </div>
+
+
+
+        {% endif %}
+
+
       </div>
+
 
       <div class="header__right">
         <div class="header__info">
           <img
             class="user__avatar"
-            src="{{ stagiaire.image.url }}"
+            src="{{stagiaire.image.url}}"
             alt=""/>
         <a href="{% url 'profileinfo' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
         </div>
         
         <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
 
-        
-        
-      </div>
-        
+
         
       </div>
 
-      <div class="header__right">
-        <div class="header__info">
-         
-        </div>
-      
+        
       </div>
-    </div>
-    <!-- header ends -->
+    </form>
 
    
     <div class="main__body">
@@ -375,14 +381,19 @@
               
               <div class="top-margin">
               
-                <select id="location-filter" name="niveau">
-                  <option value="">Niveau</option>
-                  <option value="Bac+2 ">Bac+2 </option>
-                  <option value="Bac+3 ">Bac+3 </option>
-                  <option value="Bac+4 ">Bac+4 </option>
-                  <option value="Bac+5 ">Bac+5 </option>
-                  <!-- Ajoutez plus d'options au besoin -->
-              </select>
+              
+              <select id="location-filter" name="niveau">
+                {% if stagiaire.niveau %}
+                <option value="{{stagiaire.niveau}}">Niveau ( {{stagiaire.niveau}} )</option>
+                {% else %}
+                <option value="">Niveau </option>
+{% endif %}
+                <option value="Bac+2 ">Bac+2 </option>
+                <option value="Bac+3 ">Bac+3 </option>
+                <option value="Bac+4 ">Bac+4 </option>
+                <option value="Bac+5 ">Bac+5 </option>
+                <!-- Ajoutez plus d'options au besoin -->
+            </select>
               </div>
               
               
@@ -400,6 +411,8 @@
               <div class="top-margin">
                 
                 <label>CV</label>
+                
+                
                 <input type="file" name="cv" accept="application/pdf"  value="{{stagiaire.cv}}"/>
               </div>
               
@@ -416,7 +429,10 @@
                                         
                                     </div>
                                 </div>
+                                
                         </div>
+                        <p class="btn btn-danger" ><i>* CV should include these key words: education,skills,experience...</i></p>
+
                         <button type="submit" class="btn btn-primary"   >Save</button>
               
                     </div><!-- /.modal-content -->

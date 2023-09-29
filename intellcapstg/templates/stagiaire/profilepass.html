@@ -28,7 +28,17 @@
     <link rel="stylesheet" href="{% static 'assets/css/atelier.css' %}" />
 	<style> 
 
-
+.header__ok {
+    display: flex;
+    align-items: center;
+    background-color: #fffdfb;
+    padding: 0px;
+    margin-left: 5px;
+    border-radius: 500px;
+    flex: 0.2;
+    align-items: center;
+    
+  } 
 
       #container{
       width: 450px; }
@@ -109,6 +119,18 @@
             font-size: 14px;
             line-height: 1.5;
         }
+        .material-icons-button {
+      font-family: 'Material Icons';
+
+        background: none;
+        border: none;
+        font-size: 36px; /* Adjust the size as needed */
+        cursor: pointer;
+        padding: 0;
+    }
+    .navbar-brand   img {
+        margin-top: -1px; /* Adjust the padding to your desired value */
+    }
     </style>
   </head>
   <body>
@@ -128,131 +150,130 @@
 
 
 
-
-
-
-
     <div class="header">
-      <div class="header__left">
-        <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
-      </div>
 
-      
-       
-       
-     
+        <div class="header__left">
+          <form action="{% url 'search' %}" method="post">
+            {% csrf_token %}
 
+          <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" ></a>
+        </div>
+  
+        
+         
+         
+         
+       
+  
+  
+              
+                <div class="header__middle">
+                    {%   if stagiaire.status == 0 or  stagiaire.status == 1     %}
+
+              <div class="header__input" >
+                  <span class="material-icons"> search </span><input type="text" placeholder="Search intellcap|stage" />
+  
+                </div>       
+                
+  
+         
+          <select class="header__ok" id="location-filter" name="location">
+              <option value="">Domaine</option>
+              {% for domaine in domaines %}
+              <option value="new-york">{{domaine}}</option>          
+              {%  endfor %}
+              <!-- Add more options as needed -->
+            </select>
+            <select class="header__ok" id="location-filter" name="location">
+              <option value="">Niveau</option>
+              {% for niveau in niveaus %}
+              <option value="new-york">{{niveau}}</option>          
+              {%  endfor %}
+              <!-- Add more options as needed -->
+            </select>
+            <select class="header__ok" id="location-filter" name="location">
+              <option value="">Période</option>
+              {% for dure in dures %}
+              <option value="new-york">{{dure}}</option>          
+              {%  endfor %}
+              <!-- Add more options as needed -->
+            </select>
+  
+            
+            <div class="header__option">
+                <button class="material-icons-button" type="sumbit" > <a href="">explore</a> </button>
+             
+              </div>
 
             
-              <div class="header__middle">
-          
-            <div class="header__input" >
-                <span class="material-icons"> search </span><input type="text" placeholder="Search intellcap|stage" />
-
-              </div>       
-              
-
-        <div class="header__option">
-            <span class="material-icons" > <a href="{% url  'search' %}">explore</a> </span>
-
-        </div>
-        
-        <select id="location-filter" name="location">
-            <option value="">Domaine</option>
-            {% for domaine in domaines %}
-            <option value="new-york">{{domaine}}</option>          
-            {%  endfor %}
-            <!-- Add more options as needed -->
-          </select>
-          <select id="location-filter" name="location">
-            <option value="">Niveau</option>
-            {% for niveau in niveaus %}
-            <option value="new-york">{{niveau}}</option>          
-            {%  endfor %}
-            <!-- Add more options as needed -->
-          </select>
-          <select id="location-filter" name="location">
-            <option value="">Période</option>
-            {% for dure in dures %}
-            <option value="new-york">{{dure}}</option>          
-            {%  endfor %}
-            <!-- Add more options as needed -->
-          </select>
-        <div class="header__option">`
-
-          <span class="material-icons" > <a href="#"  data-toggle="modal" data-target="#myModal" title="" data-original-title="view">bolt</a>
-          </span>
-          
-        </div>  
-
-       
-        
-        
-        
-        {%  if stagiaire.status == 0     %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
-        </div>
-
-
-
-        {%  endif %}
-
-
-        {%  if stagiaire.status == 1    %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
-        </div>
-
-
-
-        {%  endif %}
-
-        {%  if stagiaire.status == 2    %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
-        </div>
-
-
-
-        {%  endif %}
-
-      </div>
-      <div class="header__right">
-
-        <div class="header__info">
-
-          <img
-            class="user__avatar"
-            src="{{stagiaire.image.url}}"
-
-            alt=""/>
-        <a href="{% url 'profileinfo' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
-        </div>
-        
-        <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
-
-        
-        
-      </div>
-        
-        
-      </div>
-
-      <div class="header__right">
-        <div class="header__info">
+          <div class="header__option">`
+  
+            <span class="material-icons" > <a href="#"  data-toggle="modal" data-target="#myModal" title="" data-original-title="view">bolt</a>
+            </span>
+            
+          </div>  
+          {% endif %}
+  
+          {%  if stagiaire.status == 0     %}
+     
+           <div class="header__option">
+                         <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
+          </div>
+  
+  
+  
+          {%  endif %}
+  
+  
+          {%  if stagiaire.status == 1    %}
+     
+  
+           <div class="header__option">
+                         <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS  </strong></a>
+          </div>
          
+          {%  endif %}
+  
+  
+  
+          {%  if stagiaire.status == 2    %}
+  
+  
+          
+          
+          <div class="header__option">
+              <a  href="{% url 'activitemain'       stagiaire.offre_stage.id %}"     type="button" class="btn btn-success" ><strong>WORKSPACE   </strong></a>
+          </div>
+  
+        
+  
+  
+          {% endif %}
+  
         </div>
-      
-      </div>
-    </div>
+  
+        <div class="header__right">
+          <div class="header__info">
+            <img
+              class="user__avatar"
+              src="{{stagiaire.image.url}}"
+              alt=""/>
+          <a href="{% url 'profileinfo' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
+          </div>
+          
+          <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
+  
+          
+          
+        </div>
+          
+          
+        </div>
 
 
 
 
+    </form>
 
 
 
@@ -383,7 +404,7 @@
         <div class="row no-gutters row-bordered row-border-light">
         <div class="col-md-3 pt-0">
         <div class="list-group list-group-flush account-settings-links">
-            {% if stagiaire.status != 0   %}
+            {% if stagiaire.status == 1 %}
 
             <a class="list-group-item list-group-item-action "  href="{% url   'profile' %}">Candidature</a>
 {% endif %}
@@ -400,8 +421,8 @@
         <div class="tab-pane fade active show" id="account-change-password">
             {% if error %}
             <div class="alert alert-danger" role="alert" data-mdb-color="danger">
-                {{message}}
-               </div>
+                {{ message|linebreaks }}
+            </div>
                {% endif %}
             <form action="{%  url  'profilepass'  %}" method="POST">
                 {% csrf_token %}

@@ -17,12 +17,12 @@ class Command(BaseCommand):
             data=json.load(json_file)
             for item in data:
                 offre=Offre(owner=supervis,
-                            domaine=item['domaine'],
+                            domaine=item['domain'],
                             mission=item['mission'],
                             description=item['description'],
                             skills_needed=item['skills_needed'],
-                            niveau_etude=item['niveau_etude'],
-                            dure=item['duree'])
+                            niveau_etude=item['education_level'],
+                            dure=item['duration'])
                 offre.save()
 
 

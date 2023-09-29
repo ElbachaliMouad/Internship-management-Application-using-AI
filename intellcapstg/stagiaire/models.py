@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-
+from django.db.models.signals import post_delete ,pre_delete
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.admin import UserAdmin
@@ -9,8 +9,9 @@ import hashlib
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 class Supervisor(models.Model):
     supervisor_id=models.ForeignKey(User, on_delete=models.CASCADE)
@@ -36,8 +37,11 @@ class Offre(models.Model):
     skills_needed = models.CharField(max_length=255,blank=True,null=True)
     dure = models.CharField(max_length=255,blank=True,null=True)
     niveau_etude=models.CharField(max_length=255,blank=True,null=True)
-    count=models.IntegerField(default=0)
-    valable=models.IntegerField(default=0)
+    count=models.IntegerField(default=10)
+    valable=models.IntegerField(default=1)
+    date_of_expiry = models.DateTimeField(null=True, blank=True)
+    demande=models.IntegerField(default=0)
+    accepted=models.IntegerField(default=0)
 
     class Meta:
         db_table = 'offre'
@@ -45,7 +49,6 @@ class Offre(models.Model):
          return (f"{self.pk}" )
     
     
-
 
     
 @receiver(pre_save, sender=Offre)
@@ -55,8 +58,17 @@ def validate_your_field(sender, instance, **kwargs):
         raise ValidationError('Invalid value. Only 0, 1, or 2 are allowed.')
     if instance.count==0:
         instance.valable=0
-
-
+    if instance.date_of_expiry:
+        if instance.date_of_expiry <= timezone.now():
+            instance.valable=0
+@receiver(pre_delete, sender=Offre)
+def update_stagiaire_status(sender, instance, **kwargs):
+    try:
+        stagiaire = Stagiaire.objects.get(offre_stage=instance)
+        stagiaire.status = 0
+        stagiaire.save()
+    except ObjectDoesNotExist:
+        pass  
 
 
 class Stagiaire(models.Model):
@@ -70,7 +82,7 @@ class Stagiaire(models.Model):
     image = models.ImageField(upload_to='photos/', default='photos/default.jpg',)
     cv=models.FileField(upload_to='pdfs/',blank=True,null=True)
     status=models.IntegerField(default=0)
-    offre_stage=models.ForeignKey(Offre, on_delete=models.CASCADE,null=True)
+    offre_stage=models.ForeignKey(Offre, on_delete=models.SET_NULL,null=True)
 
    
     class Meta:
@@ -81,14 +93,56 @@ class Stagiaire(models.Model):
     
 @receiver(pre_save, sender=Stagiaire)
 def validate_your_field(sender, instance, **kwargs):
-    allowed_values = [0, 1, 2,3]
+    allowed_values = [0, 1, 2]
     if instance.status not in allowed_values:
-        raise ValidationError('Invalid value. Only 0, 1, 2 or 3 are allowed.')
+        raise ValidationError('Invalid value. Only 0, 1, 2  are allowed.')
+    
     if instance.stagiaire_id.is_superuser:
         raise ValidationError('only stagiaire can acces')
+    if instance.status==0:
+        instance.offre_stage=None
+    if instance.offre_stage is None:
+        instance.status==0
 
 
 
 
 
+class Task(models.Model):
+    task_offre=models.ForeignKey(Offre, on_delete=models.CASCADE,null=True)
+    task_Name=models.CharField(max_length=255,blank=True,default='')
+    date_of_expiry = models.DateTimeField(null=True, blank=True)
+    number_duc=models.IntegerField(default=0)
+    
+    class Meta:
+        db_table = 'task'
+
+    def __str__(self):
+         return (f"{self.pk}" )
+    
+
+    
+
+class Document(models.Model):
+    owner=models.ForeignKey(Stagiaire, on_delete=models.CASCADE,  limit_choices_to={'status': 2})
+    title=models.CharField(max_length=255,blank=True,default='')
+    date_upload = models.DateTimeField(null=True, blank=True )
+    content=models.FileField(upload_to='documents/',blank=True,null=True)
+    task_root=models.ForeignKey(Task, on_delete=models.CASCADE ,null=True)
+    
+    class Meta:
+        db_table = 'document'
+
+    def __str__(self):
+         return (f"{self.pk}")
+    
+    
+@receiver(pre_save, sender=Document)
+def validate_your_field(sender, instance, **kwargs): 
+   instance.date_upload=timezone.now()  
+   if instance.task_root.date_of_expiry:
+       if    instance.date_upload > instance.task_root.date_of_expiry:
+        raise ValidationError('time out ')
+
+       
 

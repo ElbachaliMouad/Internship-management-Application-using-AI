@@ -128,9 +128,7 @@
                 </div>       
                 
   
-          <div class="header__option">
-          <a href="{% url 'forum'  %}">  <span class="material-icons" style="color:#007bff"> explore </span></a>
-          </div>
+         
 
           
           
@@ -140,9 +138,9 @@
           <div class="header__info">
             <img
               class="user__avatar"
-              src="{% static 'assets/images/ok.jpg' %}"
+              src="{{stagiaire.image.url}}"
               alt=""/>
-          <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;ELBACHALI MOUAD</strong></a> 
+          <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
           </div>
           <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
           
@@ -167,12 +165,11 @@
         <div class="container-fluid">
             <ul class="nav nav-justified" id="iconbar">
 
-            <li><a class="text-center color-7" href="{% url 'activitemain' %}"><i class="fa fa-tasks fa-3x" aria-hidden="true"></i><br>Task</a></li>
-            <li><a class="text-center color-5" href="{% url 'document' %}"><i class="fa fa-file-text fa-3x"></i> <br>Document</a></li>
-            <li><a class="text-center color-5" href="{% url 'forum'  %}"><i class="fa fa-comments fa-3x"></i> <br>Forum</a></li>
-            <li><a class="text-center color-5" href="#"><i class="fa fa-cogs fa-3x" aria-hidden="true"></i><br>Settings</a></li>
-            </ul>
-            
+                <li><a class="text-center color-7" href="{% url 'activitemain' stagiaire.offre_stage.id %}"><i class="fa fa-tasks fa-3x" aria-hidden="true"></i><br>Task</a></li>
+                <li><a class="text-center color-5" href="{% url 'document' stagiaire.offre_stage.id %}"><i class="fa fa-file-text fa-3x"></i> <br>Document</a></li>
+                <li><a class="text-center color-5" href="{% url 'forum' stagiaire.offre_stage.id %}"><i class="fa fa-comments fa-3x"></i> <br>Forum</a></li>
+                <li><a class="text-center color-5" href="#"><i class="fa fa-cogs fa-3x" aria-hidden="true"></i><br>Settings</a></li>
+                </ul>
 
 
             <div>

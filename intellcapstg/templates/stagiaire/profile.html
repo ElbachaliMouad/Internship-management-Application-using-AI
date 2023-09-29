@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>INTELLCAP|STAGE </title>
+    <title>INTELLCAP|STAGE  </title>
     	<link rel="shortcut icon" href="{% static 'assets/images/logo10.png' %}">
 
     <link rel="stylesheet" href="{% static 'assets\css\upload.css' %}" />
@@ -27,7 +27,17 @@
     <link rel="stylesheet" href="{% static 'assets/css/atelier.css' %}" />
 	<style> 
 
-
+.header__ok {
+    display: flex;
+    align-items: center;
+    background-color: #fffdfb;
+    padding: 0px;
+    margin-left: 5px;
+    border-radius: 500px;
+    flex: 0.2;
+    align-items: center;
+    
+  }
 
       #container{
       width: 450px; }
@@ -108,6 +118,18 @@
             font-size: 14px;
             line-height: 1.5;
         }
+        .material-icons-button {
+      font-family: 'Material Icons';
+
+        background: none;
+        border: none;
+        font-size: 36px; /* Adjust the size as needed */
+        cursor: pointer;
+        padding: 0;
+    }
+    .navbar-brand   img {
+        margin-top: -1px; /* Adjust the padding to your desired value */
+    }
     </style>
   </head>
   <body>
@@ -132,121 +154,114 @@
 
 
     <div class="header">
-      <div class="header__left">
-        <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
-      </div>
 
-      
-       
-       
-     
+        <div class="header__left">
+          <form action="{% url 'search'  %}" method="post">
+            {% csrf_token %}
 
-
-            
-              <div class="header__middle">
-          
-            <div class="header__input" >
-                <span class="material-icons"> search </span><input type="text" placeholder="Search intellcap|stage" />
-
-              </div>       
-              
-
-        <div class="header__option">
-          <span class="material-icons" > <a href="{% url 'search' %}">explore</a> </span>
-          
+          <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
         </div>
-        <select id="location-filter" name="location">
-            <option value="">Domaine</option>
-            {% for domaine in domaines %}
-            <option value="new-york">{{domaine}}</option>          
-            {%  endfor %}
-            <!-- Add more options as needed -->
-          </select>
-          <select id="location-filter" name="location">
-            <option value="">Niveau</option>
-            {% for niveau in niveaus %}
-            <option value="new-york">{{niveau}}</option>          
-            {%  endfor %}
-            <!-- Add more options as needed -->
-          </select>
-          <select id="location-filter" name="location">
-            <option value="">Période</option>
-            {% for dure in dures %}
-            <option value="new-york">{{dure}}</option>          
-            {%  endfor %}
-            <!-- Add more options as needed -->
-          </select>
-
-        <div class="header__option">`
-
-          <span class="material-icons" > <a href="#"  data-toggle="modal" data-target="#myModal" title="" data-original-title="view">bolt</a>
-          </span>
-          
-        </div>  
-
-
-        {%  if stagiaire.status == 0     %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
-        </div>
-
-
-
-        {%  endif %}
-
-
-        {%  if stagiaire.status == 1    %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
-        </div>
-
-
-
-        {%  endif %}
-
-        {%  if stagiaire.status == 2    %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
-        </div>
-
-
-
-        {%  endif %}
-
-
-      </div>
-
-      <div class="header__right">
-        <div class="header__info">
-          <img
-            class="user__avatar"
-            src="{{stagiaire.image.url}}"
-            alt=""/>
-        <a href="{% url 'profileinfo' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
-        </div>
+  
         
-        <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
-
-        
-        
-      </div>
-        
-        
-      </div>
-
-      <div class="header__right">
-        <div class="header__info">
          
-        </div>
+         
+       
+  
       
-      </div>
-    </div>
-
-
-
+              
+                <div class="header__middle">
+  
+              <div class="header__input" >
+                  <span class="material-icons"> search </span><input type="text" placeholder="Search intellcap|stage" />
+                </div>       
+                
+  
+         
+          <select class="header__ok" id="location-filter" name="location">
+              <option value="">Domaine</option>
+              {% for domaine in domaines %}
+              <option value="new-york">{{domaine}}</option>          
+              {%  endfor %}
+              <!-- Add more options as needed -->
+            </select>
+            <select class="header__ok" id="location-filter" name="location">
+              <option value="">Niveau</option>
+              {% for niveau in niveaus %}
+              <option value="new-york">{{niveau}}</option>          
+              {%  endfor %}
+              <!-- Add more options as needed -->
+            </select>
+            <select class="header__ok" id="location-filter" name="location">
+              <option value="">Période</option>
+              {% for dure in dures %}
+              <option value="new-york">{{dure}}</option>          
+              {%  endfor %}
+              <!-- Add more options as needed -->
+            </select>
+  
+            <div class="header__option">
+              <button class="material-icons-button" type="sumbit" > <a href="">explore</a> </button>
+           
+            </div>
+  
+  
+          {%  if stagiaire.status == 0     %}
+     
+           <div class="header__option">
+                         <a  href=""    type="button" class="btn btn-danger" ><strong>NO REQUEST</strong></a>
+          </div>
+  
+  
+  
+          {%  endif %}
+  
+  
+          {%  if stagiaire.status == 1    %}
+     
+  
+           <div class="header__option">
+                         <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS  </strong></a>
+          </div>
+         
+          {%  endif %}
+  
+  
+  
+          {%  if stagiaire.status == 2    %}
+  
+          
+          <div class="header__option">
+              <a  href=""   type="button" class="btn btn-success" ><strong>ACCEPTED   </strong></a>
+          </div>
+  
+  
+  
+          {% endif %}
+  
+  
+        </div>
+  
+  
+        <div class="header__right">
+          <div class="header__info">
+            <img
+              class="user__avatar"
+              src="{{stagiaire.image.url}}"
+              alt=""/>
+          <a href="{% url 'profileinfo' %}"> <strong style="color: blanchedalmond;">&ensp;{{user.username}}</strong></a> 
+          </div>
+          
+          <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
+  
+  
+          
+        </div>
+  
+          
+        </div>
+      </form>
+  
+     
 
 
 
@@ -390,27 +405,38 @@
         <div class="col-md-9">
             
         <div class="tab-content">
+           
             
         <div class="tab-pane fade active show" id="account-general">
-                 
+            {% if error %}
+
+            <div class="alert alert-danger" role="alert" data-mdb-color="danger">
+              {{ message|linebreaks }}
+            </div>
+            {% endif %}
     
                 <div class="content mt-4">
-                <h5 class="title">Support 24/7</h5>
-                <p class="text-muted mt-3 mb-0">It is a long established fact that a reader will be distracted by the when looking at its layout.</p>
+                <h5 class="title">{{ stagiaire.offre_stage.domaine }}</h5>
+                <p class="text-muted mt-3 mb-0">{{ stagiaire.offre_stage.description }}</p>
                 <div class="mt-3">
-                 <p > <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >Domaines: genie logciel<i class="mdi mdi-chevron-right"></i></a>
-                  <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);"  >| Sous-Domaine: full-stack<i class="mdi mdi-chevron-right"></i></a>
+                 <p > <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >Mission: {{ stagiaire.offre_stage.mission }}<i class="mdi mdi-chevron-right"></i></a>
+                  <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);"  >| Skill: {{ stagiaire.offre_stage.skills_needed }}<i class="mdi mdi-chevron-right"></i></a>
                 
-                  <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| Periode: 8 semaines<i class="mdi mdi-chevron-right"></i></a>
+                  <a href="javascript:void(0)" class="text" style="color: rgb(18, 81, 184);" >| Periode: {{ stagiaire.offre_stage.dure }}<i class="mdi mdi-chevron-right"></i></a>
                 </p>
         <div class="card-body media align-items-center">
-    
+               
+          
+
+            <form action="{%  url  'profile'  %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
         <img src="{{stagiaire.image.url}}" alt="" class="d-block ui-w-80">
         <div class="media-body ml-4">
 
         <label class="btn btn-outline-primary">
         Upload new photo
-        <input type="file" class="account-settings-fileinput">
+        <input type="file" class="account-settings-fileinput" name="image">
         </label> &nbsp;
         <button type="button" class="btn btn-default md-btn-flat">Reset</button>
         <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
@@ -418,54 +444,59 @@
         </div>
         <div class="top-margin">
             <label>Last Name </label>
-            <input type="text" class="form-control">
+            <input type="text" name="lastn" class="form-control" value="{{stagiaire.last_Name}}">
           </div>	
           <div class="top-margin">
             <label>Fisrt Name </label>
-            <input type="text" class="form-control">
+            <input type="text" name="firstn" class="form-control" value="{{stagiaire.fisrt_Name}}">
           </div>
           
           
           <div class="top-margin">
             <label>Phone(+212)</label>
-            <input type="tel" class="form-control">
+            <input type="tel" name="phone" class="form-control" value="{{stagiaire.phone}}">
           </div>	
           
              
           <div class="top-margin">
             <label> School </label>
-            <input type="text" class="form-control">
+            <input type="text" name="school" class="form-control" value="{{stagiaire.school}}">
           </div>	
           
           
           <div class="top-margin">
           
-          <select id="location-filter" name="location">
-            <option value="">Niveau</option>
-            <option value="los-angeles">Bac +2 </option>
-            <option value="los-angeles">Bac +3 </option>
-            <option value="los-angeles">Bac +4 </option>
-            <option value="los-angeles">Bac +5  </option>
-            <!-- Add more options as needed -->
-          </select>
+            <select id="location-filter" name="niveau">
+                {% if stagiaire.niveau %}
+                <option value="{{stagiaire.niveau}}">Niveau ({{stagiaire.niveau}})</option>
+                {% else %}
+                <option value="">Niveau </option>
+{% endif %}
+                <option value="Bac+2 ">Bac+2 </option>
+                <option value="Bac+3 ">Bac+3 </option>
+                <option value="Bac+4 ">Bac+4 </option>
+                <option value="Bac+5 ">Bac+5 </option>
+                <!-- Ajoutez plus d'options au besoin -->
+            </select>
+           
           </div>
         </div>
         <div class="form-group">
-        <label class="form-label">Company</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <label class="form-label">Motivation</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="motiv" rows="3">{{stagiaire.motivation}}</textarea>
     </div>
         </div>
         <div class="top-margin">
                 
             <label>CV</label>
-            <input type="file" name="upload" accept="application/pdf" />
+            <input type="file" name="cv" accept="application/pdf" />
         <div class="text-right mt-3">
-            <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-            <button type="button" class="btn btn-default">Cancel</button>
+            <button type="submit" class="btn btn-primary"   >Save changes</button>
         </div>
         
        
     </div>
+</form>
         
       
         </div>

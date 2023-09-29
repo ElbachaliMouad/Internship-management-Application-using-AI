@@ -100,6 +100,16 @@
     .color-7{
     color:#115afa;
     }  
+    body {
+    margin: 0;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #f1f2f5;
+}
         </style>
 </head>
 
@@ -127,10 +137,7 @@
                 </div>       
                 
   
-          <div class="header__option">
-          <a href="{% url 'document'  %}">  <span class="material-icons" style="color:#007bff"> explore </span></a>
-          </div>
-
+       
           
           
         </div>
@@ -139,9 +146,9 @@
           <div class="header__info">
             <img
               class="user__avatar"
-              src="{% static 'assets/images/ok.jpg' %}"
+              src="{{stagiaire.image.url}}"
               alt=""/>
-          <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;" style="font-size: 20px;">&ensp;ELBACHALI MOUAD</strong></a> 
+          <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;" style="font-size: 20px;">&ensp;{{user.username}}</strong></a> 
           </div>
           <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
           
@@ -195,7 +202,7 @@
               <li>&ensp;</li>
               <li>&ensp;</li>        </li>
 
-            <li><a class="" href="{% url 'activitemain' %}"><i class="fa fa-tasks fa-5x" aria-hidden="true"></i><br>Task</a></li><br>
+            <li><a class="" href="{% url 'activitemain'  stagiaire.offre_stage.id%}"><i class="fa fa-tasks fa-5x" aria-hidden="true"></i><br>Task</a></li><br>
            
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
@@ -224,7 +231,7 @@
 
            
             <br>
-            <li><a class=   "" href="{% url 'document' %}"><i class="fa fa-file-text fa-5x"></i> <br>Document</a></li><br>
+            <li><a class=   "" href="{% url 'document' stagiaire.offre_stage.id %}"><i class="fa fa-file-text fa-5x"></i> <br>Document</a></li><br>
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
             <li>&ensp;</li>
@@ -252,7 +259,7 @@
             <li>&ensp;</li>
             <li>&ensp;</li>
                                       </li>
-            <li><a class="" href="{% url 'forum' %}"><i class="fa fa-comments fa-5x"></i> <br>Forum</a></li><br>
+            <li><a class="" href="{% url 'forum'  stagiaire.offre_stage.id%}"><i class="fa fa-comments fa-5x"></i> <br>Forum</a></li><br>
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
             <li>&ensp;</li>
@@ -562,6 +569,18 @@ border-top: 1px solid #dee2e6;
       font-weight: 600;
       color: #282828;
   }
+  .main__body {
+    width: 100%;
+    position: flex;
+    top: 0;
+    left: 0;
+    display: flex;
+    background: #fff;
+    align-items: center;
+    justify-content: space-around;
+    flex-flow: row wrap;
+}
+
       </style>
 <div>
     

@@ -28,6 +28,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/atelier.css' %}" />
 	<style> 
+  .header__ok {
+    display: flex;
+    align-items: center;
+    background-color: #fffdfb;
+    padding: 0px;
+    margin-left: 5px;
+    border-radius: 500px;
+    flex: 0.2;
+    align-items: center;
+    
+  }
   .user__avatar {
     vertical-align: middle;
     width: 40px;
@@ -96,6 +107,33 @@
             font-size: 14px;
             line-height: 1.5;
         }
+        
+    .material-icons-button {
+      font-family: 'Material Icons';
+
+        background: none;
+        border: none;
+        font-size: 36px; /* Adjust the size as needed */
+        cursor: pointer;
+        padding: 0;
+    }
+    .navbar-brand   img {
+        margin-top: -1px; /* Adjust the padding to your desired value */
+    }
+
+
+    .centered-container {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+  height: 100vh; /* Adjust the height as needed */
+  margin: 0; /* Reset margin */
+  padding: 0; /* Reset padding */
+}
+
+.centered-container h1 {
+  margin: 0; /* Reset margin for h1 */
+}
     </style>
   </head>
   <body>
@@ -120,7 +158,11 @@
 
 
     <div class="header">
+
       <div class="header__left">
+        <form action="{% url 'search' %}" method="post">
+          {% csrf_token %}
+
         <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
       </div>
 
@@ -129,51 +171,48 @@
        
      
 
-
+    
             
               <div class="header__middle">
-          
-            <div class="header__input" >
-                <span class="material-icons"> search </span><input type="text" placeholder="Search E-ART" />
 
+            <div class="header__input" >
+                <span class="material-icons"> search </span><input name="query" type="text" placeholder="Search intellcap|stage" />
               </div>       
               
 
-        <div class="header__option">
-          <span class="material-icons" > <a href="{% url 'search'  %}">explore</a> </span>
-          
-        </div>
+       
+        <select class="header__ok" id="location-filter" name="dom">
+            <option >Domaine</option>
+            {% for domaine in domaines %}
+            <option value="{{domaine}}">{{domaine}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select class="header__ok" id="location-filter" name="miss">
+            <option >Niveau</option>
+            {% for niveau in niveaus %}
+            <option value="{{niveau}}">{{niveau}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
+          <select class="header__ok" id="location-filter" name="periode">
+            <option >Période</option>
+            {% for dure in dures %}
+            <option value="{{dure}}">{{dure}}</option>          
+            {%  endfor %}
+            <!-- Add more options as needed -->
+          </select>
 
+          <div class="header__option">
+            <button   type="sumbit" class="btn btn-primary" > <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
 
-        <select id="location-filter" name="location">
-          <option value="">Domaine</option>
-          {% for domaine in domaines %}
-          <option value="new-york">{{domaine}}</option>          
-          {%  endfor %}
-          <!-- Add more options as needed -->
-        </select>
-        <select id="location-filter" name="location">
-          <option value="">Niveau</option>
-          {% for niveau in niveaus %}
-          <option value="new-york">{{niveau}}</option>          
-          {%  endfor %}
-          <!-- Add more options as needed -->
-        </select>
-        <select id="location-filter" name="location">
-          <option value="">Période</option>
-          {% for dure in dures %}
-          <option value="new-york">{{dure}}</option>          
-          {%  endfor %}
-          <!-- Add more options as needed -->
-        </select>
-
-
-        <div class="header__option">`
-
-          <span class="material-icons" > <a href="#"  data-toggle="modal" data-target="#myModal" title="" data-original-title="view">bolt</a>
-          </span>
-          
-        </div>  
+     
+            </button>
+         
+          </div>
+        </form>
 
         {%  if stagiaire.status == 0     %}
    
@@ -188,27 +227,29 @@
 
         {%  if stagiaire.status == 1    %}
    
+
          <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS</strong></a>
+                       <a  href=""    type="button" class="btn btn-warning" ><strong>IN PROCESS  </strong></a>
         </div>
-
-
-
+       
         {%  endif %}
+
+
 
         {%  if stagiaire.status == 2    %}
-   
-         <div class="header__option">
-                       <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED</strong></a>
+
+       
+        <div class="header__option">
+            <a  href=""    type="button" class="btn btn-success" ><strong>ACCEPTED   </strong></a>
         </div>
 
 
 
-        {%  endif %}
+        {% endif %}
 
 
-       
       </div>
+
 
       <div class="header__right">
         <div class="header__info">
@@ -221,22 +262,12 @@
         
         <a href="{% url 'log_out_stagiaire' %}"><span class="material-icons"> logout </span></a>
 
-        
-        
-      </div>
-        
+
         
       </div>
 
-      <div class="header__right">
-        <div class="header__info">
-         
-        </div>
-      
+        
       </div>
-    </div>
-    <!-- header ends -->
-
 
 
     <!-- main body starts -->
@@ -257,7 +288,7 @@
                 </div>
                 </div>
                 <div class="row">
-          
+                  {%  if exist   %}
 
 
 
@@ -266,7 +297,7 @@
 
             <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
               <div class="card service-wrapper rounded border-0 shadow p-4">
-
+                
               <div class="content mt-4">
               <h5 class="title">{{offre.domaine}}</h5>
               <p class="text-muted mt-3 mb-0">{{offre.description}}</p>
@@ -282,7 +313,13 @@
 
               <td>
                 <form action="offre.html">
-              <a   class="btn btn-primary" id="3"   href="{% url 'offre'  offre.id      %}">Postuler<i class="mdi mdi-chevron-right"></i></a></form>
+              <a   class="btn btn-primary" id="3"   href="{% url 'offre'  offre.id      %}">Postuler<i class="mdi mdi-chevron-right"></i></a>
+            
+              {% if offre.date_of_expiry %}
+              <a class="btn btn-danger" id="3"   > postule before ! :  {{offre.date_of_expiry}}<i ></i></a>
+              {% endif %}
+            </form>
+              
             </td>
               </div>
               </div>
@@ -308,6 +345,7 @@
             <div class="float-sm-end">
             <ul class="pagination mb-sm-0">
             <li class="page-item disabled">
+            </br>
             </li>
             <li class="page-item active"><a href="#" class="page-link">1</a></li>
             <li class="page-item"><a href="#" class="page-link">2</a></li>
@@ -320,8 +358,13 @@
             </div>
             </div>
             </div>
-            
+            {% else  %}
+            <div class="row">
+              <div class="centered-container">
+                <h1>No result ...</h1>
+              </div>
 
+              {% endif %}
             </div>
 
 
