@@ -144,9 +144,8 @@
 
     <div class="header">
       <div class="header__left">
-        <form action="{% url 'search' %}" method="post">
+        <form action="{% url 'postuler' %}" method="post">
           {% csrf_token %}
-
 
         <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'assets/images/logo.png' %}" alt="Progressus HTML5 template"></a>
       </div>
@@ -161,37 +160,41 @@
               <div class="header__middle">
           
             <div class="header__input" >
-                <span class="material-icons"> search </span><input type="text" placeholder="Search intellcap|stage" />
+              <span class="material-icons"> search </span><input name="query" type="text" placeholder="Search intellcap|stage" />
 
               </div>       
               
 
        
-        <select class="header__ok" id="location-filter" name="location">
-            <option value="">Domaine</option>
+        <select class="header__ok" id="location-filter" name="dom">
+            <option >Domaine</option>
             {% for domaine in domaines %}
-            <option value="new-york">{{domaine}}</option>          
+            <option value="{{domaine}}">{{domaine}}</option>          
             {%  endfor %}
             <!-- Add more options as needed -->
           </select>
-          <select class="header__ok" id="location-filter" name="location">
-            <option value="">Niveau</option>
+          <select class="header__ok" id="location-filter" name="miss">
+            <option >Niveau</option>
             {% for niveau in niveaus %}
-            <option value="new-york">{{niveau}}</option>          
+            <option value="{{niveau}}">{{niveau}}</option>          
             {%  endfor %}
             <!-- Add more options as needed -->
           </select>
-          <select class="header__ok" id="location-filter" name="location">
-            <option value="">Période</option>
+          <select class="header__ok" id="location-filter" name="periode">
+            <option >Période</option>
             {% for dure in dures %}
-            <option value="new-york">{{dure}}</option>          
+            <option value="{{dure}}">{{dure}}</option>          
             {%  endfor %}
             <!-- Add more options as needed -->
           </select>
 
           <div class="header__option">
-            <button class="material-icons-button" type="submit" > <a href="">explore</a> </button>
-            
+            <button   type="sumbit" class="btn btn-primary" > <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+
+     
+            </button>            
           </div>
          
         
@@ -226,6 +229,7 @@
                 </div>
                 <div class="row">
           
+                  {%  if exist   %}
 
 
 
@@ -295,7 +299,13 @@
             </div>
             </div>
             </div>
-            
+            {% else  %}
+            <div class="row">
+              <div class="centered-container">
+                <h1>No result ...</h1>
+              </div>
+
+              {% endif %}
 
             </div>
 

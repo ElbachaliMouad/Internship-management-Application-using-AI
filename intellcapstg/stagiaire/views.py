@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.http import HttpResponse
 import hashlib
-from .models import Stagiaire, Supervisor,Offre,Task, Document
+from .models import Stagiaire, Supervisor,Offre,Task, Document, Filesrespond, Fileresquest
 from django.contrib.auth.models import User, Group
 # Create your views here.
 from datetime import datetime, timedelta
@@ -18,7 +18,8 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 import re
 from django.db.models import Q
-
+import os
+from django.http import FileResponse
 
 def rechercher(query,results):
 
@@ -78,23 +79,120 @@ def contact(request):
 
 
 def index(request):
-    domaines_dict=Offre.objects.values('domaine').distinct()
-    missions_dict=Offre.objects.values('mission').distinct()
-    dures_dict=Offre.objects.values('dure').distinct()
-    niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+    try:
+        
+            for offre in  Offre.objects.filter(valable=1):
+                if offre.date_of_expiry:
+                    if offre.date_of_expiry <= timezone.now():
+                      offre.valable=0
+                      offre.save()
+                    else:
+                        pass
+                else:
+                    pass
 
-    domaines = [domaine['domaine'] for domaine in domaines_dict]
-    missions=[mission['mission'] for mission in missions_dict]
-    dures=[dure['dure'] for dure in dures_dict]
-    niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
-    print(niveaus)
-    context={
+            offres= Offre.objects.filter(valable=1)
+            domaines_dict=Offre.objects.values('domaine').distinct()
+            missions_dict=Offre.objects.values('mission').distinct()
+            dures_dict=Offre.objects.values('dure').distinct()
+            niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+
+            number=offres.count()
+            domaines = [domaine['domaine'] for domaine in domaines_dict]
+            missions=[mission['mission'] for mission in missions_dict]
+            dures=[dure['dure'] for dure in dures_dict]
+            niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+            print(niveaus)
+            
+            context={
+             'offres':offres,  
+             'number':number,
              'domaines':domaines,
              'missions':missions,
              'dures':dures,
-             'niveaus':niveaus
+             'niveaus':niveaus,
+             'exist':True
              }
-    return render(request, 'stagiaire/index.html',context)
+            if  request.method== "POST":
+                
+                query=request.POST.get('query',None)
+                dom=request.POST.get('dom',None)
+                miss=request.POST.get('miss',None)
+                periode=request.POST.get('periode',None)
+                misssperiods = domsmisss = domsperiodes = domsperiodesmiss = periodes = misss = doms = None
+
+                if  query:
+                    a=rechercher(query,offres)
+
+                else:
+                    a=Offre.objects.none()
+                if dom:
+                    doms = offres.filter(domaine=dom)
+                else:
+                    doms=Offre.objects.none()
+        
+        # Filter based on mission if provided
+                if miss:
+                    misss = offres.filter(niveau_etude=miss)
+                else:
+                    miss=Offre.objects.none()
+        # Filter based on periode if provided
+                if periode:
+                    periodes = offres.filter(dure=periode)
+                else:
+                    periodes=Offre.objects.none()
+        # Perform intersection if multiple filters provided
+                if dom and miss and periode:
+                    domsperiodesmiss = offres.filter(domaine=dom, niveau_etude=miss, dure=periode)
+                else:
+                    domsperiodesmiss=domsperiodesmiss
+                if dom and miss:
+                    domsmisss = offres.filter(domaine=dom, niveau_etude=miss)
+                else:
+                    domsperiodesmiss=Offre.objects.none()
+                if dom and periode:
+                    domsperiodes = offres.filter(domaine=dom, dure=periode)
+                else:
+                    domsperiodes=Offre.objects.none()
+                
+                if miss and periode:
+                    misssperiods = offres.filter(niveau_etude=miss, dure=periode)
+                else:
+                    misssperiods=Offre.objects.none()
+
+
+                
+
+                offres=a.union(domsperiodesmiss).union(domsmisss).union(domsperiodes).union(misssperiods).union(doms).union(misss).union(periodes)
+
+               
+            
+                if len(offres)==0:
+                    context['exist']=False
+                else:
+                    context['offres']=offres
+                    context['number']=offres.count()
+
+
+                    
+
+
+                    
+
+
+                redirect_url = 'postuler/?' + '&'.join([f'{k}={v}' for k, v in context.items()])
+
+                return redirect(redirect_url)
+            
+            return render(request, 'stagiaire/index.html',context)
+
+
+            
+
+    except Http404:
+            return render(request, 'stagiaire/error.html',status=404)
+
+
 
 #########################################
 
@@ -258,17 +356,43 @@ def activitemain(request,id):
                 pas=False
                 tasks=Task.objects.filter(task_offre=stagiaire.offre_stage)
                 documents=Document.objects.filter(owner=stagiaire)
-               
+                message = ''
+                error = False
+                if request.method == "POST":
+                  error_messages = []
+                  tas = request.POST.get('task', None)
+                  tit = request.POST.get('title', None)
+                  docu = request.FILES.get('document',None)
+                  if not tas:
 
-            
+                     error_messages.append(" * Please chose task.")
+                  if not tit:
+                     error_messages.append(" * Please entre a  title.")
+                  if not docu:
+                     error_messages.append(" * Please upload a document.")
 
 
+                  if not error_messages:
+                    tas = get_object_or_404(Task, pk=tas)
+                    existing_document = Document.objects.filter(owner=stagiaire, task_root=tas).first()
+                    if existing_document:
+                        existing_document.title=tit
+                        existing_document.date_upload=timezone.now()
+                        existing_document.content=docu
+                        existing_document.save()
+                    else:
+                        new_document = Document.objects.create(owner=stagiaire, title=tit,date_upload=timezone.now(),content=docu,task_root=tas)
+                        tas.number_duc+=1
+                        tas.save()
 
-
-
+                  else:
+                     error = True
+                     message = "\n".join(error_messages)
 
                 context={'stagiaire':stagiaire,
-                         'tasks':tasks}
+                         'tasks':tasks,
+                         'error':error,
+                         'message':message}
                 return render(request, 'stagiaire/activitemain.html', context)
 
 
@@ -284,14 +408,34 @@ def activitemain(request,id):
 @login_required(login_url='signin', )
 def document(request,id):
      try:
-        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
-        if stagiaire.offre_stage.pk != id:
+        owner = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if owner.offre_stage.pk != id:
                 return render(request, 'stagiaire/error.html', status=404)
         else:
-            if stagiaire.status != 2:
+            if owner.status != 2:
                 return render(request, 'stagiaire/error.html', status=404)
             else:
-                context={'stagiaire':stagiaire}
+                message = ''
+                error = False
+                if request.method == "POST":
+                  error_messages = []
+                  title = request.POST.get('title', None)
+                  file = request.FILES.get('file',None)
+                  if not title:
+
+                     error_messages.append(" * Please chose title.")
+                  if not file:
+                     error_messages.append(" * Please entre a  file.")
+                  if not error_messages:
+                      file= Fileresquest.objects.create(owner=owner, title=title,content=file,status=1)
+                  else:
+                     error = True
+                     message = "\n".join(error_messages)
+                context={'owner':owner,
+                         
+                         'error':error,
+                         'message':message}      
+                
                 return render(request, 'stagiaire/document.html', context)
 
 
@@ -453,11 +597,11 @@ def offre(request, id):
         return render(request, 'stagiaire/error.html', status=404)
 
 
-
-############same work############################################
-
 def postuler(request):
-    for offre in  Offre.objects.filter(valable=1):
+    
+    try:
+        
+            for offre in  Offre.objects.filter(valable=1):
                 if offre.date_of_expiry:
                     if offre.date_of_expiry <= timezone.now():
                       offre.valable=0
@@ -467,33 +611,107 @@ def postuler(request):
                 else:
                     pass
 
-    offres= Offre.objects.filter(valable=1)
-    domaines_dict=Offre.objects.values('domaine').distinct()
-    missions_dict=Offre.objects.values('mission').distinct()
-    dures_dict=Offre.objects.values('dure').distinct()
-    niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+            offres= Offre.objects.filter(valable=1)
+            domaines_dict=Offre.objects.values('domaine').distinct()
+            missions_dict=Offre.objects.values('mission').distinct()
+            dures_dict=Offre.objects.values('dure').distinct()
+            niveaus_dict=Offre.objects.values('niveau_etude').distinct()
 
-    number=offres.count()
-    domaines = [domaine['domaine'] for domaine in domaines_dict]
-    missions=[mission['mission'] for mission in missions_dict]
-    dures=[dure['dure'] for dure in dures_dict]
-    niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
-    print(niveaus)
+            number=offres.count()
+            domaines = [domaine['domaine'] for domaine in domaines_dict]
+            missions=[mission['mission'] for mission in missions_dict]
+            dures=[dure['dure'] for dure in dures_dict]
+            niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+            print(niveaus)
             
-    context={
+            context={
              'offres':offres,  
              'number':number,
              'domaines':domaines,
              'missions':missions,
              'dures':dures,
-             'niveaus':niveaus
+             'niveaus':niveaus,
+             'exist':True
              }
+            if  request.method== "POST":
                 
-    return render(request, 'stagiaire/postuler.html' , context)
+                query=request.POST.get('query',None)
+                dom=request.POST.get('dom',None)
+                miss=request.POST.get('miss',None)
+                periode=request.POST.get('periode',None)
+                print(query,dom,miss,periode)
+                misssperiods = domsmisss = domsperiodes = domsperiodesmiss = periodes = misss = doms = None
 
-    
+                if  query:
+                    a=rechercher(query,offres)
+
+                else:
+                    a=Offre.objects.none()
+                if dom:
+                    doms = offres.filter(domaine=dom)
+                else:
+                    doms=Offre.objects.none()
+        
+        # Filter based on mission if provided
+                if miss:
+                    misss = offres.filter(niveau_etude=miss)
+                else:
+                    miss=Offre.objects.none()
+        # Filter based on periode if provided
+                if periode:
+                    periodes = offres.filter(dure=periode)
+                else:
+                    periodes=Offre.objects.none()
+        # Perform intersection if multiple filters provided
+                if dom and miss and periode:
+                    domsperiodesmiss = offres.filter(domaine=dom, niveau_etude=miss, dure=periode)
+                else:
+                    domsperiodesmiss=domsperiodesmiss
+                if dom and miss:
+                    domsmisss = offres.filter(domaine=dom, niveau_etude=miss)
+                else:
+                    domsperiodesmiss=Offre.objects.none()
+                if dom and periode:
+                    domsperiodes = offres.filter(domaine=dom, dure=periode)
+                else:
+                    domsperiodes=Offre.objects.none()
+                
+                if miss and periode:
+                    misssperiods = offres.filter(niveau_etude=miss, dure=periode)
+                else:
+                    misssperiods=Offre.objects.none()
 
 
+                
+
+                offres=a.union(domsperiodesmiss).union(domsmisss).union(domsperiodes).union(misssperiods).union(doms).union(misss).union(periodes)
+
+               
+            
+                if len(offres)==0:
+                    context['exist']=False
+                else:
+                    context['offres']=offres
+                    context['number']=offres.count()
+
+
+                    
+
+
+                    
+
+
+                
+            return render(request, 'stagiaire/postuler.html' , context)
+
+            
+
+    except Http404:
+            return render(request, 'stagiaire/error.html',status=404)
+
+   
+
+############same work############################################
 
 @login_required(login_url='signin', )
 def search(request):
@@ -543,12 +761,13 @@ def search(request):
                 miss=request.POST.get('miss',None)
                 periode=request.POST.get('periode',None)
                 print(query,dom,miss,periode)
-                misssperiods = domsmisss = domsperiodes = domsperiodesmiss = periodes = misss = doms = None
+                misssperiods = domsmisss = domsperiodes = domsperiodesmiss = a= periodes = misss = doms = None
 
                 if  query:
                     a=rechercher(query,offres)
                 else:
                     a=Offre.objects.none()
+
                 if dom:
                     doms = offres.filter(domaine=dom)
                 else:
@@ -908,6 +1127,43 @@ def log_out_stagiaire(request):
 
 
 
+@login_required(login_url='signin')
+def delete_doc(request,id):
+
+    try:
+        
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.status != 2:
+                return render(request, 'stagiaire/error.html', status=404)
+        else:
+            doc = get_object_or_404(Document, pk=id, owner=stagiaire)
+            doc.delete()
+            return redirect('activitemain' , id=stagiaire.offre_stage.pk )
 
 
+
+
+
+    except Http404 :
+        return render(request, 'stagiaire/error.html', status=404)
+
+import mimetypes
+
+@login_required(login_url='signin')
+
+def download_file(request,pk):
+    try:
+        obj = get_object_or_404(Document, pk=pk)
+
+    # Assuming the file is stored in a FileField named 'file_field'
+
+        response =HttpResponse(obj.content, content_type='application/force-download')
+        response['Content-Disposition']=f'attachment; filename={obj.content.name}"'
+        return response
+                
+
+
+
+    except Http404 :
+        return render(request, 'stagiaire/error.html', status=404)
 

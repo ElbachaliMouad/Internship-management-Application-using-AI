@@ -146,7 +146,7 @@
           <div class="header__info">
             <img
               class="user__avatar"
-              src="{{stagiaire.image.url}}"
+              src="{{owner.image.url}}"
               alt=""/>
           <a href="{% url 'profile' %}"> <strong style="color: blanchedalmond;" style="font-size: 20px;">&ensp;{{user.username}}</strong></a> 
           </div>
@@ -202,7 +202,7 @@
               <li>&ensp;</li>
               <li>&ensp;</li>        </li>
 
-            <li><a class="" href="{% url 'activitemain'  stagiaire.offre_stage.id%}"><i class="fa fa-tasks fa-5x" aria-hidden="true"></i><br>Task</a></li><br>
+            <li><a class="" href="{% url 'activitemain'  owner.offre_stage.id%}"><i class="fa fa-tasks fa-5x" aria-hidden="true"></i><br>Task</a></li><br>
            
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
@@ -231,7 +231,7 @@
 
            
             <br>
-            <li><a class=   "" href="{% url 'document' stagiaire.offre_stage.id %}"><i class="fa fa-file-text fa-5x"></i> <br>Document</a></li><br>
+            <li><a class=   "" href="{% url 'document' owner.offre_stage.id %}"><i class="fa fa-file-text fa-5x"></i> <br>Document</a></li><br>
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
             <li>&ensp;</li>
@@ -259,7 +259,7 @@
             <li>&ensp;</li>
             <li>&ensp;</li>
                                       </li>
-            <li><a class="" href="{% url 'forum'  stagiaire.offre_stage.id%}"><i class="fa fa-comments fa-5x"></i> <br>Forum</a></li><br>
+            <li><a class="" href="{% url 'forum'  owner.offre_stage.id%}"><i class="fa fa-comments fa-5x"></i> <br>Forum</a></li><br>
             <li>&ensp;<br><br></li>
             <li>&ensp;</li>
             <li>&ensp;</li>
@@ -601,6 +601,12 @@ border-top: 1px solid #dee2e6;
         <a href="#"  data-toggle="modal" data-target="#modal"  class="btn btn-primary fa-5x"  id="3" ><i class="bx bx-plus me-1" ></i >Add New</a>
           </div>
       </H1> 
+      {% if error %}
+
+      <div  id="myDiv" class="alert alert-danger" role="alert" data-mdb-color="danger">
+        {{ message|linebreaks }}
+      </div>
+      {% endif %}
   <div class="row">
   <div class="col-md-6">
   <div class="card m-b-30">
@@ -620,74 +626,25 @@ border-top: 1px solid #dee2e6;
   <div class="card-body">
   <div class="product-file-type">
   <ul class="list-unstyled">
+
+
+    {% for file in owner.fileresquest_set.all %}
+
   <li class="media mb-3">
-  <span class="mr-3 align-self-center img-icon primary-rgba text-primary">.doc</span>
   <div class="media-body">
-  <h5 class="font-16 mb-1">Marketing Guidelines<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()" >download</span></H1>
+  <h5 class="font-16 mb-1">{{file.title}}<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()" >download</span></H1>
   </i></h5>
-  <p>.doc, 5.3 MB</p>
-  </div>
-  </li>
-  <li class="media mb-3">
-  <span class="mr-3 align-self-center img-icon success-rgba text-success">.xls</span>
-  <div class="media-body">
-  <h5 class="font-16 mb-1">Complete Product Sheet<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-  </i></h5>
-  <p>.xls, 2.5 MB</p>
-  </div>
-  </li>
-  <li class="media mb-3">
-  <span class="mr-3 align-self-center img-icon danger-rgba text-danger">.pdf</span>
-  <div class="media-body">
-  <h5 class="font-16 mb-1">Annual Sales Report 2018-19<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-  </i></h5>
-  <p>.pdf, 10.5 MB</p>
-  </div>
-  </li>
-  <li class="media">
-  <span class="mr-3 align-self-center img-icon info-rgba text-info">.zip</span>
-  <div class="media-body">
-  <h5 class="font-16 mb-1">Brand Photography<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-  </i></h5>
-  <p>.zip, 53.2 MB</p>
+  <p></p>
   </div>
   </li>
   
-  <li class="media mb-3">
-      <span class="mr-3 align-self-center img-icon primary-rgba text-primary">.doc</span>
-      <div class="media-body">
-          
-      <h5 class="font-16 mb-1">Marketing Guidelines<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-      </i>     
-                   
-  </h5>   
-      <p>.doc, 5.3 MB</p>
-      </div>
-      </li>
-      <li class="media mb-3">
-      <span class="mr-3 align-self-center img-icon success-rgba text-success">.xls</span>
-      <div class="media-body">
-      <h5 class="font-16 mb-1">Complete Product Sheet<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-      </i></h5>
-      <p>.xls, 2.5 MB</p>
-      </div>
-      </li>
-      <li class="media mb-3">
-      <span class="mr-3 align-self-center img-icon danger-rgba text-danger">.pdf</span>
-      <div class="media-body">
-      <h5 class="font-16 mb-1">Annual Sales Report 2018-19<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-      </i></h5>
-      <p>.pdf, 10.5 MB</p>
-      </div>
-      </li>
-      <li class="media">
-      <span class="mr-3 align-self-center img-icon info-rgba text-info">.zip</span>
-      <div class="media-body">
-      <h5 class="font-16 mb-1">Brand Photography<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-      </i></h5>
-      <p>.zip, 53.2 MB</p>
-      </div>
-      </li>
+
+  {% endfor %}
+ 
+ 
+  
+  
+     
   </ul>
   </div>
   </div>
@@ -708,65 +665,24 @@ border-top: 1px solid #dee2e6;
   <div class="card-body">
   <div class="product-file-type">
   <ul class="list-unstyled">
+
+
+
+    {% for file in owner.fileresquest_set.all %}
+{%  for fileres in file.Filesrespond_set.all  %}
   <li class="media mb-3">
-  <span class="mr-3 align-self-center img-icon primary-rgba text-primary">.doc</span>
   <div class="media-body">
-  <h5 class="font-16 mb-1">Marketing Guidelines<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></h5>
-  <p>.doc, 5.3 MB</p>
+  <h5 class="font-16 mb-1">{{fileres.title}}<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></h5>
   </div>
   </li>
-  <li class="media mb-3">
-  <span class="mr-3 align-self-center img-icon success-rgba text-success">.xls</span>
-  <div class="media-body">
-  <h5 class="font-16 mb-1">Complete Product Sheet<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></h5>
-  <p>.xls, 2.5 MB</p>
-  </div>
-  </li>
-  <li class="media mb-3">
-  <span class="mr-3 align-self-center img-icon danger-rgba text-danger">.pdf</span>
-  <div class="media-body">
-  <h5 class="font-16 mb-1">Annual Sales Report 2018-19<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></h5>
-  <p>.pdf, 10.5 MB</p>
-  </div>
-  </li>
-  <li class="media">
-  <span class="mr-3 align-self-center img-icon info-rgba text-info">.zip</span>
-  <div class="media-body">
-  <h5 class="font-16 mb-1">Brand Photography<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></h5>
-  <p>.zip, 53.2 MB</p>
-  </div>
-  </li>
-  <li class="media mb-3">
-      <span class="mr-3 align-self-center img-icon success-rgba text-success">.xls</span>
-      <div class="media-body">
-      <h5 class="font-16 mb-1">Complete Product Sheet<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></i></h5>
-      <p>.xls, 2.5 MB</p>
-      </div>
-      </li>
-      <li class="media mb-3">
-      <span class="mr-3 align-self-center img-icon danger-rgba text-danger">.pdf</span>
-      <div class="media-body">
-      <h5 class="font-16 mb-1">Annual Sales Report 2018-19<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></i></h5>
-      <p>.pdf, 10.5 MB</p>
-      </div>
-      </li>
-      <li class="media">
-      <span class="mr-3 align-self-center img-icon info-rgba text-info">.zip</span>
-      <div class="media-body">
-      <h5 class="font-16 mb-1">Brand Photography<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></i></h5>
-      <p>.zip, 53.2 MB</p>
-      </div>
-      </li>
-      <li class="media mb-3">
-          <span class="mr-3 align-self-center img-icon success-rgba text-success">.xls</span>
-          <div class="media-body">
-          <h5 class="font-16 mb-1">Complete Product Sheet<i class="feather icon-download-cloud float-right"><H1>
-              
-              <span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1>
-          </i></i></h5>
-          <p>.xls, 2.5 MB</p>
-          </div>
-          </li>
+  {% endfor %}
+ {%   endfor %}
+  
+  
+ 
+   
+     
+     
         
   </ul>
   </div>
@@ -787,6 +703,8 @@ border-top: 1px solid #dee2e6;
             <div class="modal-header">
             </div>
             <div class="modal-body">
+              <form action="{% url 'document'  owner.offre_stage.pk  %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
                 <form class="form-horizontal" role="form" method="POST" action="">
                   <div class="form-group">
                     <div>
@@ -797,15 +715,15 @@ border-top: 1px solid #dee2e6;
     <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add File</button>
   
     <div class="image-upload-wrap">
-      <input class="file-upload-input" type='file' onchange="readURL(this);" />
+      <input class="file-upload-input"  name="file"  type='file' onchange="readURL(this);" />
       <div class="drag-text">
         <h3>Drag and drop a file </h3>
       </div>
     </div>
     <div class="file-upload-content">
-      <img class="file-upload-image" src="#" alt="your image" />
+      <div class="file-upload-image" src="#" alt="your file" ></div>
       <div class="image-title-wrap">
-        <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+        <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded File</span></button>
       </div>
     </div>
   </div>
@@ -850,24 +768,14 @@ border-top: 1px solid #dee2e6;
                    </div>
     
                      
-              <div class="top-margin">
               
-                <select id="location-filter" name="location">
-                  <option value="">Niveau</option>
-                  <option value="los-angeles">Bac +2 </option>
-                  <option value="los-angeles">Bac +3 </option>
-                  <option value="los-angeles">Bac +4 </option>
-                  <option value="los-angeles">Bac +5  </option>
-                  <!-- Add more options as needed -->
-                </select>
-                </div>
 
                     
   
                     <div class="top-margin">
-                        <label for="membre" class="control-label">Name</label>
+                        <label for="membre" class="control-label">Title</label>
                         <div>
-                            <input id="membre" type="membre" class="form-control" name="membre">
+                            <input id="membre" type="membre" class="form-control" name="title">
                         </div>
                     </div>
                    
@@ -889,7 +797,7 @@ border-top: 1px solid #dee2e6;
                     </div>
             </div>
   
-            <button class="file-upload-btn" type="button"  >Save</button>
+            <button class="file-upload-btn" type="submit "  >Save</button>
                             
                     </div>
                 </form>

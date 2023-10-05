@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import  Stagiaire, Offre ,Supervisor,Document,Task
+from .models import  Stagiaire, Offre ,Supervisor,Document,Task,Fileresquest,Filesrespond
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
@@ -40,3 +40,15 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Task, TaskAdmin)
+
+
+class FileresquestAdmin(admin.ModelAdmin):
+    list_display=('owner', 'title','content','status',)
+admin.site.register(Fileresquest, FileresquestAdmin)
+
+
+class FilesrespondAdmin(admin.ModelAdmin):
+    list_display=('file_request','title','content')
+
+admin.site.register(Filesrespond, FilesrespondAdmin)
+

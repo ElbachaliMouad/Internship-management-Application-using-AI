@@ -1,5 +1,6 @@
 from django.urls import path ,include
 from . import views 
+from .views import download_file
 
 
 urlpatterns=[
@@ -25,7 +26,7 @@ urlpatterns=[
     path('workspace/<int:id>/forum',views.forum,name='forum'),
 
 
-    path('postuler',views.postuler,name='postuler'),
+    path('postuler/',views.postuler,name='postuler'),
     
 
 
@@ -61,8 +62,10 @@ urlpatterns=[
 
     path('log_out_stagiaire',views.log_out_stagiaire, name='log_out_stagiaire'),
    
+    path('delete_doc/<int:id>',views.delete_doc, name='delete_doc'),
 
-         
+    path('download/<int:pk>/', download_file, name='download_file'),
+
     
 
     ]

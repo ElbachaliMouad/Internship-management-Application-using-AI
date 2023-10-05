@@ -137,8 +137,10 @@ class Document(models.Model):
          return (f"{self.pk}")
     
     
+    
 @receiver(pre_save, sender=Document)
 def validate_your_field(sender, instance, **kwargs): 
+   instance.task_root.number_duc+=1
    instance.date_upload=timezone.now()  
    if instance.task_root.date_of_expiry:
        if    instance.date_upload > instance.task_root.date_of_expiry:
@@ -146,3 +148,32 @@ def validate_your_field(sender, instance, **kwargs):
 
        
 
+class Fileresquest(models.Model):
+    owner=models.ForeignKey(Stagiaire, on_delete=models.CASCADE,  limit_choices_to={'status': 2})
+    title=models.CharField(max_length=255,blank=True,default='')
+    content=models.FileField(upload_to='filerequest/',blank=True,null=True)
+    status=models.IntegerField(default=0)
+
+
+
+
+    class Meta:
+        db_table = 'Fileresquest'
+
+    def __str__(self):
+         return (f"{self.pk}")
+
+
+class Filesrespond(models.Model):
+    file_request=models.ForeignKey(Fileresquest, on_delete=models.CASCADE,  )
+    content=models.FileField(upload_to='files/',blank=True,null=True)
+    title=models.CharField(max_length=255,blank=True,default='')
+
+    class Meta:
+        db_table = 'Filesrespond'
+
+    def __str__(self):
+         return (f"{self.pk}")
+
+
+      

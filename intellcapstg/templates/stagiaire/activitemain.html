@@ -460,6 +460,9 @@ border-top: 1px solid #dee2e6;
     box-shadow: none;
     border: 1px solid transparent;
 }
+    .hidden {
+      display: none;
+    }
     </style>
 </head>
 <body>
@@ -474,6 +477,13 @@ border-top: 1px solid #dee2e6;
 
         </div>
     </H1> 
+    {% if error %}
+
+      <div  id="myDiv" class="alert alert-danger" role="alert" data-mdb-color="danger">
+        {{ message|linebreaks }}
+      </div>
+      {% endif %}
+
 <div class="row">
 <div class="col-md-6">
 <div class="box box-aqua">
@@ -513,11 +523,10 @@ border-top: 1px solid #dee2e6;
 
 
 
-<span class="text">{{task.task_Name}}</span>
-<strong class="label label-danger"><i class="fa fa-clock-o"></i>{{task.date_of_expiry}}</strong>
+<span class="text" style = "font-family:georgia,garamond,serif;font-size:16px;" >{{task}} | {{task.task_Name}}</span>{% if  task.date_of_expiry %}
+<p class="label label-danger" style = "font-family:georgia,garamond,serif;font-size:16px;" ><i class="fa fa-clock-o"></i>{{task.date_of_expiry}}</p>{% endif %}
 <div class="tools">
-<i class="fa fa-edit"></i>
-<i class="fa fa-trash-o"></i>
+
 </div>
 </li>
 {% endfor %}
@@ -537,32 +546,76 @@ border-top: 1px solid #dee2e6;
 <div class="box-body">
 <ul class="todo-list ui-sortable">
 
+  {% for task in tasks %}
 
+  {% if task.document_set.exists %}
 
+  {% for document in task.document_set.all %}
+  
+  
+  {% if document.owner == stagiaire  %}
 <li>
 <span class="handle ui-sortable-handle">
 <i class="fa fa-ellipsis-v"></i>
 <i class="fa fa-ellipsis-v"></i>
 </span>
-<span class="text">Let theme shine like a star</span>
-<small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
+<span class="text" style = "font-family:georgia,garamond,serif;font-size:16px;">&ensp;{{document.title}}</span>
+<p class="label label-success" style = "font-family:georgia,garamond,serif;font-size:16px;"><i class="fa fa-clock-o"></i>{{document.date_upload}}
+</p>
 <div class="tools">
-<i class="fa fa-edit"></i>
-<i class="fa fa-trash-o"></i>
+
+<button style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons"  style = "font-size:20px;" onclick="downloadFile()">download</button>
 </div>
 
-<li>
-<span class="handle ui-sortable-handle">
-<i class="fa fa-ellipsis-v"></i>
-<i class="fa fa-ellipsis-v"></i>
-</span>
-<span class="text">Let theme shine like a star</span>
-<small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
+<script>
+  function downloadFile() {
+    
+    let downloadUrl = "{% url 'download_file' pk=document.pk %}";
+
+      window.location.href =downloadUrl;
+  }
+</script>
+
 <div class="tools">
-<i class="fa fa-edit"></i>
-<i class="fa fa-trash-o"></i>
+<a  href="{% url 'delete_doc' document.id  %}" class="fa fa-trash-o" style = "font-size:25px;" ></a>
 </div>
+
 </li>
+
+{% else  %}
+<li>
+  <span class="handle ui-sortable-handle">
+  <i class="fa fa-ellipsis-v"></i>
+  <i class="fa fa-ellipsis-v"></i>
+  </span>
+  <span class="text"></span>
+  <div class="tools">
+  
+  </div>
+  
+  </li>
+
+  {% endif %}
+
+  {% endfor %}
+  
+  {% else %}
+  <li>
+    <span class="handle ui-sortable-handle">
+    <i class="fa fa-ellipsis-v"></i>
+    <i class="fa fa-ellipsis-v"></i>
+    </span>
+    <span class="text"></span>
+    <div class="tools">
+    </div>
+    
+    </li>  
+  {% endif %}
+  
+
+
+{% endfor %}
+
 </ul>
 </div>
 
@@ -578,7 +631,9 @@ border-top: 1px solid #dee2e6;
             <div class="modal-header">
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form" method="POST" action="">
+              <form action="{% url 'activitemain'  stagiaire.offre_stage.pk  %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <form class="form-horizontal"   action="" method="POST" >
                   <div class="form-group">
                     <div>
                       
@@ -588,22 +643,22 @@ border-top: 1px solid #dee2e6;
     <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add File</button>
   
     <div class="image-upload-wrap">
-      <input class="file-upload-input" type='file' onchange="readURL(this);" />
+      <input class="file-upload-input"   name="document" type='file' onchange="readURL(this);" />
       <div class="drag-text">
         <h3>Drag and drop a file </h3>
       </div>
     </div>
     <div class="file-upload-content">
-      <img class="file-upload-image" src="#" alt="your image" />
+      <div class="file-upload-image" src="#" alt="your file" ></div>
       <div class="image-title-wrap">
-        <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+        <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded File</span></button>
       </div>
     </div>
   </div>
   
   
   <script>
-      function readURL(input) {
+    function readURL(input) {
     if (input.files && input.files[0]) {
   
       var reader = new FileReader();
@@ -630,10 +685,10 @@ border-top: 1px solid #dee2e6;
     $('.image-upload-wrap').show();
   }
   $('.image-upload-wrap').bind('dragover', function () {
-          $('.image-upload-wrap').addClass('image-dropping');
-      });
-      $('.image-upload-wrap').bind('dragleave', function () {
-          $('.image-upload-wrap').removeClass('image-dropping');
+      $('.image-upload-wrap').addClass('image-dropping');
+    });
+    $('.image-upload-wrap').bind('dragleave', function () {
+      $('.image-upload-wrap').removeClass('image-dropping');
   });
   
   </script>
@@ -643,22 +698,23 @@ border-top: 1px solid #dee2e6;
                      
               <div class="top-margin">
               
-                <select id="location-filter" name="location">
-                  <option value="">Niveau</option>
-                  <option value="los-angeles">Bac +2 </option>
-                  <option value="los-angeles">Bac +3 </option>
-                  <option value="los-angeles">Bac +4 </option>
-                  <option value="los-angeles">Bac +5  </option>
+                <select  name="task">
+                  <option value="">Task</option>
+                  {% for task in tasks %}
+
+                  <option value="{{task}}">{{task}} </option>
+                  {%  endfor %}
+
                   <!-- Add more options as needed -->
                 </select>
-                </div>
 
+               
                     
   
                     <div class="top-margin">
-                        <label for="membre" class="control-label">Name</label>
+                        <label  class="control-label">title</label>
                         <div>
-                            <input id="membre" type="membre" class="form-control" name="membre">
+                            <input   class="form-control" name="title">
                         </div>
                     </div>
                    
@@ -680,11 +736,12 @@ border-top: 1px solid #dee2e6;
                     </div>
             </div>
   
-            <button class="file-upload-btn" type="button" >Save</button>
-                            
+            <button type="submit" class="file-upload-btn"  >Save</button>
+            
                     </div>
-                </form>
-            </div>
+                </div>
+              </form>
+
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
@@ -729,7 +786,16 @@ border-top: 1px solid #dee2e6;
 <script type="text/javascript"></script>
 
     
+<script>
+  // Function to hide the div after a specified time (in milliseconds)
+  function hideDivAfterTime() {
+    var div = document.getElementById("myDiv");
+    div.classList.add("hidden");  // Hide the div
+  }
 
+  // Set a timeout to call the function after a specified time (e.g., 5000 milliseconds = 5 seconds)
+  setTimeout(hideDivAfterTime, 1000);
+</script>
 <script src="js/swiper-bundle.min.js"></script>
 <script src="{% static 'js/style2.js' %}"></script>
 

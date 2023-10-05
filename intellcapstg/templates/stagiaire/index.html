@@ -171,52 +171,56 @@
 	<!-- Header -->
 	
 	<header id="head">
-		
+		<form action="{% url 'postuler' %}" method="post">
+			{% csrf_token %}
 		<div class="container">
 			<div class="row">
 				<p><div class="header2">
 				</div>   
 				  <div class="header__middle">
 					<div class="header__input" >
-						<span class="material-icons" > search</span><input type="text" placeholder="INTELLCAP|STAGE"/>
+						
+						<span class="material-icons" > search</span><input name="query" type="text" placeholder="INTELLCAP|STAGE"/>
 						
 					  </div>     
-					  <a class="btn btn-action btn-lg" role="button"  href="{% url 'postuler' %} " style="color:#025311;">Search</a>
+					  <button type="sumbit"  class="btn btn-action btn-lg" role="button" style="color:#025311;">Search</button>
 					  </div>
 					  
 					 </p>
 					 
-				<p>	<select id="location-filter" name="location">
-						<option value="">Domaine</option>
+				<p>	<select id="location-filter" name="dom">
+						<option >Domaine</option>
 						{%  for domaine in domaines %}
-						<option value="new-york">{{domaine}}</option>
+						<option value="{{domaine}}">{{domaine}}</option>
 
 						{%  endfor %}
 						<!-- Add more options as needed -->
 					</select>
-					<select id="location-filter" name="location">
-						<option value="">Niveau</option>
+					<select id="location-filter" name="miss">
+						<option >Niveau</option>
 						{%  for niveau in niveaus %}
-						<option value="new-york">{{niveau}}</option>
+						<option value="{{niveau}}">{{niveau}}</option>
 
 						{%  endfor %}
 					</select>
 
-					<select id="location-filter" name="location">
-						<option value="">Période</option>
+					<select id="location-filter" name="periode">
+						<option >Période</option>
 						{%  for dure in dures %}
-						<option value="new-york">{{dure}}</option>
+						<option value="{{dure}}">{{dure}}</option>
 
 						{%  endfor %}
 					</select>
 				</p>
 				
-					
 			</div>
 		</div>
+
 	</p>
 							
 	</header>
+</form>
+
 
 
 	
