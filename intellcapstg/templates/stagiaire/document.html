@@ -593,6 +593,9 @@ border-top: 1px solid #dee2e6;
 
   <STYLE type="text/css">
     
+    .hidden {
+      display: none;
+    }
       H1 { text-align: right}
      </STYLE>
   <div class="container">
@@ -607,6 +610,17 @@ border-top: 1px solid #dee2e6;
         {{ message|linebreaks }}
       </div>
       {% endif %}
+       
+<script>
+  // Function to hide the div after a specified time (in milliseconds)
+  function hideDivAfterTime() {
+    var div = document.getElementById("myDiv");
+    div.classList.add("hidden");  // Hide the div
+  }
+
+  // Set a timeout to call the function after a specified time (e.g., 5000 milliseconds = 5 seconds)
+  setTimeout(hideDivAfterTime, 1000);
+</script>
   <div class="row">
   <div class="col-md-6">
   <div class="card m-b-30">
@@ -632,11 +646,22 @@ border-top: 1px solid #dee2e6;
 
   <li class="media mb-3">
   <div class="media-body">
-  <h5 class="font-16 mb-1">{{file.title}}<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()" >download</span></H1>
+  <h5 class="font-16 mb-1">{{file.id}} | {{file.title}}<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()" >download</span></H1>
   </i></h5>
-  <p></p>
+  <p>{{file.description}}</p>
   </div>
+  <div class="tools">
+    <a  href="{% url 'delete_filee'     file.id  %}" class="fa fa-trash-o" style = "font-size:25px;" ></a>
+    </div>
   </li>
+  <script>
+    function downloadFile() {
+      
+      let downloadUrl = "{% url 'download_filee' pk=file.pk %}";
+  
+        window.location.href =downloadUrl;
+    }
+  </script>
   
 
   {% endfor %}
@@ -669,17 +694,27 @@ border-top: 1px solid #dee2e6;
 
 
     {% for file in owner.fileresquest_set.all %}
-{%  for fileres in file.Filesrespond_set.all  %}
+{%  for fileres in file.filesrespond_set.all  %}
   <li class="media mb-3">
   <div class="media-body">
-  <h5 class="font-16 mb-1">{{fileres.title}}<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></h5>
+  <h5 class="font-16 mb-1"> {{file.id}} | {{fileres.title}}<i class="feather icon-download-cloud float-right"><H1><span style="color: rgb(255, 0, 0) ; cursor: pointer" class="material-icons" onclick="downloadFile()">download</span></H1></i></h5>
+  <p>{{fileres.description}}</p>
   </div>
   </li>
+  <script>
+    function downloadFile() {
+      
+      let downloadUrl = "{% url 'download_filerespond' pk=fileres.pk %}";
+  
+        window.location.href =downloadUrl;
+    }
+  </script>
+   
   {% endfor %}
  {%   endfor %}
   
   
- 
+
    
      
      
@@ -785,7 +820,10 @@ border-top: 1px solid #dee2e6;
                      
 
 
-
+                    <div class="form-group">
+                      <label class="form-label">Description</label>
+                      <textarea class="form-control"  name="description" rows="3"> </textarea>
+                  </div>
 
 
                

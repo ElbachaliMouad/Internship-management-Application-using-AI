@@ -151,6 +151,7 @@ def validate_your_field(sender, instance, **kwargs):
 class Fileresquest(models.Model):
     owner=models.ForeignKey(Stagiaire, on_delete=models.CASCADE,  limit_choices_to={'status': 2})
     title=models.CharField(max_length=255,blank=True,default='')
+    description=models.TextField(null=True,blank=True)
     content=models.FileField(upload_to='filerequest/',blank=True,null=True)
     status=models.IntegerField(default=0)
 
@@ -165,9 +166,11 @@ class Fileresquest(models.Model):
 
 
 class Filesrespond(models.Model):
-    file_request=models.ForeignKey(Fileresquest, on_delete=models.CASCADE,  )
+    file_request=models.ForeignKey(Fileresquest, on_delete=models.SET_NULL,null=True  )
     content=models.FileField(upload_to='files/',blank=True,null=True)
     title=models.CharField(max_length=255,blank=True,default='')
+    description=models.TextField(null=True,blank=True)
+
 
     class Meta:
         db_table = 'Filesrespond'

@@ -1,6 +1,6 @@
 from django.urls import path ,include
 from . import views 
-from .views import download_file
+from .views import download_file,download_filee,download_filerespond
 
 
 urlpatterns=[
@@ -57,6 +57,9 @@ urlpatterns=[
 
     path('supervisor/profile/', views.superprofile, name='superprofile'),
 
+        path('supervisor/search_admin/', views.search_admin, name='search_admin'),
+
+
 
   ##################################################################################
 
@@ -66,7 +69,15 @@ urlpatterns=[
 
     path('download/<int:pk>/', download_file, name='download_file'),
 
-    
+   
+       path('download_filerespond/<int:pk>/', download_filerespond, name='download_filerespond'),
+
+           path('download_filee/<int:pk>/', download_filee, name='download_filee'),
+
+ 
+    path('delete_filee/<int:id>',views.delete_filee, name='delete_filee'),
+
+    path('dash',views.dash, name='dash')
 
     ]
 

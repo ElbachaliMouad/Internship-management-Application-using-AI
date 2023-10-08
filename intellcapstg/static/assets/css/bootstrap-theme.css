@@ -23,7 +23,7 @@
 .navbar-inverse .navbar-nav > .active > a { background:none; color:white; }
 
 .navbar-inverse .navbar-brand { font-family: "Open sans", helvetica, arial; font-size: 20px; color:white; padding:0 0 0 15px; margin:12px 0 0 0; }
-	.navbar-inverse .navbar-brand img { margin-top:-90px;}
+	.navbar-inverse .navbar-brand img { margin-top:-8px;}
 
 .navbar-nav .dropdown-menu {
 	left:-5px;

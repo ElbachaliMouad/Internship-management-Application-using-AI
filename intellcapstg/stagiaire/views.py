@@ -421,13 +421,14 @@ def document(request,id):
                   error_messages = []
                   title = request.POST.get('title', None)
                   file = request.FILES.get('file',None)
+                  description=request.POST.get('description', None)
                   if not title:
 
                      error_messages.append(" * Please chose title.")
                   if not file:
                      error_messages.append(" * Please entre a  file.")
                   if not error_messages:
-                      file= Fileresquest.objects.create(owner=owner, title=title,content=file,status=1)
+                      file= Fileresquest.objects.create(owner=owner, title=title,content=file,status=1,description=description)
                   else:
                      error = True
                      message = "\n".join(error_messages)
@@ -1105,15 +1106,207 @@ def profilepass(request):
 ##########################supervisor##############################
  
 def supersignin(request):
-    return render(request,'supervisor/signin.html')
+    error=False
+    valid=False
+    message1=""
+    message=""
+    if request.method =="POST":
+        mail=request.POST.get('mail', None)
+        password=request.POST.get('password', None)
+        try :
+            validate_email(mail)==False
+        except:
+            error=True
+            message="Enter a valid email !"
 
 
+          
+        print("=="*5, "NEW POST:", mail, "=="*5)
+        print("=="*5, "NEW POST:", password, "=="*5)
+  
+
+        user=User.objects.filter(email=mail).first()
+        if user:
+            user_mail=authenticate(username=user.username, password=password)
+            test=user.is_superuser
+            print(test)
+            if user_mail :
+                if test:
+                    try:
+                        supervisor = get_object_or_404(Supervisor, supervisor_id=user)
+                        login(request, user_mail)
+                        return redirect('search_admin')
+                     
+                    except Http404:
+                        return render(request, 'stagiaire/error.html', status=404)
+
+                    
+                    
+                else:
+                    error=True
+                    message="can't find  user"
+            
+            else:
+                    error=True
+                    message="wrong password"
+               
+
+        else:
+            error=True
+            message="The email is wrong"
+        
+
+
+
+
+
+
+
+
+    context= {
+        'error':error,
+        'message':message,
+        'valid': valid
+    }
+    
+
+
+    return render(request,'supervisor/signin.html',context)
+
+
+
+@login_required(login_url='supersignin', )
 def superoffre(request):
+
     return render(request, 'supervisor/actviteadmin.html')
 
 
+
+
+@login_required(login_url='supersignin', )
 def  superprofile(request, id):
+
+    
     return render(request, 'supervisor/profile.html')
+
+
+
+
+@login_required(login_url='supersignin', )
+def search_admin(request):
+    
+    try:
+        
+        supervisor = get_object_or_404(Supervisor, supervisor_id=request.user)
+        
+        for offre in  Offre.objects.filter(valable=1):
+                if offre.date_of_expiry:
+                    if offre.date_of_expiry <= timezone.now():
+                      offre.valable=0
+                      offre.save()
+                    else:
+                        pass
+                else:
+                    pass
+
+        offres= Offre.objects.filter(owner=supervisor)
+        domaines_dict=Offre.objects.values('domaine').distinct()
+        missions_dict=Offre.objects.values('mission').distinct()
+        dures_dict=Offre.objects.values('dure').distinct()
+        niveaus_dict=Offre.objects.values('niveau_etude').distinct()
+
+        number=offres.count()
+        domaines = [domaine['domaine'] for domaine in domaines_dict]
+        missions=[mission['mission'] for mission in missions_dict]
+        dures=[dure['dure'] for dure in dures_dict]
+        niveaus=[niveau['niveau_etude'] for niveau in  niveaus_dict]
+        print(niveaus)
+            
+        context={'supervisor' : supervisor,
+             'offres':offres,  
+             'number':number,
+             'domaines':domaines,
+             'missions':missions,
+             'dures':dures,
+             'niveaus':niveaus,
+             'exist':True
+             }
+        if  request.method== "POST":
+                
+                query=request.POST.get('query',None)
+                dom=request.POST.get('dom',None)
+                miss=request.POST.get('miss',None)
+                periode=request.POST.get('periode',None)
+                print(query,dom,miss,periode)
+                misssperiods = domsmisss = domsperiodes = domsperiodesmiss = a= periodes = misss = doms = None
+
+                if  query:
+                    a=rechercher(query,offres)
+                else:
+                    a=Offre.objects.none()
+
+                if dom:
+                    doms = offres.filter(domaine=dom)
+                else:
+                    doms=Offre.objects.none()
+        
+        # Filter based on mission if provided
+                if miss:
+                    misss = offres.filter(niveau_etude=miss)
+                else:
+                    miss=Offre.objects.none()
+        # Filter based on periode if provided
+                if periode:
+                    periodes = offres.filter(dure=periode)
+                else:
+                    periodes=Offre.objects.none()
+        # Perform intersection if multiple filters provided
+                if dom and miss and periode:
+                    domsperiodesmiss = offres.filter(domaine=dom, niveau_etude=miss, dure=periode)
+                else:
+                    domsperiodesmiss=domsperiodesmiss
+                if dom and miss:
+                    domsmisss = offres.filter(domaine=dom, niveau_etude=miss)
+                else:
+                    domsperiodesmiss=Offre.objects.none()
+                if dom and periode:
+                    domsperiodes = offres.filter(domaine=dom, dure=periode)
+                else:
+                    domsperiodes=Offre.objects.none()
+                
+                if miss and periode:
+                    misssperiods = offres.filter(niveau_etude=miss, dure=periode)
+                else:
+                    misssperiods=Offre.objects.none()
+
+
+                
+
+                offres=a.union(domsperiodesmiss).union(domsmisss).union(domsperiodes).union(misssperiods).union(doms).union(misss).union(periodes)
+
+               
+            
+                if len(offres)==0:
+                    context['exist']=False
+                else:
+                    context['offres']=offres
+                    context['number']=offres.count()
+
+
+                    
+
+
+                    
+
+
+                
+        return render(request, 'supervisor/search_admin.html' , context)
+
+            
+
+    except Http404:
+            return render(request, 'stagiaire/error.html',status=404)
+
 
 ##########################logout#################################
 
@@ -1153,17 +1346,89 @@ import mimetypes
 
 def download_file(request,pk):
     try:
-        obj = get_object_or_404(Document, pk=pk)
+        stagiarire=get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiarire.status !=2:
+            return render(request, 'stagiaire/error.html', status=404)
+        else:
+            obj = get_object_or_404(Document, pk=pk, owner=stagiarire)
+            response =HttpResponse(obj.content, content_type='application/force-download')
+            response['Content-Disposition']=f'attachment; filename={obj.content.name}"'
+            return response
+                
 
-    # Assuming the file is stored in a FileField named 'file_field'
 
-        response =HttpResponse(obj.content, content_type='application/force-download')
-        response['Content-Disposition']=f'attachment; filename={obj.content.name}"'
-        return response
+    except Http404 :
+        return render(request, 'stagiaire/error.html', status=404)
+
+
+
+import mimetypes
+@login_required(login_url='signin')
+def download_filerespond(request,pk):
+
+    try:
+        stagiaire=get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.status !=2:
+            return render(request, 'stagiaire/error.html', status=404)
+        else:
+            obj = get_object_or_404(Filesrespond, pk=pk, file_request__owner=stagiaire)
+            response =HttpResponse(obj.content, content_type='application/force-download')
+            response['Content-Disposition']=f'attachment; filename={obj.content.name}"'
+            return response
+                
+
+
+    except Http404 :
+        return render(request, 'stagiaire/error.html', status=404)
+
+
+
+@login_required(login_url='signin')
+def download_filee(request,pk):
+    try:
+        stagiarire=get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiarire.status !=2:
+            return render(request, 'stagiaire/error.html', status=404)
+        else:
+            obj = get_object_or_404(Fileresquest, pk=pk , owner=stagiarire)
+            response =HttpResponse(obj.content, content_type='application/force-download')
+            response['Content-Disposition']=f'attachment; filename={obj.content.name}"'
+            return response
                 
 
 
 
     except Http404 :
         return render(request, 'stagiaire/error.html', status=404)
+    
 
+
+
+@login_required(login_url='signin')
+def delete_filee(request,id):
+
+
+    
+
+    try:
+        
+        stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
+        if stagiaire.status != 2:
+                return render(request, 'stagiaire/error.html', status=404)
+        else:
+            doc = get_object_or_404(Fileresquest, pk=id, owner=stagiaire)
+            doc.delete()
+            return redirect('document' , id=stagiaire.offre_stage.pk )
+
+
+
+
+
+    except Http404 :
+        return render(request, 'stagiaire/error.html', status=404)
+    
+
+
+
+def dash(request):
+    return render(request, 'supervisor/dashboard.html')

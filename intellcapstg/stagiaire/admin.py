@@ -43,12 +43,12 @@ admin.site.register(Task, TaskAdmin)
 
 
 class FileresquestAdmin(admin.ModelAdmin):
-    list_display=('owner', 'title','content','status',)
+    list_display=('owner', 'title','content','status','description')
 admin.site.register(Fileresquest, FileresquestAdmin)
 
 
 class FilesrespondAdmin(admin.ModelAdmin):
-    list_display=('file_request','title','content')
+    list_display=('file_request','title','content','description')
 
 admin.site.register(Filesrespond, FilesrespondAdmin)
 
