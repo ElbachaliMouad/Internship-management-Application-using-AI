@@ -21,6 +21,13 @@ from django.db.models import Q
 import os
 from django.http import FileResponse
 
+from django.db.models import Count
+
+
+
+
+
+
 def rechercher(query,results):
 
     for i, char in enumerate(query):
@@ -382,8 +389,6 @@ def activitemain(request,id):
                         existing_document.save()
                     else:
                         new_document = Document.objects.create(owner=stagiaire, title=tit,date_upload=timezone.now(),content=docu,task_root=tas)
-                        tas.number_duc+=1
-                        tas.save()
 
                   else:
                      error = True
@@ -1406,10 +1411,6 @@ def download_filee(request,pk):
 
 @login_required(login_url='signin')
 def delete_filee(request,id):
-
-
-    
-
     try:
         
         stagiaire = get_object_or_404(Stagiaire, stagiaire_id=request.user)
@@ -1420,15 +1421,61 @@ def delete_filee(request,id):
             doc.delete()
             return redirect('document' , id=stagiaire.offre_stage.pk )
 
-
-
-
-
     except Http404 :
         return render(request, 'stagiaire/error.html', status=404)
     
 
 
+@login_required(login_url='supersignin')
+def dashboard(request,id):
+    try:
+        
 
-def dash(request):
-    return render(request, 'supervisor/dashboard.html')
+        
+        for offre in  Offre.objects.filter(valable=1):
+                if offre.date_of_expiry:
+                    if offre.date_of_expiry <= timezone.now():
+                      offre.valable=0
+                      offre.save()
+                    else:
+                        pass
+                else:
+                    pass
+        supervisor = get_object_or_404(Supervisor, supervisor_id=request.user)
+        offre=get_object_or_404(Offre, pk=id, owner=supervisor, valable=0)
+      
+        tasks=Task.objects.filter(task_offre=offre)
+        task_counts = tasks.annotate(document_count=Count('document'))
+        a=tasks.count()
+            
+        colors = ['#1DC7EA', '#FB404B', '#FFA534', '#9368E9', '#87CB16', '#1F77D0', '#5e5e5e', '#dd4b39', '#35465c', '#e52d27', '#55acee', '#cc2127', '#1769ff', '#6188e2', '#a748ca', '#a748ca']
+        task_colors = {task: colors[i % len(colors)] for i, task in enumerate(tasks)}
+       
+        import json
+        p=0
+        total_document_count = sum(task_count.document_count for task_count in task_counts)
+
+            
+
+        data = {
+    'series':[f"{int((task_count.document_count / total_document_count) * 100)}" for task_count in task_counts]}
+
+        json_data = json.dumps(data)
+
+        context={'supervisor' : supervisor,
+             'offre':offre,  
+             'tasks':tasks,
+             'task_counts':task_counts,
+             'colors':colors,
+             'task_colors':task_colors,
+             'json_data':json_data
+}
+
+            
+             
+        return render(request, 'supervisor/dashboard.html' , context)
+
+            
+
+    except Http404:
+            return render(request, 'stagiaire/error.html',status=404)

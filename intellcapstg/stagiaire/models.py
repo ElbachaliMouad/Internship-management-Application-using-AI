@@ -112,8 +112,7 @@ class Task(models.Model):
     task_offre=models.ForeignKey(Offre, on_delete=models.CASCADE,null=True)
     task_Name=models.CharField(max_length=255,blank=True,default='')
     date_of_expiry = models.DateTimeField(null=True, blank=True)
-    number_duc=models.IntegerField(default=0)
-    
+
     class Meta:
         db_table = 'task'
 
@@ -129,7 +128,6 @@ class Document(models.Model):
     date_upload = models.DateTimeField(null=True, blank=True )
     content=models.FileField(upload_to='documents/',blank=True,null=True)
     task_root=models.ForeignKey(Task, on_delete=models.CASCADE ,null=True)
-    
     class Meta:
         db_table = 'document'
 
@@ -140,11 +138,11 @@ class Document(models.Model):
     
 @receiver(pre_save, sender=Document)
 def validate_your_field(sender, instance, **kwargs): 
-   instance.task_root.number_duc+=1
    instance.date_upload=timezone.now()  
-   if instance.task_root.date_of_expiry:
-       if    instance.date_upload > instance.task_root.date_of_expiry:
-        raise ValidationError('time out ')
+   if instance.task_root.date_of_expiry and instance.date_upload > instance.task_root.date_of_expiry:
+        raise ValidationError('Time out')
+    
+    # Save the related Task model
 
        
 

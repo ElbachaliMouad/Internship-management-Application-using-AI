@@ -36,7 +36,7 @@ admin.site.register(Document, DocumentAdmin)
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display=('task_offre', 'task_Name','date_of_expiry','number_duc')
+    list_display=('task_offre', 'task_Name','date_of_expiry')
 
 
 admin.site.register(Task, TaskAdmin)

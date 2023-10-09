@@ -77,7 +77,7 @@ urlpatterns=[
  
     path('delete_filee/<int:id>',views.delete_filee, name='delete_filee'),
 
-    path('dash',views.dash, name='dash')
+    path('supervisor/dashboard/<int:id>',views.dashboard, name='dashboard')
 
     ]
 
